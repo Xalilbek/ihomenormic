@@ -1,0 +1,128 @@
+.qb_line{
+    display: block;
+    background: #efefef;
+    margin-top: 30px;
+    padding: 25px 15px;
+    border-radius: 5px;
+}
+.qb_first_line{
+    display: table;
+    width: 100%;
+}
+.query_props_body{
+    padding: 0;
+    margin-top: 10px;
+    border-radius: 4px;
+    background: #e0e0e0;
+    max-width: 850px;
+}
+.query_prop_line{
+    padding: 15px 15px;
+    border-bottom: 1px solid #f7f7f7;
+}
+.query_title{
+    border: 1px solid #d4d4d4;
+    display: table-cell;
+}
+.query_render_types{
+    display: table-cell;
+    width: 20%;
+    min-width: 200px;
+}
+.query_prop_title, .interval_valuemin,.interval_valuemax{
+    border: 1px solid #d4d4d4;
+    display: table-cell;
+}
+.query_select{
+    border: 1px solid #d4d4d4;
+}
+.query_prop_items{
+    display: table;
+    width: 100%;
+}
+.query_prop_seperator{
+    display: table-cell;
+    width: 10px;
+}
+.query_prop_btn{
+    display: table-cell;
+    width: 40px;
+    text-align: center;
+    padding: 0;
+    padding-top: 8px;
+    background: white;
+    border-radius: 4px;
+    margin-left: 10px;
+    border: 1px solid #d4d3d3;
+}
+.query_prop_btn:hover{
+    background: #f1f1f1;
+    cursor: pointer;
+}
+.query_prop_delete i{
+    color: red;
+}
+.survey_ac_line{
+    display: table;
+    padding-top: 10px;
+}
+.survey_ac_btn{
+    display: table-cell;
+    width: 350px;
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 11px;
+    height: 45px;
+    background: white;
+    border-radius: 4px;
+    margin-left: 10px;
+    border: 1px solid #d4d3d3;
+}
+.survey_ac_btn:hover{
+    background: #ececec;
+    cursor: pointer;
+}
+.survey_ac_btn_icon{
+    display: table-cell;
+    width: 25px;
+}
+.survey_ac_btn_icon .la-square{
+    color: #cecdcd !important;
+    font-weight: 900;
+}
+.survey_ac_btn_icon .la-check-square{
+    color: #1f9810 !important;
+    font-weight: 900;
+}
+.survey_ac_btn_text{
+    display: table-cell;
+    font-size: 14px;
+}
+.survey_close_line{
+    width: 100%;
+}
+.survey_close{
+    display: table-cell;
+    width: 40px;
+    text-align: center;
+    padding-top: 8px;
+    background: #fdfdfd;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+}
+.survey_close i{
+    color: red;
+}
+.survey_close:hover{
+    background: #e6e6e6;
+    cursor: pointer;
+}
+
+.interval_line{
+    width: 100%;
+    padding: 10px 10px;
+    display: table;
+}
+.interval_min, .interval_max{
+    display: table-cell;
+}

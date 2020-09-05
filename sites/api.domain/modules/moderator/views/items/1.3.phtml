@@ -1,0 +1,41 @@
+<section id="registration_employee">
+    <h2 id="html-structure"><a href="javascript:;"> Authentication / Registration for Employee</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/register/employee</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>firstname:</code> (type: STRING)<br/>
+            <code>lastname:</code> (type: STRING)<br/>
+            <code>password:</code> (type: STRING)<br/>
+            <code>phone:</code>  (type: STRING, format: +380731033735)<br/>
+            <code>email:</code> (type: STRING)<br/>
+            <code>gender:</code> (type: INT) 0 => Female, 1 => Male<br/>
+            <code>ssn:</code> (type: STRING)<br/>
+            <code>place:</code> (type: STRING)<br/>
+            <code>address:</code> (type: STRING)<br/>
+            <code>zipcode:</code> (type: STRING)<br/>
+            <code>languages:</code> (type: ARRAY) <a href="#data_languages">get languages list here</a><br/>
+            <code>city:</code> (type: INT) <a href="#data_cities">get city list here</a><br/>
+            <code>payment_registration_number:</code> (type: STRING)<br/>
+            <code>payment_account_number:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/register/employee?lang=en&firstname=Testing&lastname=Testing&password=123456&phone=+380731033736&email=test@test.com&gender=0&ssn=12346&languages[]=1&languages[]=2&place=Denmark&address=Streat test 12&zipcode=10000&city=1&payment_registration_number=320943290&payment_account_number=23423432x<br/>
+            <?php
+            $json = '{"status":"success","description":"Added successfully","token":"da7afd7f87e3f3bd6a290d0e26228171","hash":"9d03d28372dd4b338fb16be49f1f076e","data":{"id":18,"firstname":"Testing","lastname":"Testing","phone":"380731033736","email":"test@test.com","gender":0,"gender_text":"Female","languages":[1,2],"ssn":"12346","address":"Streat test 12","zipcode":"10000","city":1,"payment_registration_number":"320943290","payment_account_number":"23423432x","type":"employee"}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/register/employee?lang=en&firstname=Testing&lastname=Testing&password=123456&phone=+380731033736&email=test@test.com&gender=0&ssn=12346&languages[]=1&languages[]=2&place=Denmark&address=Streat test 12&zipcode=10000&city=1&payment_registration_number=320943290&payment_account_number=23423432x<br/>
+            <?php
+            $json = '{"status":"error","error_code":1101,"description":"User exists"}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>

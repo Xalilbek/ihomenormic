@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" >
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8" />
+    <title>
+        <?=$this->lang->get("siteTitle", "CareCompagniet");?> - <?=$this->lang->get("Login", "Log ind");?>
+    </title>
+    <meta name="description" content="Latest updates and statistic charts">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+      WebFont.load({
+        google: {"families":["Poppins:300,400,500,600,700","Roboto:300,400,500,600,700"]},
+        active: function() {
+          sessionStorage.fonts = true;
+        }
+      });
+    </script>
+    <!--end::Web font -->
+    <!--begin::Base Styles -->
+    <link href="/cc-crm2/assets/vendors/base/vendors.bundle.css?1jks" rel="stylesheet" type="text/css" />
+    <link href="/cc-crm2/assets/demo/default/base/style.bundle.css?1xasxs" rel="stylesheet" type="text/css" />
+    <!--end::Base Styles -->
+    <link rel="shortcut icon" href="/cc-crm2/assets/demo/default/media/img/logo/favicon.ico" />
+    <style>
+        .m-login.m-login--1 .m-login__aside {
+            margin: 0 auto;
+            /*width: 1140px !important;*/
+        }
+        .m-login.m-login--1 .m-login__wrapper {
+            padding: 20px 2rem 2rem 2rem;
+        }
+
+        .bg-secondary {
+            background-color: #f7fafc !important;
+        }
+
+        .card {
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            -webkit-box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+        }
+
+        @media screen and (device-aspect-ratio: 40/71) { /* phone 5/se */
+            #login_back_color {height: 108vh !important}
+        }
+
+        @media screen and (min-width: 992px) { /* phone 5/se */
+            .m-login.m-login--1 .m-login__aside {
+                width: 1140px !important;
+            }
+        }
+    </style>
+</head>
+<!-- end::Head -->
+<!-- end::Body -->
+<body  class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <div style="display: block;" class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-grid--tablet-and-mobile m-grid--hor-tablet-and-mobile m-login m-login--1 m-login--signin" id="m_login">
+
+        <!-- z_code-->
+        <style>
+            #login_back_color {
+                background-image:url("/resources/images/bg_blue_pattern.jpg");
+                background-size: cover;
+            }
+        </style>
+        <div id="login_back_color" style="position: absolute; z-index: 0;;width: 100vw; height: 100vh;">
+
+        </div>
+        <div style="position: absolute; z-index: 0; background: white;width: 100%; height: 400px;">
+        </div>
+
+
+
+
+
+
+        <div class="m-grid__item m-grid__item--order-tablet-and-mobile-2 m-login__aside" style="position: relative; z-index: 10;">
+            <div class="m-stack m-stack--hor m-stack--desktop">
+                <div class="m-stack__item m-stack__item--fluid">
+                    <div class="m-login__wrapper">
+                        <div class="m-login__logo">
+                            <a href="#">
+                                <img style="width: 270px;" width="100" src="/resources/images/logo-2.png?123">
+                            </a>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6 col-md-6">
+                                <form class="card bg-secondary shadow border-0 m-login__form m-form" action="" method="post" >
+                                    <div class="form-group m-form__group row">
+                                        <style>
+                                            .form-error,.form-success{
+                                                display: block;
+                                                width: 100%;
+                                                font-size: 14px;
+                                                font-weight: normal;
+                                                text-align: left;
+                                                border-radius: 4px;
+                                                background-color: #f3cdd3;
+                                                color: #210406;
+                                                margin: 0 0 20px 0;
+                                                padding: 12px 12px 12px 12px;
+                                                border-left: 4px solid #de6c6c;
+                                            }
+                                        </style>
+                                        <div class="form-error" id="error_alert" style="display: none;">
+
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col text-muted fs-15 justify-content-center align-self-center">Login</div>
+                                            <div class="col-auto text-muted fs-15">
+                                                <img alt="en"
+                                                     width="85px"
+                                                     src="/resources/images/ihomelogo.png?123?Asda">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group input-group-alternative">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                <input class="form-control m-input"
+                                                       type="text"
+                                                       placeholder="<?=$this->lang->get("Username");?>"
+                                                       name="username"
+                                                       autocomplete="off"
+                                                       value="<?=$this->request->get("username");?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group input-group-alternative">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-lock"></i>
+                                                    </span>
+                                                </div>
+                                                <input class="form-control m-input m-login__form-input--last"
+                                                       type="password"
+                                                       placeholder="<?=$this->lang->get("Password");?>"
+                                                       name="password">
+                                            </div>
+                                        </div>
+                                        <div class="m-login__form-action" style="margin: 1rem 0 1rem 0">
+                                            <button id="m_login_signin_submit" type="submit" class="btn d-flex align-items-center ml-auto w-100 justify-content-center" style="background: #56C9FF; color: white">
+                                                <?=$this->lang->get("Login");?>
+                                                <i class="feather feather-arrow-right ml-2"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="m-login__forget-password">
+                            <div class="m-login__head">
+                                <h3 class="m-login__title">
+                                    Glemt dit kodeord?
+                                </h3>
+                                <div class="m-login__desc">
+                                    Skriv din e-mail adresse for at gendanne dit kodeord
+                                </div>
+                            </div>
+                            <form class="m-login__form m-form" action="">
+                                <div class="form-group m-form__group">
+                                    <input class="form-control m-input" type="text" placeholder="E-mail Adresse" name="email" id="m_email" autocomplete="off">
+                                </div>
+                                <div class="m-login__form-action">
+                                    <button id="m_login_forget_password_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air">
+                                        Gendan
+                                    </button>
+                                    <button id="m_login_forget_password_cancel" class="btn btn-outline-focus m-btn m-btn--pill m-btn--custom">
+                                        Annueler
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <style>
+                        .btn-lang{background: #fff;border: 1px solid #d5d5d5;border-radius: 15px;padding: 8px 10px;color: #444;font-size: 15px;}
+                    </style>
+                    <div style="display: block;text-align: center;">
+                        <?php foreach($this->parameters->getList($this->lang, "system_languages") as $value):?>
+                            <a href="?_setlang=<?=$value["code"];?>" class="btn-lang" style="margin-right: 10px;"><?=$value["code"];?></a>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="m-grid__item m-grid__item--fluid m-grid m-grid--center m-grid--hor m-grid__item--order-tablet-and-mobile-1	m-login__content" style="background-image: url(/cc-crm2/assets/app/media/img//bg/bg-4.jpg)">-->
+
+    </div>
+</div>
+<script>
+  var datePickerSettings = {
+    en: {
+      days:["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+      daysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+      daysMin:["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"],
+      months:["<?=$this->lang->get("January");?>","<?=$this->lang->get("February");?>","<?=$this->lang->get("March");?>","<?=$this->lang->get("April");?>","<?=$this->lang->get("May");?>","<?=$this->lang->get("June");?>","<?=$this->lang->get("July");?>","<?=$this->lang->get("August");?>","<?=$this->lang->get("September");?>","<?=$this->lang->get("October");?>","<?=$this->lang->get("November");?>","<?=$this->lang->get("December");?>"],
+      monthsShort:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+      today:"Today",clear:"Clear",titleFormat:"MM yyyy"
+    }
+  };
+</script>
+<!-- end:: Page -->
+<!--begin::Base Scripts -->
+<script src="/cc-crm2/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+<script src="/cc-crm2/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
+<!--end::Base Scripts -->
+<!--begin::Page Snippets -->
+<script src="/resources/js/login.js?<?=rand(1,999999999);?>" type="text/javascript"></script>
+<!--end::Page Snippets -->
+</body>
+
+<!-- end::Body -->
+</html>

@@ -1,0 +1,512 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("NewCase", "Ny Opgave");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <?php if($this->request->get("source") == "profile"):?>
+                        <a href="<?=_PANEL_ROOT_;?>/profile/cases/<?=$this->request->get("citizen");?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Cases");?></span></a>
+                    <?php else:?>
+                        <a href="<?=_PANEL_ROOT_;?>/cases" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Cases");?></span></a>
+                    <?php endif;?>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="javascript:;" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("NewCase", "Ny Opgave");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("NewCase", "Ny Opgave");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Customer");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_1" name="citizen">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($customers as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("citizen") ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Employee");?></label>
+                        <div class="col-2">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="booking_date" onchange="getEmployees(this.value)" value="<?=(($this->request->get("booking_date")) ? ($this->request->get("next_service_date")): "");?>" autocomplete="off" placeholder="<?=$this->lang->get("BookingDate", "Booking date");?>">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5" id="emp_body">
+                            <select class="form-control m-select2" id="m_select2_2" name="employee">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($employees as $value):?>
+                                    <?php if($bookings[$value->id]):?>
+                                        <option value="<?=(int)$value->id;?>_<?=$bookings[$value->id]["date"];?>" <?=((int)$value->id == (int)$this->request->get("employee") ? 'selected="selected"': '');?>><?=$bookings[$value->id]["title"];?> - <?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>" autocomplete="off"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("FocusArea", "Indsatsområde");?></label>
+                        <div class="col-7">
+                            <select id="focus_area" class="form-control m-input" name="focus_area" onchange="focusAreaChanged(this.value)">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($this->parameters->getList($this->lang, "focusareas") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$this->request->get("focus_area") == (int)$value["id"] ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("FocusType", "Indsatstype");?></label>
+                        <div class="col-7" id="focus_types">
+                            <select class="form-control m-input" name="focus_type">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($this->parameters->getList($this->lang, "focustypes") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$this->request->get("focus_type") == (int)$value["id"] ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Partner");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="partner" onchange="partnerChanged(this.value)">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($partners as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$this->request->get("partner") == (int)$value->id ? 'selected="selected"': '');?>><?=$value->name;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ContactPersons");?></label>
+                        <div class="col-7" id="contact_person">
+                            <select class="form-control m-input" id="m_select2_3"  name="contact_person[]" multiple="multiple">
+                                <?php foreach($contactPersons as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=(in_array((int)$value->id, $this->request->get("contact_person")) ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("CaseMaterials", "Sagsmateriale");?></label>
+                        <div class="col-7">
+                            <div class="m-dropzone dropzone dz-clickable" action="/documents/upload?puid=<?=$puid;?>" id="m-dropzone-one">
+                                <div class="m-dropzone__msg dz-message needsclick">
+                                    <h3 class="m-dropzone__msg-title"><?=$this->lang->get("CaseMatL1", "Drop filen her eller tryk for at vælge");?></h3>
+                                    <span class="m-dropzone__msg-desc"><?=$this->lang->get("CaseMatL2", "Kun tilladt at upload billede eller pdf, docx og xlsx filer");?></span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="puid" value="<?=$puid;?>"/>
+                        </div>
+                    </div> -->
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label" id="eval_report_name"><?=$this->lang->get("EvaluationReport");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="report_interval">
+                                <option value="14_days"><?=$this->lang->get("Every14days", "Hver 14. dag");?></option>
+                                <option value="1_month" <?=((string)$this->request->get("report_interval") == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("1stEveryMonth", "Den 1. hver måned");?></option>
+                                <option value="3_month" <?=((string)$this->request->get("report_interval") == "3_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery3Months", "Hver 3. måned");?></option>
+                                <option value="6_month" <?=((string)$this->request->get("report_interval") == "6_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery6Months", "Hver 6. måned");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label" id="eval_report_name"><?=$this->lang->get("MeetingDuration", "Meeting duration");?></label>
+                        <div class="col-3">
+                            <input class="form-control m-input" name="meeting_duration" type="text" value="<?=$this->request->get("meeting_duration");?>" placeholder="0 <?=strtolower($this->lang->get("Hour"));?>">
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control m-input" name="meeting_duration_type">
+                                <option value="week" <?=((string)$this->request->get("meeting_duration_type") == "week" ? 'selected="selected"': '');?>><?=$this->lang->get("Week", "Per week");?></option>
+                                <option value="month" <?=((string)$this->request->get("meeting_duration_type") == "month" ? 'selected="selected"': '');?>><?=$this->lang->get("PerMonth", "Per month");?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityCage", "Aktivitetsburget");?></label>
+                        <div class="col-3">
+                            <input class="form-control m-input" name="activity_budget" type="text" value="<?=($this->request->get("activity_budget") > 0 ? $this->request->get("activity_budget"): 0);?>" placeholder="0,00">
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control m-input" name="activity_budget_type">
+                                <option value="1_month" <?=((string)$this->request->get("activity_budget_type") == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("PerMonth", "Per month");?></option>
+                                <option value="1_year" <?=((string)$this->request->get("activity_budget_type") == "1_year" ? 'selected="selected"': '');?>><?=$this->lang->get("PerYear", "Per year");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityCage", "Aktivitetsburget");?></label>
+                        <div class="col-3">
+                            <input class="form-control m-input" name="activity_budget_max" type="text" value="<?=($this->request->get("activity_budget_max") > 0 ? $this->request->get("activity_budget_max"): '');?>" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("StartDate");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="start_date" value="<?=(($this->request->get("start_date")) ? $this->lib->dateToDanish($this->request->get("start_date")): date("d-m-Y"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("NextServiceDate", "Next service date");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="next_service_date" value="<?=(($this->request->get("next_service_date")) ? $this->lib->dateToDanish($this->request->get("next_service_date")): date("d-m-Y"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php /**
+
+                    <div id="trading_plan_body" style="background: #f5f5f5;">
+                        <?php $planNumber=0;foreach($this->request->get("goal") as $varKey => $varValue):?>
+                            <?php $planNumber++;?>
+                            <div id="plan_template_<?=$planNumber;?>">
+                                <div class="form-group m-form__group row" style="padding-top: 20px;">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            <?=$this->lang->get("TradingPlan", "Trading plan");?> <!-- #<?=$planNumber;?> -->
+                                            <a href="javascript:deleteTradingPlan(<?=$planNumber;?>);" class="trade-plan-close"><i class="la la-trash"></i> </a>
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ChooseRelationship", "Vælg forhold");?></label>
+                                    <div class="col-7">
+                                        <select class="form-control m-input" name="goal[<?=$planNumber;?>]">
+                                            <?php foreach($this->parameters->getList($this->lang, "goals") as $value):?>
+                                                <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$this->request->get("goal")[$varKey] ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                            <?php endforeach;?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActionPlan1", "Handleplansmål");?></label>
+                                    <div class="col-7">
+                                        <textarea name="action_plan[<?=$planNumber;?>]" class="form-control m-input" rows="3"><?=$this->request->get("action_plan")[$varKey];?></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("SelectQuestions", "Udvælg spørgsmål");?></label>
+                                    <div class="col-7">
+                                        <select class="form-control m-select2" id="m_select2_12_<?=$planNumber;?>" name="questions[<?=$planNumber;?>][]" multiple="multiple">
+                                            <optgroup label="">
+                                                <?php foreach($this->parameters->getList($this->lang, "questions") as $value):?>
+                                                    <option value="<?=(int)$value["id"];?>" <?=((in_array((int)$value["id"], $this->request->get("questions")[$varKey])) ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                                <?php endforeach;?>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="padding-bottom: 20px;border-bottom: 5px solid white;"></div>
+                            </div>
+                        <?php endforeach;?>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"></label>
+                        <div class="col-7">
+                            <a href="javascript:addTradingPlan();" class="btn btn-accent m-btn m-btn--custom m-btn--trade"><i class="la la-plus"></i> <?=$this->lang->get("AddTradingPlan", "Add trading plan");?></a>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    */ ?>
+
+
+
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/case/tradingplansadd/<?=$caseId;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Continue");?></a>
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("AddDocument", "Tilføj dokument");?></button>
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="trading_plan_template" style="display: none;">
+    <div id="plan_template_{trading_plan_number}">
+        <div class="form-group m-form__group row" style="padding-top: 20px;">
+            <div class="col-9 ml-auto">
+                <h3 class="m-form__section">
+                    <?=$this->lang->get("TradingPlan", "Trading plan");?> <!-- #{trading_plan_number} -->
+                    <a href="javascript:deleteTradingPlan({trading_plan_number});" class="trade-plan-close"><i class="la la-trash"></i> </a>
+                </h3>
+            </div>
+        </div>
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ChooseRelationship", "Vælg forhold");?></label>
+            <div class="col-7">
+            <div id="goal_template_{trading_plan_number}"><?=$this->lang->get("ChooseFocusArea", "Please, choose focus area");?></div>
+            </div>
+        </div>
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActionPlan1", "Handleplansmål");?></label>
+            <div class="col-7">
+                <textarea name="action_plan[{trading_plan_number}]" class="form-control m-input" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("SelectQuestions", "Udvælg spørgsmål");?></label>
+            <div class="col-7">
+                <div id="question_template_{trading_plan_number}"><?=$this->lang->get("ChooseGoalAndCat", "Please, choose goal and case category");?></div>
+            </div>
+        </div>
+        <div style="padding-bottom: 20px;border-bottom: 5px solid white;"></div>
+    </div>
+</div>
+
+<div id="trading_goal_template" style="display: none;">
+    <?=$this->lang->get("ChooseFocusArea", "Please, choose focus area");?>
+</div>
+
+<div id="trading_question_template" style="display: none;">
+    <?=$this->lang->get("ChooseGoalAndCat", "Please, choose goal and case category");?>
+</div>
+
+<script>
+    var tradingPlanNumb = <?=(count($this->request->get("goal")) > 0 ? (int)count($this->request->get("goal"))+1: 1);?>;
+    var activePlans = [];
+    <?php foreach($this->request->get("goal") as $varKey => $varValue):?>
+    activePlans[<?=(int)($varKey+1);?>] = <?=(int)($varKey+1);?>;
+    <?php endforeach;?>
+    function addTradingPlan(){
+        var Html = document.getElementById("trading_plan_template").innerHTML;
+        Html = Html.replace(new RegExp('{trading_plan_number}', 'g'), tradingPlanNumb);
+
+        document.getElementById("trading_plan_body").insertAdjacentHTML('beforeend', Html);
+
+        var goalTemplate = document.getElementById("trading_goal_template").innerHTML;
+        goalTemplate = goalTemplate.replace(new RegExp('{trading_plan_number}', 'g'), tradingPlanNumb);
+        document.getElementById("goal_template_"+tradingPlanNumb).innerHTML = goalTemplate;
+
+        if(tradingPlanNumb > 1)
+            $("#m_select2_12_"+tradingPlanNumb).select2({
+                placeholder: "Select an option"
+            });
+
+        activePlans[tradingPlanNumb] = tradingPlanNumb;
+        tradingPlanNumb++;
+    }
+    function deleteTradingPlan(num){
+        document.getElementById("plan_template_"+num).innerHTML = '';
+        activePlans[num] = 0;
+    }
+    <?php if(count($this->request->get("goal")) == 0):?>
+    //addTradingPlan();
+    <?php endif;?>
+
+    function reportTypeChanged(id){
+        if(id == 3){
+            $("#eval_report_name").html('<?=$this->lang->get("Letter");?>');
+        }else if(id == 2){
+            $("#eval_report_name").html('<?=$this->lang->get("StatusReport");?>');
+        }else{
+            $("#eval_report_name").html('<?=$this->lang->get("EvaluationReport");?>');
+        }
+    }
+
+    function focusAreaChanged(focusArea){
+        focusArea = parseInt(focusArea);
+        if(focusArea > 0){
+            $.ajax({
+                    method: "POST",
+                    url: "/data/focustypes",
+                    data: {focusarea: focusArea},
+                    dataType: "json",
+                })
+                .done(function(res){
+                    var html = '<select class="form-control m-input" name="focus_type">';
+                    html += '<option value=""><?=$this->lang->get("None");?></option>';
+                    for(var iii=0;iii<res.data.length;iii++){
+                        var quest = res.data[iii];
+                        html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                    }
+                    html += '</select>';
+                    document.getElementById("focus_types").innerHTML = html;
+                });
+        }
+    }
+
+    function loadQuestions(goalId, planNumber){
+        $.ajax({
+                method: "POST",
+                url: "/data/questions",
+                data: {goal: goalId},
+                dataType: "json",
+            })
+            .done(function( res ) {
+                var html = '<select class="form-control m-select2" id="m_select2_12_{trading_plan_number}" name="questions[{trading_plan_number}][]" multiple="multiple">';
+                html += '<optgroup label="">';
+                for(var iii=0;iii<res.data.length;iii++){
+                    var quest = res.data[iii];
+                    html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                }
+                html += '</optgroup>';
+                html += '</select>';
+
+                html = html.replace(new RegExp('{trading_plan_number}', 'g'), planNumber);
+                document.getElementById("question_template_"+planNumber).innerHTML = html;
+                $("#m_select2_12_"+planNumber).select2({
+                    placeholder: "Select an option"
+                });
+            });
+    }
+
+
+    function partnerChanged(partnerId){
+        $.ajax({
+                method: "POST",
+                url: "/data/contacts",
+                data: {partner_id: partnerId},
+                dataType: "json",
+            })
+            .done(function(res){
+                var html = '<select class="form-control m-select2" id="m_select2_3" name="contact_person[]" multiple="multiple">';
+                html += '<optgroup label="">';
+                for(var iii=0;iii<res.data.length;iii++){
+                    var quest = res.data[iii];
+                    html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                }
+                html += '</optgroup>';
+                html += '</select>';
+
+                document.getElementById("contact_person").innerHTML = html;
+                $("#m_select2_3").select2({
+                    placeholder: "Select an option"
+                });
+            });
+    }
+
+
+    function getEmployees(dateString){
+        $.ajax({
+                method: "POST",
+                url: "/cases/employees",
+                data: {date: dateString},
+                dataType: "json",
+            })
+            .done(function(res){
+                if(res.status == 'success'){
+                    var html = '<select class="form-control m-select2" id="m_select2_2" name="employee">';
+                    for(var iii=0;iii<res.data.length;iii++){
+                        var quest = res.data[iii];
+                        html += '<option value="'+quest.value+'">'+quest.title+'</option>';
+                    }
+                    html += '</select>';
+
+                    document.getElementById("emp_body").innerHTML = html;
+                    $("#m_select2_2").select2({
+                        placeholder: "Select an option"
+                    });
+                }
+            });
+    }
+
+    function resetCaseAdd(){
+        tradingPlanNumb = 1;
+        activePlans = [];
+        document.getElementById("trading_plan_body").innerHTML = '';
+        addTradingPlan();
+    }
+</script>
+<style>
+    .trade-plan-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .trade-plan-close i{
+        font-size: 20px;
+        color: #bd362f;
+    }
+    .m-btn--trade{
+        background-color: #dcdcdc;
+        color: #444 !important;
+    }
+    .m-btn--trade:hover{
+        color: #111 !important;
+    }
+</style>

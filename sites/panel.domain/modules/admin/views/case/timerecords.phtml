@@ -1,0 +1,95 @@
+<script>
+    var tablelisturl = '<?=_PANEL_ROOT_;?>/<?=$controller;?>/timerecordslist/<?=$id;?>';
+</script>
+<div class="m-portlet m-portlet--full-height m-portlet--tabs">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("TimeRecording");?>
+                    </a>
+                </li>
+            </ul>
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="<?=_PANEL_ROOT_;?>/case/timerecordsadd/<?=$id;?>" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                        <i class="la la-plus"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="m_user_profile_tab_1">
+                <div class="table-container">
+                    <?php //if($this->auth->isPermitted($this->lang, "case_timerecords", "delete")):?>
+                    <div class="table-actions-wrapper">
+                        <span></span>
+                        <select class="table-group-action-input form-control input-inline input-small input-sm">
+                            <option value="false"><?=$this->lang->get("Select");?></option>
+                            <option value="delete"><?=$this->lang->get("Delete");?></option>
+                        </select>
+                        <button class="btn btn-sm yellow table-group-action-submit"><i class="fa fa-check"></i> <?=$this->lang->get("Execute");?></button>
+                    </div>
+                    <?php //endif;?>
+
+                    <table class="table table-striped table-bordered table-hover" id="datatable_ajax">
+                        <thead>
+                        <tr role="row" class="heading">
+                            <th width="2%"><input type="checkbox" class="group-checkable"></th>
+                            <th><?=$this->lang->get("Date");?></th>
+                            <th><?=$this->lang->get("StartTime", "Start time");?></th>
+                            <th><?=$this->lang->get("Place");?></th>
+                            <th><?=$this->lang->get("EndTime", "End time");?></th>
+                            <th><?=$this->lang->get("Place");?></th>
+                            <th><?=$this->lang->get("ElapsedTime");?></th>
+                            <th><?=$this->lang->get("Type");?></th>
+                            <th width="100"><?=$this->lang->get("Show", "Vis");?></th>
+                        </tr>
+                            <tr role="row" class="filter">
+                                <td></td>
+                                <td colspan="2">
+                                    <div class="input-group date date-picker margin-bottom-8" data-date-format="yyyy-mm-dd">
+                                        <input type="text" class="form-control form-filter input-sm search-input" autocomplete="off" name="created_from" placeholder="<?=$this->lang->get("From");?>"/>
+									<span class="input-group-btn">
+									    <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td colspan="2">
+                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input type="text" class="form-control form-filter input-sm search-input" autocomplete="off" name="created_to" placeholder="<?=$this->lang->get("To");?>">
+									<span class="input-group-btn">
+                                        <button class="btn btn-sm default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <select name="type" class="form-control form-filter input-sm">
+                                        <option value=""><?=$this->lang->get("Select");?></option>
+                                        <?php foreach($this->parameters->getList($this->lang, "session_types") as $value):?>
+                                            <option value="<?=$value["id"];?>"><?=htmlspecialchars($value["title"]);?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="margin-bottom-5" style="margin-bottom: 6px;">
+                                        <button class="btn btn-sm yellow filter-submit"><i class="fa fa-search"></i> <?=$this->lang->get("Search");?></button>
+                                    </div>
+                                    <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> <?=$this->lang->get("Reset");?></button>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

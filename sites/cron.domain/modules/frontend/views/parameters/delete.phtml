@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">Delete parameter</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <?php if($error):?>
+                <p style="color: red;">
+                    <?=$error;?>
+                </p>
+            <?php endif;?>
+            <?php if($success):?>
+                <p style="color: green;">
+                    <?=$success;?>
+                </p>
+            <?php else:?>
+                <input type="hidden" name="submit" value="1"/>
+                <h4><?=AskToDelete;?></h4>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <?php if(!$success):?>
+    <button type="button" class="btn green" name="submit" value="1" onclick="Fmodal.init('/parameters/delete/<?=$id;?>?type=<?=$this->request->get("type");?>','html', 'post');"><?=Confirm?></button>
+    <?php endif;?>
+    <button type="button" data-dismiss="modal" class="btn"><?=Close?></button>
+</div>

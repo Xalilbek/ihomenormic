@@ -1,0 +1,87 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("UserProfile", "Profile");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <div class="form-group m-form__group row">
+                        <div class="col-9 ml-auto">
+                            <h3 class="m-form__section">1. <?=$this->lang->get("PersonalInformation", "Personlige Oplysninger");?></h3>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Firstname", "Fornavn");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=htmlspecialchars($data->firstname);?></div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Lastname", "Efternavn");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=htmlspecialchars($data->lastname);?></div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("PhoneNumber", "Telefonnummer");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=htmlspecialchars($data->phone);?></div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Email", "E-mail Adresse");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=htmlspecialchars($data->email);?></div>
+                        </div>
+                    </div>
+                    <?php if($partner):?>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Commune");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=$partner->commune;?></div>
+                        </div>
+                    </div>
+                    <?php endif;?>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Gender", "Køn");?></label>
+                        <div class="col-7">
+                            <div class="profile-info-right"><?=($data->gender == "male" ? $this->lang->get("Male", "Mand"): $this->lang->get("Female", "Kvinde"));?></div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_2">
+
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_3">
+
+        </div>
+    </div>
+</div>

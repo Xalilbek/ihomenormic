@@ -1,0 +1,276 @@
+<!--begin::Base Scripts -->
+<script>
+    var datePickerSettings = {
+        en: {
+            days:["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+            daysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            daysMin:["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"],
+            months:["<?=$this->lang->get("January");?>","<?=$this->lang->get("February");?>","<?=$this->lang->get("March");?>","<?=$this->lang->get("April");?>","<?=$this->lang->get("May");?>","<?=$this->lang->get("June");?>","<?=$this->lang->get("July");?>","<?=$this->lang->get("August");?>","<?=$this->lang->get("September");?>","<?=$this->lang->get("October");?>","<?=$this->lang->get("November");?>","<?=$this->lang->get("December");?>"],
+            monthsShort:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            today:"Today",clear:"Clear",titleFormat:"MM yyyy"
+        }
+    };
+</script>
+
+<!--begin::Base Scripts -->
+<script src="/cc-crm2/assets/vendors/base/vendors.bundle.js?s2" type="text/javascript"></script>
+<script src="/cc-crm2/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
+<!--begin::Page Vendors -->
+<!--begin::Page Snippets -->
+<script src="/resources/js/dashboard.js?9876" type="text/javascript"></script>
+<!--end::Page Snippets -->
+<script src="/cc-crm2/assets/demo/default/custom/components/forms/widgets/select2.js" type="text/javascript"></script>
+
+<?php if($controller == "profile" && $action == "index"):?>
+
+<?php elseif($controller == "profile" && $action == "permissions"):?>
+    <script src="/resources/js/permission.js?<?=microtime(true);?>" type="text/javascript"></script>
+<?php elseif($action == "messages"):?>
+    <script>
+        setTimeout(loadMessages(), 500);
+
+        $("#msg_scroll_body").scroll(function() {
+            initScroll();
+        });
+
+        $('#message_box').keypress(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                sendMessage();
+            }
+        });
+    </script>
+<?php elseif($controller == "survey" && in_array($action, ["query","response"])):?>
+    <script>
+        Survey.init();
+    </script>
+<?php elseif(in_array($controller, ["index", "calendar"]) || $action == "calendar" || ($controller == "case" && $action == "index")):?>
+    <script>
+        var calEvents = [];
+        /**
+         {
+             title: "Møde",
+             start: moment("2018-04-08"),
+             description: "Lorem ipsum dolor sit incid idunt ut",
+             className: "m-fc-event--light m-fc-event--solid-warning"
+         }, {
+            title: "Møde",
+            description: "Lorem ipsum dolor incid idunt ut labore",
+            start: moment("2018-04-09T13:30:00"),
+            end: moment("2018-04-09T17:30:00"),
+            className: "m-fc-event--accent"
+        }, {
+            title: "Møde",
+            start: moment("2018-04-11"),
+            description: "Lorem ipsum dolor sit tempor incid",
+            className: "m-fc-event--light  m-fc-event--solid-danger"
+        }, {
+            title: "Event",
+            start: moment("2018-04-13"),
+            description: "Lorem ipsum dolor sit incid idunt ut",
+            className: "m-fc-event--danger m-fc-event--solid-focus"
+        }, {
+            title: "Rapport",
+            description: "Lorem ipsum dolor incid idunt ut labore",
+            start: moment("2018-04-14T13:30:00"),
+            end: moment("2018-04-14T17:30:00"),
+            className: "m-fc-event--accent"
+        }
+         */
+
+        <?php foreach($todoEvents as $value):?>
+            <?php
+            //if($value->type == "todo") $className = "m-fc-event--solid-warning";
+            if($value->type == "todo"){
+                $className = "m-fc-event--solid-warning";
+                if((int)$value->status == 1){
+                    $className .= " notstarted_todo";
+                }elseif((int)$value->status == 2){
+                    $className .= " pending_todo";
+                }else{
+                    $className .= " finished_event";
+                }
+            }elseif($value->type == "event"){
+                $className = "m-fc-event--solid-info";
+                if($this->mymongo->toSeconds($value->date_deadline) < time()){
+                    $className .= " expired_event";
+                }else{
+                    $className .= " pending_event";
+                }
+            }
+            //$className .= "m-fc-event--solid-success";
+            ?>
+
+            var eventD = {
+                title: '<?=htmlspecialchars(preg_replace('/\s+/', ' ', $value->title));?>',
+                start: moment("<?=$this->mymongo->dateFormat($value->type == "todo" ? $value->date_deadline: $value->date, "Y-m-d H:i:s");?>"),
+            description: "<?=htmlspecialchars(preg_replace('/\s+/', ' ', $value->title));?> <?=(strlen(@$value->description) > 0 ? "._______".htmlspecialchars(preg_replace('/\s+/', ' ', @$value->description)):"");?>",
+                //end: null,
+                className: "m-fc-event--light <?=$className;?>",
+                url: "<?=_PANEL_ROOT_;?>/index/edit/<?=$value->id;?>",
+                allDay: <?=($value->type == "todo" ? "true": "false");?>,
+                agenda: 'H:mm{ - H:mm}',
+                timeFormat: 'H:mm',
+            };
+            <?php if($value->type == "event"):?>
+                //eventD['end'] = moment("<?=$this->mymongo->dateFormat($value->date_deadline, "Y-m-d H:i:s");?>");
+            <?php endif;?>
+            calEvents[calEvents.length] = eventD;
+        <?php endforeach;?>
+
+        var fullCalendarData = {
+            header: {
+                left: "prev,next today",
+                center: "title",
+                right: "month,agendaWeek,agendaDay,listWeek"
+            },
+            firstDay: 1,
+            editable: !1,
+            eventLimit: !0,
+            navLinks: !0,
+            defaultDate: moment("<?=date("Y-m-d");?>"),
+            events: calEvents,
+            timeFormat: 'H:mm',
+            labelFormat: 'H:mm',
+            eventRender: function(e, t) {
+                t.hasClass("fc-day-grid-event") ? (t.data("content", e.description), t.data("placement", "top"), mApp.initPopover(t)) : t.hasClass("fc-time-grid-event") ? t.find(".fc-title").append('<div class="fc-description">' + e.description + "</div>") : 0 !== t.find(".fc-list-item-title").lenght && t.find(".fc-list-item-title").append('<div class="fc-description">' + e.description + "</div>")
+            },
+
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: "",
+            weekNumbers: true,
+
+            closeText: "Luk",
+            prevText: "&#x3C;Forrige",
+            nextText: "Næste&#x3E;",
+            currentText: "Idag",
+            monthNames: ["Januar", "Februar", "Marts", "April", "Maj", "Juni",
+                "Juli", "August", "September", "Oktober", "November", "December"
+            ],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun",
+                "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
+            ],
+            dayNames: ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+            dayNamesShort: ["Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"],
+            dayNamesMin: ["Sø", "Ma", "Ti", "On", "To", "Fr", "Lø"],
+            weekHeader: "Uge"
+        }
+
+        var calendarLocale = {
+            buttonText: {
+                month: "<?=$this->lang->get("Month");?>",
+                week: "<?=$this->lang->get("Week");?>",
+                day: "<?=$this->lang->get("Day");?>",
+                list: "<?=$this->lang->get("Agenda");?>"
+            },
+            allDayText: "<?=$this->lang->get("WholeDay", "Hele dagen");?>",
+            eventLimitText: "<?=$this->lang->get("more", "flere");?>",
+            noEventsMessage: "<?=$this->lang->get("NoEventFound", "Ingen arrangementer at vise");?>"
+        }
+    </script>
+
+    <script src="/cc-crm2/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js?12s" type="text/javascript"></script>
+    <style>
+        .expired_event .fc-content:before{background: #09dc00 !important;}
+        .pending_event .fc-content:before{background: #ffd672 !important;}
+
+        .notstarted_todo .fc-content:before{background: #dc453b !important;}
+        .pending_todo .fc-content:before{background: #ffd672 !important;}
+        .finished_event .fc-content:before{background: #09dc00 !important;}
+    </style>
+
+<?php elseif($action == "timerecordsadd" || $action == "timerecordsedit" || ($controller == "timerecords" && $action == "add")):?>
+    <script src="/resources/js/wickedpicker.js" type="text/javascript"></script>
+    <script>
+        var options = {
+            //now: "12:35",
+            twentyFour: true,
+            title: '<?=$this->lang->get("Time");?>',
+            showSeconds: false,
+            secondsInterval: 1,
+            minutesInterval: 1,
+            beforeShow: null,
+            show: null,
+            clearable: false,
+        };
+        <?php if(strlen($this->request->get("time_start")) > 1):?>
+        options['now'] = '<?=$this->request->get("time_start");?>';
+        <?php elseif($recorddata):?>
+        options['now'] = '<?=$this->mymongo->dateFormat($recorddata->time_start, "H:i");?>';
+        <?php endif;?>
+
+        $(".timepicker2").inputmask({"mask": "99:99"});
+        $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+    </script>
+<?php elseif((in_array($controller, ["knowledgebaseitems", "offers","mailbox", "contracts"]) &&  in_array($action, ["add", "edit"])) || in_array($action, ["todoedit","todoadd", "activitiesadd","activitiesedit","tradingplansedit"])):?>
+    <script src="/cc-crm2/assets/demo/default/custom/components/forms/widgets/summernote.js" type="text/javascript"></script>
+    <script src="/resources/datepicker/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script>
+        $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+    </script>
+<?php elseif(in_array($controller, ["employees", "cases", "moderators","settings","todo","noteitems","dialogues","offers","citizens", "vacancies"]) &&  in_array($action, ["add", "edit"])):?>
+    <script src="/cc-crm2/assets/demo/default/custom/components/forms/widgets/dropzone.js" type="text/javascript"></script>
+    <script src="/resources/datepicker/bootstrap-datepicker.min.js" type="text/javascript"></script>
+
+    <?php if($controller == "settings"):?>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.js"></script>
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Prettyprint -->
+        <script src="/resources/colorpicker/jquery.colorpicker.js"></script>
+        <link href="/resources/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Plugin extensions -->
+        <script src="/resources/colorpicker/i18n/jquery.ui.colorpicker-nl.js"></script>
+        <script src="/resources/colorpicker/parts/jquery.ui.colorpicker-rgbslider.js"></script>
+        <script src="/resources/colorpicker/parts/jquery.ui.colorpicker-memory.js"></script>
+        <script>
+            $('#colorpicker-popup').colorpicker();
+        </script>
+    <?php endif;?>
+    <script>
+        $("#birthdate").inputmask({"mask": "99.99.9999"});
+    </script>
+<?php elseif($hasDatatable):?>
+    <script src="/assetsx/global/plugins/jquery.min.js?32123" type="text/javascript"></script>
+    <script src="/assetsx/global/plugins/bootstrap/js/bootstrap.min.js?32123" type="text/javascript"></script>
+    <script src="/assetsx/global/plugins/jquery.blockui.min.js?32123" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="/assetsx/global/scripts/app.min.js?32123" type="text/javascript"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+
+    <script src="/assetsx/global/scripts/datatable.js?32123" type="text/javascript"></script>
+    <script src="/assetsx/global/plugins/datatables/datatables.min.js?32123" type="text/javascript"></script>
+    <script src="/assetsx/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js?32123" type="text/javascript"></script>
+    <script src="/assetsx/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js?32123" type="text/javascript"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="/assetsx/pages/scripts/table-datatables-buttons.min.js?32123" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+<?php elseif($hasAjaxtable):?>
+    <script src="/resources/js/datatable.js?<?=microtime(true);?>" type="text/javascript"></script>
+<?php else: ?>
+
+<?php endif;?>
+<script>
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd', weekStart: 1,calendarWeeks: true
+        //startDate: '-3d'
+    });
+    $('.datepickerDen').datepicker({format: 'dd-mm-yyyy', weekStart: 1,calendarWeeks: true});
+
+    $('.datepicker').on('changeDate', function(ev){
+        $(this).datepicker('hide');
+    });
+
+    $('.datepickerDen').on('changeDate', function(ev){
+        $(this).datepicker('hide');
+    });
+
+    $(".timepicker").inputmask({"mask": "99:99"});
+    $("#ssnnumber").inputmask({"mask": "999999-9999"});
+</script>

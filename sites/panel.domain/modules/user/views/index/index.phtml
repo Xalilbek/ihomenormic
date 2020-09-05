@@ -1,0 +1,271 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title ">
+                <?=$this->lang->get("ControlPanel");?>
+            </h3>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--Begin::Section-->
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet " id="m_portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+							<span class="m-portlet__head-icon"><i class="flaticon-map-location"></i></span>
+                            <h3 class="m-portlet__head-text">
+                                <?=$this->lang->get("Calendar");?>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <a href="<?=_PANEL_ROOT_;?>/index/add" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                                    <i class="la la-plus"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div id="m_calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="m-portlet m-portlet--full-height ">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                <?=$this->lang->get("Todo");?>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" role="tablist">
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_widget2_tab1_content" role="tab">
+                                    <?=$this->lang->get("Today", "Today");?>
+                                </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_widget2_tab2_content" role="tab">
+                                    <?=$this->lang->get("ThisWeek", "This week");?>
+                                </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_widget2_tab3_content" role="tab">
+                                    <?=$this->lang->get("This month", "This month");?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_widget2_tab1_content">
+                            <div class="m-widget2">
+                                <?php foreach($todoEvents as $value):?>
+                                    <?php if($this->mymongo->dateFormat($value->date, "Y-m-d") == date("Y-m-d")):?>
+                                        <div class="m-widget2__item">
+                                            <?php
+                                            $color = @$calendarStatuses[$value->status]["html_code"];
+                                            //if($this->mymongo->toSeconds($value->date_deadline) < time()) $color = "green";
+                                            ?>
+
+                                            <div class="todo-color" style="background: <?=@$color;?>;"></div>
+
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text"><?=htmlspecialchars($value->title);?></span>
+                                                <span class="m-widget2__text" style="color: #999;font-size: 13px;padding-left: 10px;"><?=$this->mymongo->dateFormat($value->date, "Y-m-d");?></span>
+                                                <br>
+                                                <span class="m-widget2__user-name"><a href="#" class="m-widget2__link"><?=htmlspecialchars($todoCats[(int)$value->category]["title"]);?></a></span>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="m_widget2_tab2_content">
+                            <div class="m-widget2">
+                                <?php foreach($todoEvents as $value):?>
+                                    <?php if($this->mymongo->toSeconds($value->date) < time() + 7*24*3600):?>
+                                        <div class="m-widget2__item">
+                                            <?php
+                                            $color = @$calendarStatuses[$value->status]["html_code"];
+                                            //if($this->mymongo->toSeconds($value->date_deadline) < time()) $color = "green";
+                                            ?>
+
+                                            <div class="todo-color" style="background: <?=@$color;?>;"></div>
+
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text"><?=htmlspecialchars($value->title);?></span>
+                                                <span class="m-widget2__text" style="color: #999;font-size: 13px;padding-left: 10px;"><?=$this->mymongo->dateFormat($value->date, "Y-m-d");?></span>
+                                                <br>
+                                                <span class="m-widget2__user-name"><a href="#" class="m-widget2__link"><?=htmlspecialchars($todoCats[(int)$value->category]["title"]);?></a></span>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="m_widget2_tab3_content">
+                            <div class="m-widget2">
+                                <?php foreach($todoEvents as $value):?>
+                                    <div class="m-widget2__item">
+                                        <?php
+                                        $color = @$calendarStatuses[$value->status]["html_code"];
+                                        //if($this->mymongo->toSeconds($value->date_deadline) < time()) $color = "green";
+                                        ?>
+
+                                        <div class="todo-color" style="background: <?=@$color;?>;"></div>
+
+                                        <div class="m-widget2__desc">
+                                            <span class="m-widget2__text"><?=htmlspecialchars($value->title);?></span>
+                                            <span class="m-widget2__text" style="color: #999;font-size: 13px;padding-left: 10px;"><?=$this->mymongo->dateFormat($value->date, "Y-m-d");?></span>
+                                            <br>
+                                            <span class="m-widget2__user-name"><a href="#" class="m-widget2__link"><?=htmlspecialchars($todoCats[(int)$value->category]["title"]);?></a></span>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Tasks -->
+        </div>
+        <div class="col-xl-6">
+            <!--begin:: Widgets/Audit Log-->
+            <div class="m-portlet m-portlet--full-height ">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                <?=$this->lang->get("TimeRecording", "Tidsregistrering");?>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" role="tablist">
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_widget4_tab1_content" role="tab">
+                                    <?=$this->lang->get("Today", "Today");?>
+                                </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_widget4_tab2_content" role="tab">
+                                    <?=$this->lang->get("ThisWeek", "This week");?>
+                                </a>
+                            </li>
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_widget4_tab3_content" role="tab">
+                                    <?=$this->lang->get("This month", "This month");?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_widget4_tab1_content">
+                            <div class="m-scrollable" data-scrollable="true" data-max-height="400" style="height: 400px; overflow: hidden;">
+                                <div class="m-list-timeline m-list-timeline--skin-light">
+                                    <div class="m-list-timeline__items">
+                                        <?php $classes = ["success","info","danger","accent","warning","brand"];?>
+                                        <?php foreach($timeRecords as $key => $value):?>
+                                            <?php $ki = $key - 6*(int)($key/6);?>
+                                            <?php if($this->mymongo->toSeconds($value->time_start) > time() - 24*3600):?>
+                                                <div class="m-list-timeline__item">
+                                                    <span class="m-list-timeline__badge m-list-timeline__badge--<?=$classes[$ki];?>"></span>
+                                                    <span class="m-list-timeline__text">
+                                                        <a target="_blank" href="<?=_PANEL_ROOT_;?>/profile/<?=$value->employee[0];?>">
+                                                            <?=((@$employees[$value->employee[0]]) ? htmlspecialchars(@$employees[$value->employee[0]]->firstname): $this->lang->get("DeletedUser", "Deleted User"));?>
+                                                        </a>
+                                                        started to work
+                                                    </span>
+                                                    <span class="m-list-timeline__time"><?=$this->mymongo->dateFormat($value->time_start, "Y-m-d H:i");?></span>
+                                                </div>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="m_widget4_tab2_content">
+                            <div class="m-scrollable" data-scrollable="true" data-max-height="400" style="height: 400px; overflow: hidden;">
+                                <div class="m-list-timeline m-list-timeline--skin-light">
+                                    <div class="m-list-timeline__items">
+                                        <?php foreach($timeRecords as $key => $value):?>
+                                            <?php $ki = $key - 6*(int)($key/6);?>
+                                            <?php if($this->mymongo->toSeconds($value->time_start) > time() - 7*24*3600):?>
+                                                <div class="m-list-timeline__item">
+                                                    <span class="m-list-timeline__badge m-list-timeline__badge--<?=$classes[$ki];?>"></span>
+                                                    <span class="m-list-timeline__text">
+                                                        <a target="_blank" href="<?=_PANEL_ROOT_;?>/profile/<?=$value->employee[0];?>">
+                                                            <?=((@$employees[$value->employee[0]]) ? htmlspecialchars(@$employees[$value->employee[0]]->firstname): $this->lang->get("DeletedUser", "Deleted User"));?>
+                                                        </a>
+                                                        started to work
+                                                    </span>
+                                                    <span class="m-list-timeline__time"><?=$this->mymongo->dateFormat($value->time_start, "Y-m-d H:i");?></span>
+                                                </div>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="m_widget4_tab3_content">
+                            <div class="m-scrollable" data-scrollable="true" data-max-height="400" style="height: 400px; overflow: hidden;">
+                                <div class="m-list-timeline m-list-timeline--skin-light">
+                                    <div class="m-list-timeline__items">
+                                        <?php foreach($timeRecords as $key => $value):?>
+                                            <?php $ki = $key - 6*(int)($key/6);?>
+                                            <?php if($this->mymongo->toSeconds($value->time_start) > time() - 30*24*3600):?>
+                                                <div class="m-list-timeline__item">
+                                                    <span class="m-list-timeline__badge m-list-timeline__badge--<?=$classes[$ki];?>"></span>
+                                                    <span class="m-list-timeline__text">
+                                                        <a target="_blank" href="<?=_PANEL_ROOT_;?>/profile/<?=$value->employee[0];?>">
+                                                            <?=((@$employees[$value->employee[0]]) ? htmlspecialchars(@$employees[$value->employee[0]]->firstname): $this->lang->get("DeletedUser", "Deleted User"));?>
+                                                        </a>
+                                                        started to work
+                                                    </span>
+                                                    <span class="m-list-timeline__time"><?=$this->mymongo->dateFormat($value->time_start, "Y-m-d H:i");?></span>
+                                                </div>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end:: Widgets/Audit Log-->
+        </div>
+    </div>
+    <!--End::Section-->
+</div>
+
+<style>
+    .todo-color{
+        float: left;
+        width: 5px;
+        height: 34px;
+        border-radius: 3px;
+        margin-right: 10px;
+        margin-top: 5px;
+    }
+    .todo-title{padding: 12px 5px 0 15px;}
+    .fc-week-number{padding: 0.5em !important;}
+</style>

@@ -1,0 +1,96 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Permissions");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <style>
+                        .option-item{width: 100%;display: table;padding: 8px 10px;background: #f1f1f1;text-decoration: none;color: #a1a1a1;border-bottom: 1px solid white;text-decoration: none !important;cursor: default !important;}
+                        .option-item-hover:hover{background: #e7e7e7;color: #a1a1a1;cursor: pointer !important;}
+                        .option-checkbox, .option-price, .option-title{display: table-cell;}
+                        .option-checkbox{width: 25px;text-decoration: none;}
+                        .option-title{text-decoration: none;color: #444;}
+                        .fa-gray{color: #aeaeae !important;}
+                        .fa-green{color: green !important;}
+                        .permission-type{padding: 0 !important;border-right: 1px solid white;flex: 16%;max-width: 16%;font-size: 13px;}
+                        .permission-title{padding: 9px 10px 0 5px;text-align: right;background: #e1e1e1;height: 35px;border-right: 1px solid white;flex: 20%;max-width: 20%;font-size: 13px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+                        .permission-btn{padding: 8px 20px;border: 1px solid #e1e1e1;border-radius: 3px;background: #e1e1e1;color: #444;font-size: 14px;text-decoration: none;margin-right: 10px;}
+                        .permission-btn:hover{border: 1px solid #d1d1d1;border-radius: 3px;background: #d4d4d4;text-decoration: none;}
+                        .permission-margin-top{margin-top: 10px;}
+                    </style>
+                    <script>
+                        var permissionsList = <?=json_encode($this->permission->getList($this->lang, $data), true);?>;
+                        var userPermissions = <?=(count($data->permissions) == 0 || !$data->permissions ? '{}': json_encode($data->permissions, true));?>;
+                    </script>
+                    <div class="form-group m-form__group row">
+                        <div class="col-12">
+                            <?php if($data->type == "moderator"):?>
+                                <div style="padding-bottom: 30px;">
+                                    <input id="only_self" style="width: 30px;float: left;margin-top: 5px;" class="form-control m-input" name="only_self" type="checkbox" value="1" <?=((int)$data->only_self == 1 ? 'checked="checked"': '');?> onchange="selfEditChanged()"> <span><?=$this->lang->get("OnlySelfEdit", "Can edit only his/her information");?></span>
+                                </div>
+                            <?php endif;?>
+                            <div id="permission_container" <?=((int)$data->only_self == 1 ? 'style="display: none;"': '');?>>
+                                <div style="padding-bottom: 15px;">
+                                    <a href="javascript:PPermission.checkAll();" class="permission-btn"><?=$this->lang->get("SelectAll", "Select all");?></a>
+                                    <a href="javascript:PPermission.uncheckAll();" class="permission-btn"><?=$this->lang->get("UnselectAll", "Unselect All");?></a>
+                                </div>
+                                <div class="col-sm-12" id="permissions_list" style=""></div>
+                            </div>
+                            <input id="hidden_permissions" type="hidden" name="permissions" value='<?=(count($data->permissions) == 0 || !$data->permissions ? '{}': json_encode($data->permissions, true));?>'/>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-7">
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selfEditChanged(){
+        var obj = document.getElementById("permission_container");
+        if(document.getElementById("only_self").checked)
+        {
+            obj.style.display = 'none';
+        }
+        else
+        {
+            obj.style.display = 'block';
+        }
+    }
+</script>

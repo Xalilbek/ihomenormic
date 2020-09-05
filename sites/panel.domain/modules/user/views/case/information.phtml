@@ -1,0 +1,94 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Information");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label" id="eval_report_name"><?=$this->lang->get("EvaluationReport");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="report_interval" readonly>
+                                <option value="14_days"><?=$this->lang->get("Every14days", "Hver 14. dag");?></option>
+                                <option value="1_month" <?=($data->report_interval == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("1stEveryMonth", "Den 1. hver måned");?></option>
+                                <option value="3_month" <?=($data->report_interval == "3_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery3Months", "Hver 3. måned");?></option>
+                                <option value="6_month" <?=($data->report_interval == "6_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery6Months", "Hver 6. måned");?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityCage", "Aktivitetsburget");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="activity_budget" type="activity_budget" value="<?=$this->lib->floatToDanish($data->activity_budget, 2);?>" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityBudgetType", "Activity Budget Type");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="activity_budget_type">
+                                <option value="1_month" <?=((string)$data->activity_budget_type == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("PerMonth", "Per month");?></option>
+                                <option value="1_year" <?=((string)$data->activity_budget_type == "1_year" ? 'selected="selected"': '');?>><?=$this->lang->get("PerYear", "Per year");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("StartDate");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepicker" name="start_date" value="<?=$this->mymongo->dateFormat($data->start_date, "Y-m-d");?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ContactPersons");?></label>
+                        <div class="col-7" id="contact_person">
+                            <select class="form-control m-input" id="m_select2_1"  name="contact_person[]" multiple="multiple" readonly="readonly">
+                                <?php foreach($contactPersons as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=(in_array((int)$value->id, $data->contact_person) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_2">
+
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_3">
+
+        </div>
+    </div>
+</div>

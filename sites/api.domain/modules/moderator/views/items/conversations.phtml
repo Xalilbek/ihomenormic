@@ -1,0 +1,135 @@
+<section id="todo_list">
+    <h2 id="html-structure"><a href="javascript:;"> Todo / List</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/todo/list</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>skip:</code> (type: INT, default: 0)<br/>
+            <code>limit:</code> (type: INT, default: 20, min: 5, max: 100)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":8,"title":"Meet with CEO","is_comleted":false,"color_code":"#0b9913","date":"27.07.18","unixtime":1532649600,"category":{"id":1,"title":"Todo cat 1"}},{"id":9,"title":"Meet with Partner","is_comleted":false,"color_code":"#0b9913","date":"27.07.18","unixtime":1532649600,"category":{"id":1,"title":"Todo cat 1"}}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"error","description":"Information not found","error_code":1301}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+<section id="todo_create">
+    <h2 id="html-structure"><a href="javascript:;"> Todo / Create</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/todo/create</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>title:</code> (type: STRING)<br/>
+            <code>category:</code> (type: INT) <a href="#data_todocategories">get categories list here</a><br/>
+            <code>description:</code> <i>optional</i>(type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/create?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&title=Test todo&category=3&description=Test todo description Test todo description Test todo description<br/>
+            <?php
+            $json = '{"status":"success","description":"Added successfully"}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/create?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&title=&category=3&description=Test todo description Test todo description Test todo description
+            <?php
+            $json = '{"status":"error","description":"Title is wrong. (minimum 2 and maximum 40 characters)","error_code":1202}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="todo_edit">
+    <h2 id="html-structure"><a href="javascript:;"> Todo / Edit</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/todo/edit</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>id:</code> (type: INT)<br/>
+            <code>title:</code> (type: STRING)<br/>
+            <code>category:</code> (type: INT) <a href="#data_todocategories">get categories list here</a><br/>
+            <code>description:</code> <i>optional</i>(type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/edit?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&id=19&title=Todo test 1&category=3&description=Test todo description Test todo description Test todo description</br>
+            <?php
+            $json = '{"status":"success","description":"Updated successfully"}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/todo/edit?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&id=19&title=Todo test 1&category=3&description=Test todo description Test todo description Test todo description
+            <?php
+            $json = '{"status":"error","description":"Object doesn\"t exist","error_code":1202}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="todo_delete">
+    <h2 id="html-structure"><a href="javascript:;"> Todo / Delete</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/todo/delete</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>id:</code> (type: INT)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>todo/delete?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&id=19</br>
+            <?php
+            $json = '{"status":"success","description":"Deleted successfully"}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>todo/delete?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&lang=en&id=19</br>
+            <?php
+            $json = '{"status":"error","description":"Object doesn\"t exist","error_code":1202}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+

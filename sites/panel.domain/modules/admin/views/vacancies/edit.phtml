@@ -1,0 +1,267 @@
+<div class="m-subheader ">
+    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-default"><i class="la la-arrow-left"></i> <?=$this->lang->get("Back");?></a>
+</div>
+
+
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Edit", "Edit");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php if($error):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-error">
+                            <?=$error;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Fullname");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="fullname" type="text" value="<?=htmlspecialchars($data->fullname);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Email");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="email" type="text" value="<?=htmlspecialchars($data->email);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Phone");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="phone" type="text" value="<?=htmlspecialchars($data->phone);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("WorkPosition", "Work Position");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="work_position" type="text" value="<?=htmlspecialchars($data->work_position);?>">
+                    </div>
+                </div>
+
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("City");?></label>
+                    <div class="col-7">
+                        <select class="form-control m-input" name="city" id="m_select2_4">
+                            <?php foreach($this->parameters->getList($this->lang, "vacancy_cities") as $value):?>
+                                <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$data->city ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ZipCode");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="post_number" type="text" value="<?=htmlspecialchars($data->post_number);?>">
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("year_of_application", "Year of application");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="year_of_application" type="text" value="<?=htmlspecialchars($data->year_of_application);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Gender", "Køn");?></label>
+                    <div class="col-7">
+                        <select class="form-control m-input" name="gender">
+                            <option value="male" <?=($data->gender == "male" ? 'selected="selected"': '');?>><?=$this->lang->get("Male", "Mand");?></option>
+                            <option value="female" <?=($data->gender== "female" ? 'selected="selected"': '');?>><?=$this->lang->get("Female", "Kvinde");?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Birthdate");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" id="birthdate" name="birthdate" type="text" value="<?=htmlspecialchars($data->birthdate);?>" placeholder="dd.mm.yyyy">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Age");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="age" type="text" value="<?=htmlspecialchars($data->age);?>">
+                    </div>
+                </div>
+
+
+                <!--
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Language");?> 1</label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="language_1" type="text" value="<?=htmlspecialchars($data->language_1);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Language");?> 2</label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="language_2" type="text" value="<?=htmlspecialchars($data->language_2);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Language");?> 3</label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="language_3" type="text" value="<?=htmlspecialchars($data->language_3);?>">
+                    </div>
+                </div> -->
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Languages");?></label>
+                    <div class="col-7">
+                        <select class="form-control m-select2" id="m_select2_3" name="languages[]" multiple="multiple">
+                            <optgroup label="<?=$this->lang->get("Language", "Sprog");?>">
+                                <?php foreach($this->parameters->getList($this->lang, "vacancy_languages") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((in_array((int)$value["id"], $data->languages)) ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Education");?> 1</label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="education_1" type="text" value="<?=htmlspecialchars($data->education_1);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Education");?> 2</label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="education_2" type="text" value="<?=htmlspecialchars($data->education_2);?>">
+                    </div>
+                </div>
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("work_experience", "Work eperience");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="work_experience" type="text" value="<?=htmlspecialchars($data->work_experience);?>">
+                    </div>
+                </div>
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Diabetes");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="diabetes" type="checkbox" value="1" <?=((int)$data->diabetes == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ADHD");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="ADHD" type="checkbox" value="1" <?=((int)$data->ADHD == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("autism");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="autism" type="checkbox" value="1" <?=((int)$data->autism == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("borderline");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="borderline" type="checkbox" value="1" <?=((int)$data->borderline == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("PTSD");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="PTSD" type="checkbox" value="1" <?=((int)$data->PTSD == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("OCD");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="OCD" type="checkbox" value="1" <?=((int)$data->OCD == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("criminals");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="criminals" type="checkbox" value="1" <?=((int)$data->criminals == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("drug_and_alcohol_abuse");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="drug_and_alcohol_abuse" type="checkbox" value="1" <?=((int)$data->drug_and_alcohol_abuse == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("physically_vulnerable");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="physically_vulnerable" type="checkbox" value="1" <?=((int)$data->physically_vulnerable == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("handicap");?></label>
+                    <div class="col-7">
+                        <input style="margin-top: 8px;" class="form-control m-input" name="handicap" type="checkbox" value="1" <?=((int)$data->handicap == 1 ? "checked='checked'": "");?>>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Address");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="address" type="text" value="<?=htmlspecialchars($data->address);?>">
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("last_updated");?> </label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="last_updated" type="text" value="<?=htmlspecialchars($data->last_updated);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("occupation");?> </label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="occupation" type="text" value="<?=htmlspecialchars($data->occupation);?>">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-7">
+                            <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

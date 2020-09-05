@@ -1,0 +1,89 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("CreateNew", "Opret ny");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>?folder=<?=(int)$this->request->get("folder");?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Articles");?></span></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/add?folder=<?=(int)$this->request->get("folder");?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("CreateNew", "Opret ny");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("CreateNew", "Opret ny");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("NoteName", "Notat navn");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Description");?></label>
+                        <div class="col-7">
+                            <textarea class="summernote" id="m_summernote_1" name="description" style="min-height: 200px;"><?=$this->request->get("description");?></textarea>
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>?folder=<?=(int)$this->request->get("folder");?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

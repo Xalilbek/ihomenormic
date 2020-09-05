@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" >
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8" />
+    <title>
+        <?=$this->lang->get("siteTitle", "CareCompagniet");?>
+    </title>
+    <meta name="description" content="Latest updates and statistic charts">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {"families":["Poppins:300,400,500,600,700","Roboto:300,400,500,600,700"]},
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+        });
+        var USER_TOKEN = '<?=@$_COOKIE["token"];?>';
+        var API_URL = 'https://ihomeapi.besfly.com';
+    </script>
+    <!--end::Web font -->
+    <!--begin::Base Styles -->
+    <!--begin::Page Vendors -->
+    <link href="/cc-crm2/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors -->
+    <link href="/cc-crm2/assets/vendors/base/vendors.bundle.css?1" rel="stylesheet" type="text/css" />
+    <link href="/cc-crm2/assets/demo/default/base/style.bundle.css?x12" rel="stylesheet" type="text/css" />
+    <!--end::Base Styles -->
+    <link href="/resources/css/datatables.css?986s" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="/cc-crm2/assets/demo/default/media/img/logo/favicon.ico" />
+</head>
+<!-- end::Head -->
+<!-- end::Body -->
+<body  class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
+<!-- begin:: Page -->
+<div class="m-grid m-grid--hor m-grid--root m-page">
+
+    <?php $this->view->partial("parts/header");?>
+
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+        <?php $this->view->partial("parts/menu");?>
+
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+
+            <?=$this->getContent();?>
+
+        </div>
+    </div>
+    <!-- end:: Body -->
+
+    <?php $this->view->partial("parts/footer");?>
+</div>
+<!-- end:: Page -->
+<!-- begin::Scroll Top -->
+<div id="m_scroll_top" class="m-scroll-top">
+    <i class="la la-arrow-up"></i>
+</div>
+
+<?php $this->view->partial("parts/javascripts");?>
+
+
+</body>
+<!-- end::Body -->
+</html>
+
+<?php
+$this->logger->save(
+    $this->lang,
+    [
+        "controller"        => $controller,
+        "action"            => $action,
+        "id"                => (int)@$this->dispatcher->getParam("id"),
+        "user"              => $this->auth->getData(),
+        "success"           => @$success,
+        "error"             => @$error,
+    ]
+);
+?>

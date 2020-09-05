@@ -1,0 +1,157 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("Products");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Products");?></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=($id > 0 ? $this->lang->get("Edit"): $this->lang->get("Add"));?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="<?=_PANEL_ROOT_;?>/<?=$controller;?>/edit/<?=$id;?>">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php if($error):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-error">
+                            <?=$error;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Title");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="title" type="text" value="<?=htmlspecialchars($data->title);?>"/>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Amount");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="amount" type="text" value="<?=htmlspecialchars($data->amount);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Quantity");?></label>
+                    <div class="col-7">
+                        <input class="form-control m-input" name="quantity" type="text" value="<?=htmlspecialchars($data->quantity);?>">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Description");?></label>
+                    <div class="col-7">
+                        <textarea class="form-control m-input" name="description" style="min-height: 200px;"><?=htmlspecialchars($data->description);?></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Photos");?></label>
+                    <div class="col-7">
+                        <div class="m-dropzone dropzone dz-clickable" action="/documents/upload?puid=<?=(string)$data->uuid;?>&uuid=<?=(string)$data->uuid;?>&for=product&id=<?=$id;?>" id="m-dropzone-one">
+                            <div class="m-dropzone__msg dz-message needsclick">
+                                <h3 class="m-dropzone__msg-title"><?=$this->lang->get("CaseMatL1", "Drop filen her eller tryk for at vælge");?></h3>
+                                <span class="m-dropzone__msg-desc"><?=$this->lang->get("CaseMatL2", "Kun tilladt at upload billede eller pdf, docx og xlsx filer");?></span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="puid" value="<?=$data->uuid;?>"/>
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-2 col-form-label"></label>
+                    <div class="col-7">
+                        <?php if(count($photos) > 0):?>
+                            <?php foreach($photos as $key => $value):?>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1" style="width: 20px;"><b><?=$key+1;?>)</b></div>
+                                    <div class="col-3">
+                                        <?php if(in_array($value->type, array("jpeg", "jpg", "png", "gif"))): ?>
+                                            <a target="_blank" href="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/org.jpg">
+                                                <img style="max-width: 100%;" src="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/medium.jpg?<?=microtime(true);?>"/>
+                                            </a>
+                                        <?php else: ?>
+                                            <a target="_blank" href="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/<?=(string)htmlspecialchars($value->filename).'.'.$value->type;?>"><b><?=(string)htmlspecialchars($value->filename).'.'.$value->type;?></b></a>
+                                        <?php endif;?>
+                                    </div>
+                                    <div class="col-5">
+                                    <?php if(in_array($value->type, array("jpeg", "jpg", "png", "gif"))): ?>
+                                        <?php if((string)$value->_id !== (string)$data->avatar_id):?>
+                                        <div style="margin-bottom: 10px;">
+                                            <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/<?=$action;?>/<?=$id;?>?avatar=<?=$value->_id;?>">
+                                                <b><?=$this->lang->get("MakeAvatar", "Make default photo");?></b>
+                                            </a>
+                                        </div>
+                                        <?php endif;?>
+                                        <div style="margin-bottom: 10px;">
+                                            <a href="<?=_PANEL_ROOT_;?>/documents/edit?id=<?=$value->_id;?>">
+                                                <b><?=$this->lang->get("Edit");?></b>
+                                            </a>
+                                        </div>
+
+                                        <div style="margin-bottom: 10px;">
+                                            <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/<?=$action;?>/<?=$id;?>?delete=<?=$value->_id;?>">
+                                                <b><?=$this->lang->get("Delete");?></b>
+                                            </a>
+                                        </div>
+                                    <?php endif;?>
+                                    </div>
+                                    <!--
+                                    <div class="col-2">
+                                        <a href="?id=<?=$this->request->get("id");?>&delete=<?=(string)$value->_id;?>"><i class="la la-trash redcolor"></i></a>
+                                    </div>
+                                    -->
+                                </div>
+                            <?php endforeach;?>
+                        <?php else: ?>
+
+                        <?php endif;?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

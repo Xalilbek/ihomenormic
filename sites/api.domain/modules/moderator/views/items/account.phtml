@@ -1,0 +1,117 @@
+<section id="account_info">
+    <h2 id="html-structure"><a href="javascript:;"> Account / Info</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/account/info</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/info?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":{"id":1,"firstname":"John","lastname":"Erikson","phone":"12345678902","email":"john@gmail.com","gender":0,"gender_text":"Female","languages":null,"ssn":"234234","address":"Harward","zipcode":"20000","city":2,"payment_registration_number":null,"payment_account_number":null,"type":"employee"}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/info?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"error","description":"Information not found","error_code":1301}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+<section id="account_citizen">
+    <h2 id="html-structure"><a href="javascript:;">Account / Update Citizen</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/account/updatecitizen</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+
+            <code>firstname:</code> (type: STRING)<br/>
+            <code>lastname:</code> (type: STRING)<br/>
+            <code>email:</code> (type: STRING)<br/>
+            <code>ssn:</code> (type: STRING)<br/>
+            <code>place:</code> (type: STRING)<br/>
+            <code>address:</code> (type: STRING)<br/>
+            <code>zipcode:</code> (type: STRING)<br/>
+            <code>city:</code> (type: INT) <a href="#data_cities">get city list here</a><br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/updatecitizen?token=d064a2207558b694f90cbe73bc5652df&hash=d8b03b8b49c6f9ffb14aaa164b447089&firstname=Testing&lastname=Testing&phone=+380731033736&email=test@test.com&ssn=12346&place=Denmark&address=Streat test 12&zipcode=10000&city=1<br/>
+            <?php
+            $json = '{"status":"success","description":"Updated successfully","data":{"id":11,"firstname":"Testing","lastname":"Testing","phone":"380731033736","email":"test@test.com","ssn":"12346","place":"Denmark","address":"Streat test 12","zipcode":"10000","city":1,"type":"citizen"}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/updatecitizen?token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&firstname=Testing&lastname=Testing&phone=+380731033736&email=test@test.com&ssn=12346&place=Denmark&address=Streat test 12&zipcode=10000&city=1<br/>
+            <?php
+            $json = '{"status":"error","description":"You are not citizen","error_code":1021}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section id="account_employee">
+    <h2 id="html-structure"><a href="javascript:;">Account / Update Employee</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/account/updateemployee</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+
+            <code>firstname:</code> (type: STRING)<br/>
+            <code>lastname:</code> (type: STRING)<br/>
+            <code>email:</code> (type: STRING)<br/>
+            <code>gender:</code> (type: INT) 0 => Female, 1 => Male<br/>
+            <code>ssn:</code> (type: STRING)<br/>
+            <code>place:</code> (type: STRING)<br/>
+            <code>address:</code> (type: STRING)<br/>
+            <code>zipcode:</code> (type: STRING)<br/>
+            <code>languages:</code> (type: ARRAY) <a href="#data_languages">get languages list here</a><br/>
+            <code>city:</code> (type: INT) <a href="#data_cities">get city list here</a><br/>
+            <code>payment_registration_number:</code> (type: STRING)<br/>
+            <code>payment_account_number:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/updateemployee?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&firstname=Testing&lastname=Testing&email=test@test.com&gender=0&ssn=12346&languages[]=1&languages[]=2&place=Denmark&address=Streat test 12&zipcode=10000&city=1&payment_registration_number=320943290&payment_account_number=23423432x<br/>
+            <?php
+            $json = '{"status":"success","description":"Updated successfully","data":{"id":1,"firstname":"Testing","lastname":"Testing","phone":"12345678902","email":"test@test.com","gender":0,"gender_text":"Female","languages":[1,2],"ssn":"12346","address":"Streat test 12","zipcode":"10000","city":1,"payment_registration_number":"320943290","payment_account_number":"23423432x","type":"employee"}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/account/updateemployee?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&firstname=Testing&lastname=Testing&email=test@test.com&gender=0&ssn=12346&languages[]=1&languages[]=2&place=Denmark&address=Streat test 12&zipcode=10000&city=1&payment_registration_number=320943290&payment_account_number=23423432x<br/>
+            <?php
+            $json = '{"status":"error","description":"You are not employee","error_code":1031}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+

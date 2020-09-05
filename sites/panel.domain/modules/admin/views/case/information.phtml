@@ -1,0 +1,252 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Information");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("EmployeeTitle", "Employee title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=htmlspecialchars(@$data->title);?>" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("PartnerTitle", "Partner title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="partner_title" type="text" value="<?=htmlspecialchars(@$data->partner_title);?>" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("FocusArea", "Indsatsområde");?></label>
+                        <div class="col-7">
+                            <select id="focus_area" class="form-control m-input" name="focus_area" onchange="focusAreaChanged(this.value)">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($this->parameters->getList($this->lang, "focusareas") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$data->focus_area[0] == (int)$value["id"] ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("FocusType", "Indsatstype");?></label>
+                        <div class="col-7" id="focus_types">
+                            <select class="form-control m-input" name="focus_type">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($this->parameters->getList($this->lang, "focustypes", ["focus_area" => (int)$data->focus_area[0]]) as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$data->focus_type[0] == (int)$value["id"] ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label" id="eval_report_name" id="eval_report_name"><?=$reportTypes[(int)$data->report_type]["title"];?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="report_interval">
+                                <option value="14_days"><?=$this->lang->get("Every14days", "Hver 14. dag");?></option>
+                                <option value="1_month" <?=($data->report_interval == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("1stEveryMonth", "Den 1. hver måned");?></option>
+                                <option value="3_month" <?=($data->report_interval == "3_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery3Months", "Hver 3. måned");?></option>
+                                <option value="6_month" <?=($data->report_interval == "6_month" ? 'selected="selected"': '');?>><?=$this->lang->get("onceEvery6Months", "Hver 6. måned");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityCage", "Aktivitetsburget");?></label>
+                        <div class="col-4">
+                            <input class="form-control m-input" name="activity_budget" type="text" value="<?=$this->lib->floatToDanish($data->activity_budget, 2);?>" placeholder="0,00">
+                        </div>
+                        <div class="col-3">
+                            <select class="form-control m-input" name="activity_budget_type">
+                                <option value="1_month" <?=((string)$data->activity_budget_type == "1_month" ? 'selected="selected"': '');?>><?=$this->lang->get("PerMonth", "Per month");?></option>
+                                <option value="1_year" <?=((string)$data->activity_budget_type == "1_year" ? 'selected="selected"': '');?>><?=$this->lang->get("PerYear", "Per year");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActivityBudgetMax", "Maximum budget");?></label>
+                        <div class="col-4">
+                            <input class="form-control m-input" name="activity_budget_max" type="text" value="<?=$this->lib->floatToDanish($data->activity_budget_max, 2);?>" placeholder="0,00">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label" id="eval_report_name"><?=$this->lang->get("MeetingDuration", "Meeting duration");?></label>
+                        <div class="col-3">
+                            <input class="form-control m-input" name="meeting_duration" type="text" value="<?=(string)$data->meeting_duration;?>" placeholder="0 <?=strtolower($this->lang->get("Hour"));?>">
+                        </div>
+                        <div class="col-4">
+                            <select class="form-control m-input" name="meeting_duration_type">
+                                <option value="week" <?=((string)$data->meeting_duration_type == "week" ? 'selected="selected"': '');?>><?=$this->lang->get("Week", "Per week");?></option>
+                                <option value="month" <?=((string)$data->meeting_duration_type == "month" ? 'selected="selected"': '');?>><?=$this->lang->get("PerMonth", "Per month");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("StartDate");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="start_date" value="<?=$this->lib->dateToDanish($this->mymongo->dateFormat($data->start_date, "Y-m-d"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("NextServiceDate", "Next service date");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="next_service_date" value="<?=$this->lib->dateToDanish($this->mymongo->dateFormat($data->next_service_date, "Y-m-d"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Partner");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="partner" onchange="partnerChanged(this.value)">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($partners as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$data->partner == (int)$value->id ? 'selected="selected"': '');?>><?=$value->name;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ContactPersons");?></label>
+                        <div class="col-7" id="contact_person">
+                            <select class="form-control m-input" id="m_select2_1"  name="contact_person[]" multiple="multiple">
+                                <?php foreach($contactPersons as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=(in_array((int)$value->id, $data->contact_person) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-7">
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_2">
+
+        </div>
+        <div class="tab-pane " id="m_user_profile_tab_3">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function reportTypeChanged(id){
+        if(id == 3){
+            $("#eval_report_name").html('<?=$this->lang->get("Letter");?>');
+        }else if(id == 2){
+            $("#eval_report_name").html('<?=$this->lang->get("StatusReport");?>');
+        }else{
+            $("#eval_report_name").html('<?=$this->lang->get("EvaluationReport");?>');
+        }
+    }
+
+    function focusAreaChanged(focusArea){
+        focusArea = parseInt(focusArea);
+        if(focusArea > 0){
+            $.ajax({
+                    method: "POST",
+                    url: "/data/focustypes",
+                    data: {focusarea: focusArea},
+                    dataType: "json",
+                })
+                .done(function(res){
+                    var html = '<select class="form-control m-input" name="focus_type">';
+                    html += '<option value=""><?=$this->lang->get("None");?></option>';
+                    for(var iii=0;iii<res.data.length;iii++){
+                        var quest = res.data[iii];
+                        html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                    }
+                    html += '</select>';
+                    document.getElementById("focus_types").innerHTML = html;
+                });
+        }
+    }
+
+    function partnerChanged(partnerId){
+        $.ajax({
+                method: "POST",
+                url: "/data/contacts",
+                data: {partner_id: partnerId},
+                dataType: "json",
+            })
+            .done(function(res){
+                var html = '<select class="form-control m-select2" id="m_select2_3" name="contact_person[]" multiple="multiple">';
+                html += '<optgroup label="">';
+                for(var iii=0;iii<res.data.length;iii++){
+                    var quest = res.data[iii];
+                    html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                }
+                html += '</optgroup>';
+                html += '</select>';
+
+                document.getElementById("contact_person").innerHTML = html;
+                $("#m_select2_3").select2({
+                    placeholder: "Select an option"
+                });
+            });
+    }
+
+</script>

@@ -1,0 +1,175 @@
+<script>
+    var tablelisturl = '<?=_PANEL_ROOT_;?>/<?=$controller;?>/list';
+</script>
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("Translations");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Translations");?></span></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Overview", "Oversigt");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__body">
+            <!--end: Search Form -->
+            <div class="table-container">
+                <table class="table table-striped table-bordered table-hover" id="datatable_ajax">
+                    <thead>
+                    <tr role="row" class="heading">
+                        <th width="2%"><input type="checkbox" class="group-checkable"></th>
+                        <th width="15%">Key</th>
+                        <th width="35%">Original</th>
+                        <th width="35%">Translation</th>
+                        <th width="">Source</th>
+                        <th width=""><?=$this->lang->get("Show", "Vis");?></th>
+                    </tr>
+                    <tr role="row" class="filter">
+                        <td></td>
+                        <td>
+                            <input type="text" class="form-control form-filter input-sm search-input" name="key">
+                        </td>
+                        <td>
+                            <select class="form-control form-filter select margin-bottom-10 margin-bottom-8" name="from_lang">
+                                <?php foreach($this->parameters->getList($this->lang, "system_languages") as $value):?>
+                                    <option value="<?=htmlspecialchars($value["code"]);?>" <?=($key == 1 ? 'selected="selected"': '');?>><?=htmlspecialchars($value["code"]);?> - <?=htmlspecialchars($value["title"]);?></option>
+                                <?php endforeach;?>
+                            </select>
+                            <input type="text" class="form-control form-filter input-sm search-input" name="from_original">
+                        </td>
+                        <td>
+                            <select class="form-control form-filter select margin-bottom-10 margin-bottom-8" name="to_lang">
+                                <?php foreach($this->parameters->getList($this->lang, "system_languages") as $value):?>
+                                    <option value="<?=htmlspecialchars($value["code"]);?>" <?=($key == 1 ? 'selected="selected"': '');?>><?=htmlspecialchars($value["code"]);?> - <?=htmlspecialchars($value["title"]);?></option>
+                                <?php endforeach;?>
+                            </select>
+                            <input type="text" class="form-control form-filter input-sm search-input" name="to_original">
+                        </td>
+                        <td>
+                            <select class="form-control form-filter select" name="template_id">
+                                <option value="0">All</option>
+                                <?php foreach($this->lang->templates as $key => $value):?>
+                                    <option value="<?=$key;?>"><?=$value["name"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="margin-bottom-5" style="margin-bottom: 6px;">
+                                <button class="btn btn-sm yellow filter-submit"><i class="fa fa-search"></i> <?=$this->lang->get("Search");?></button>
+                            </div>
+                            <button class="btn btn-sm red filter-cancel"><i class="fa fa-times"></i> <?=$this->lang->get("Reset");?></button>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editKeyword(uuid, lang, dataMetod, fromLang){
+        Fmodal.init("<?=_PANEL_ROOT_;?>/<?=$controller;?>/edit?uuid="+uuid+"&current_lang="+lang+"&from_lang="+fromLang, "html", dataMetod);
+    }
+</script>
+
+<script>
+    var Fmodal = {
+        'requestType': 'json',
+        'init': function(url, type){
+            if (type)
+                this.requestType = type;
+            if ($("#main").css("display") !== "block"){
+                $("#footermodal").click();
+                var dataSent = {};
+            }else{
+                var dataSent = $("#footer-form").serialize();
+            }
+            $("#footer-modal").html('');
+            if(this.requestType == 'json'){
+
+            }
+
+            var request = $.ajax({
+                url: url,
+                method: "POST",
+                data: dataSent,
+                dataType: this.requestType
+            });
+
+            request.done(function( msg ) {
+                if (Fmodal.requestType == 'json'){
+                    Fmodal.setTitle('Result');
+                    if (msg.status == "success"){
+                        Fmodal.setBody(msg.description);
+                    }else if (msg.status == "error"){
+                        Fmodal.setBody(msg.description);
+                    }else{
+                        Fmodal.setBody(msg);
+                    }
+                    Fmodal.setFooter('<button type="button" class="btn default" data-dismiss="modal">Close</button>');
+                }else{
+                    $("#footer-modal").append(msg);
+                }
+                $(".close").click(function(){
+                    this.close();
+                });
+            });
+
+        },
+        'setTitle': function(title){
+            var h = '<div class="modal-header">';
+            h += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>';
+            h += '<h4 class="modal-title">'+title+'</h4>';
+            h += '</div>';
+            $("#footer-modal").append(h);
+        },
+        'setBody': function(body){
+            var h = '<div class="modal-body" id="footer-modal-body">';
+            h += body;
+            h += '</div>';
+            $("#footer-modal").append(h);
+        },
+        'setFooter': function(footer){
+            var h = '<div class="modal-footer">';
+            h += footer;
+            h += '</div>';
+            $("#footer-modal").append(h);
+        },
+        'close': function(){
+            $("#footer-modal").html('');
+        }
+    }
+
+</script>
+<a class="btn default" id="footermodal" data-toggle="modal" href="#main" style="display: none;"></a>
+<div class="modal fade" id="main" tabindex="-1" role="basic" aria-hidden="true" style="display: none;opacity: 1;">
+    <div class="modal-dialog" style="top: 150px;">
+        <form id="footer-form" action="" method="post">
+            <div class="modal-content" id="footer-modal">
+
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

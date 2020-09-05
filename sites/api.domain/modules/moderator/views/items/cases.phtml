@@ -1,0 +1,65 @@
+<section id="cases_list">
+    <h2 id="html-structure"><a href="javascript:;"> Cases / List</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/cases/list</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>skip:</code> (type: INT, default: 0)<br/>
+            <code>limit:</code> (type: INT, default: 20, min: 5, max: 100)<br/>
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/cases/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":13,"citizen":{"id":11,"firstname":"Testing","lastname":"Testing"},"focus_area":{"id":4,"title":"Focus area 3"},"focus_type":{"id":1,"title":"focus type 1"},"date":"22.07.18","unixtime":1532263184},{"id":12,"citizen":{"id":2,"firstname":"John","lastname":"Malkovich"},"focus_area":{"id":3,"title":"Focus area 2"},"focus_type":{"id":2,"title":"focus type 2"},"date":"22.07.18","unixtime":1532261533}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/cases/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"error","description":"Information not found","error_code":1301}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+<section id="case_by_id">
+    <h2 id="html-structure"><a href="javascript:;"> Cases / Case By ID</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/cases/case</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>skip:</code> (type: INT, default: 0)<br/>
+            <code>limit:</code> (type: INT, default: 20, min: 5, max: 100)<br/>
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/cases/case?lang=en&id=13&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":{"id":13,"citizen":{"id":11,"firstname":"Testing","lastname":"Testing"},"employee":{"id":5,"firstname":"Test5","lastname":"User"},"focus_area":false,"focus_type":{"id":1,"title":"focus type 1"},"date":"22.07.18","unixtime":1532263184}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/cases/case?lang=en&id=13&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279<br/>
+            <?php
+            $json = '{"status":"error","description":"Information not found","error_code":1301}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+

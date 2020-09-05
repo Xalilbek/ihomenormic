@@ -1,0 +1,79 @@
+
+<div class="m-portlet m-portlet--full-height m-portlet--tabs">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Contacts");?>
+                    </a>
+                </li>
+            </ul>
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="<?=_PANEL_ROOT_;?>/profile/contactsadd/<?=$id;?>" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                        <i class="la la-plus"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="m_user_profile_tab_1">
+                <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                    <div class="m-portlet__body">
+                        <?php if(count($contacts) == 0):?>
+                            <div class="form-group m-form__group row">
+                                <div class="form-error">
+                                    <?=$this->lang->get("NoContact", "No contact found");?>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <style>
+                                .m-form__group{padding-top: 0 !important;padding-bottom: 0 !important;}
+                                .contact-value{padding-top: 7px;}
+                            </style>
+                            <?php foreach($contacts as $contact):?>
+                                <div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Title");?></label>
+                                        <div class="col-7 contact-value">
+                                            <?=$contact->title;?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("firstname");?></label>
+                                        <div class="col-7 contact-value">
+                                            <?=$contact->firstname;?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("lastname");?></label>
+                                        <div class="col-7 contact-value">
+                                            <?=$contact->lastname;?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("phone");?></label>
+                                        <div class="col-7 contact-value">
+                                            <a href="tel:<?=$contact->phone;?>"><B><?=$contact->phone;?></B></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-form__group row">
+                                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("email");?></label>
+                                        <div class="col-7 contact-value">
+                                            <?=$contact->email;?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

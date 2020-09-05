@@ -1,0 +1,144 @@
+<div class="m-content">
+    <div class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__body">
+            <script>
+                var tableConf = <?=json_encode($tableConf, true);?>
+            </script>
+
+            <!--begin: Search Form -->
+            <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+
+
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-4">
+                        <select name="user_id" class="form-control m-select2 search-filter" id="m_select2_3">
+                            <option value="0"><?=$this->lang->get("All");?></option>
+                            <?php foreach($users as $value):?>
+                                <option value="<?=(int)$value->id;?>" <?=(in_array($value->id, $this->request->get("lead")) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid datepickerDen" name="date_from" autocomplete="off" placeholder="<?=$this->lang->get("date_from");?>">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid datepickerDen" name="date_to" autocomplete="off" placeholder="<?=$this->lang->get("date_to");?>">
+                    </div>
+                </div>
+
+                <!--
+                <div class="row more-searches" style="margin-top: 10px;display: none;">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="email" autocomplete="off" placeholder="<?=$this->lang->get("Email");?>">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="phone" autocomplete="off" placeholder="<?=$this->lang->get("Phone");?>">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="work_position" autocomplete="off" placeholder="<?=$this->lang->get("WorkPosition");?>">
+                    </div>
+                </div>
+
+
+                <div class="row more-searches" style="margin-top: 10px;display: none;">
+                    <div class="col-sm-4">
+                        <select class="form-control m-bootstrap-select search-filter m-bootstrap-select--solid" name="city" multiple="multiple">
+                            <option value=""><?=$this->lang->get("City");?></option>
+                            <?php foreach($this->parameters->getList($this->lang, "vacancy_cities") as $value):?>
+                                <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$data->city ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="post_number" autocomplete="off" placeholder="<?=$this->lang->get("ZipCode");?>">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="work_experience" autocomplete="off" placeholder="<?=$this->lang->get("work_experience");?>">
+                    </div>
+                </div>
+
+
+                <div class="row more-searches" style="margin-top: 10px;display: none;">
+                    <div class="col-sm-4">
+                        <select class="form-control m-bootstrap-select search-filter m-bootstrap-select--solid" name="language" multiple="multiple">
+                            <option value=""><?=$this->lang->get("Language");?></option>
+                            <?php foreach($this->parameters->getList($this->lang, "vacancy_languages") as $value):?>
+                                <option value="<?=(int)$value["id"];?>" <?=((in_array((int)$value["id"], $data->languages)) ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control m-input search-filter m-input--solid" name="occupation" autocomplete="off" placeholder="<?=$this->lang->get("occupation");?>">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control m-input search-filter m-input--solid" name="age_from" autocomplete="off" placeholder="<?=$this->lang->get("age_from");?>">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control m-input search-filter m-input--solid" name="age_to" autocomplete="off" placeholder="<?=$this->lang->get("age_to");?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 10px;">
+                        <div class="col-3 more-searches">
+                            <a href="javascript:$('.more-searches').toggle();" class="btn btn-info m-btn ">
+                                <span><?=$this->lang->get("MoreFilters", "More Filters");?></span></span>
+                            </a>
+                        </div>
+
+                    <div class="col-3 more-searches" style="display: none;">
+                        <a href="javascript:$('.more-searches').toggle();" class="btn btn-warning m-btn ">
+                            <span><?=$this->lang->get("HideFilters", "Hide Filters");?></span></span>
+                        </a>
+                    </div>
+                </div>
+                -->
+            </div>
+            <!--end: Search Form -->
+
+
+
+            <!--begin: Selected Rows Group Action Form -->
+            <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30 collapse" id="m_datatable_group_action_form">
+                <div class="row align-items-center">
+                    <div class="col-xl-12">
+                        <div class="m-form__group m-form__group--inline">
+                            <div class="m-form__label m-form__label-no-wrap">
+                                <label class="m--font-bold m--font-danger-">Selected
+                                    <span id="m_datatable_selected_number">0</span> records:</label>
+                            </div>
+                            <div class="m-form__control">
+                                <div class="btn-toolbar">
+                                    <div class="col-md-4">
+                                        <div class="input-group m-input-group m-input-group--pill">
+                                            <select class="form-control m-bootstrap-select m-bootstrap-select--solid" name="param" id="data_command">
+                                                <option>Choose</option>
+                                                <option value="delete">Delete</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-success" type="button" id="data_execute">Verify</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end: Selected Rows Group Action Form -->
+
+
+            <div class="m_datatable" id="local_record_selection"></div>
+
+
+        </div>
+    </div>
+</div>

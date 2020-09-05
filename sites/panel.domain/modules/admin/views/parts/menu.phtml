@@ -1,0 +1,222 @@
+<!-- BEGIN: Left Aside -->
+<button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+    <i class="la la-close"></i>
+</button>
+<div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark ">
+    <!-- BEGIN: Aside Menu -->
+    <div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark" m-menu-vertical="1" m-menu-scrollable="0" m-menu-dropdown-timeout="500">
+        <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
+            <li class="m-menu__item <?=($controller == "index" ? "m-menu__item--active": "");?>" aria-haspopup="true">
+                <a  href="<?=_PANEL_ROOT_;?>/" class="m-menu__link ">
+                    <i class="m-menu__link-icon flaticon-line-graph"></i>
+                    <span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"><?=$this->lang->get("ControlPanel", "Kontrolpanel");?></span></span></span>
+                </a>
+            </li>
+
+
+            <?php if($this->auth->isPermitted($this->lang, "citizens", "view")):?>
+                <li class="m-menu__item  <?=($controller == "citizens" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/citizens" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-user"></i><span class="m-menu__link-text"><?=$this->lang->get("Citizens");?></span>
+                    </a>
+                </li>
+            <?php endif;?>
+
+
+
+            <?php if($this->auth->isPermitted($this->lang, "cases", "view")):?>
+                <li class="m-menu__item <?=($controller == "cases" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/cases" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-tasks"></i><span class="m-menu__link-text"><?=$this->lang->get("Cases", "Sager");?></span>
+                    </a>
+                </li>
+            <?php endif;?>
+
+
+
+            <?php if($this->auth->isPermitted($this->lang, "settings", "view")):?>
+                <li class="m-menu__item  m-menu__item--submenu <?=($controller == "settings" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="javascript:;" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-gear"></i><span class="m-menu__link-text"><?=$this->lang->get("Settings", "Indstillinger");?></span>
+                        <i class="m-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                    <div class="m-menu__submenu ">
+                        <span class="m-menu__arrow"></span>
+                        <ul class="m-menu__subnav">
+                            <?php foreach($this->parameters->getParametersList($this->lang) as $key => $value): ?>
+                                <li class="m-menu__item <?=($controller == "settings" && $this->request->get("type") == $key ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                    <a  href="<?=_PANEL_ROOT_;?>/settings?type=<?=$key;?>" class="m-menu__link"><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$value["title"];?></span></a>
+                                </li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif;?>
+
+
+
+            <?php if($this->auth->isPermitted($this->lang, "calendar", "view")):?>
+                <li class="m-menu__item  m-menu__item--submenu  <?=($controller == "todo" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="javascript:;" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-check-circle"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Calendar");?></span></span></span><i class="m-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                    <div class="m-menu__submenu ">
+                        <span class="m-menu__arrow"></span>
+                        <ul class="m-menu__subnav">
+                            <li class="m-menu__item <?=($controller == "todo" && $action == "index" ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/todo" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("Overview", "Oversigt");?></span></a>
+                            </li>
+                            <li class="m-menu__item <?=($controller == "todo" && (int)$this->request->get("archive") == 1 ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/todo?archive=1" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("Archive", "Arkiv");?></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif;?>
+
+
+
+            <?php if($this->auth->isPermitted($this->lang, "notes", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "notes" || $controller == "noteitems" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a href="<?=_PANEL_ROOT_;?>/notes" class="m-menu__link "><i class="m-menu__link-icon la la-comment"></i> <span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"><?=$this->lang->get("Notes", "Notater");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+
+            <!--
+            <?php if($this->auth->isPermitted($this->lang, "calendar", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "calendar" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a href="<?=_PANEL_ROOT_;?>/calendar" class="m-menu__link "><i class="m-menu__link-icon la la-calendar"></i> <span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"><?=$this->lang->get("Calendar", "Kalender");?></span><span class="m-menu__link-badge"></span></span></span></a>
+                </li>
+            <?php endif;?>
+            -->
+
+
+            <?php if($this->auth->isPermitted($this->lang, "partners", "view")):?>
+                <li class="m-menu__item  m-menu__item--submenu  <?=($controller == "partners" || $controller == "partnerusers" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="javascript:;" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-users"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Partners");?></span></span></span><i class="m-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                    <div class="m-menu__submenu ">
+                        <span class="m-menu__arrow"></span>
+                        <ul class="m-menu__subnav">
+                            <li class="m-menu__item <?=($controller == "partners" && $action == "index" ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/partners" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("Overview");?></span></a>
+                            </li>
+                            <li class="m-menu__item <?=($controller == "partnerusers" ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/partnerusers" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("ContactPersons", "Contact persons");?></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif;?>
+
+
+            <?php if($this->auth->isPermitted($this->lang, "employees", "view")):?>
+                <li class="m-menu__item  m-menu__item--submenu  <?=($controller == "employees" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="javascript:;" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-check-circle"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Employees");?></span></span></span><i class="m-menu__ver-arrow la la-angle-right"></i>
+                    </a>
+                    <div class="m-menu__submenu ">
+                        <span class="m-menu__arrow"></span>
+                        <ul class="m-menu__subnav">
+                            <li class="m-menu__item <?=($controller == "employees" && (int)$this->request->get("former") !== 1 ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/employees" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("Overview");?></span></a>
+                            </li>
+                            <li class="m-menu__item <?=($controller == "employees" && (int)$this->request->get("former") == 1 ? "m-menu__item--active": "");?>" aria-haspopup="true" >
+                                <a  href="<?=_PANEL_ROOT_;?>/employees?former=1" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text"><?=$this->lang->get("Former");?></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "moderators", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "moderators" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/moderators" class="m-menu__link"><i class="m-menu__link-icon la la-user"></i><span class="m-menu__link-text"><?=$this->lang->get("Moderators");?></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "jobdatabase", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "vacancies" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a  href="<?=_PANEL_ROOT_;?>/vacancies" class="m-menu__link "><i class="m-menu__link-icon la la-suitcase"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"><?=$this->lang->get("JobList", "Jobdatabase");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "products", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "products" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="<?=_PANEL_ROOT_;?>/products" class="m-menu__link"><i class="m-menu__link-icon la la-cart-arrow-down"></i><span class="m-menu__link-text"> <?=$this->lang->get("Products");?></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "productorders", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "productorders" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="<?=_PANEL_ROOT_;?>/productorders" class="m-menu__link"><i class="m-menu__link-icon la la-list"></i><span class="m-menu__link-text"> <?=$this->lang->get("Orders");?></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "knowledgebase", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "knowledgebase" || $controller == "knowledgebaseitems" ? "m-menu__item--open": "");?>" aria-haspopup="true"  m-menu-submenu-toggle="hover">
+                    <a  href="<?=_PANEL_ROOT_;?>/knowledgebase" class="m-menu__link"><i class="m-menu__link-icon la la-question-circle"></i><span class="m-menu__link-text"> <?=$this->lang->get("Knowledgebase", "Vidensdatabase");?></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "communication", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "dialogues" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/dialogues" class="m-menu__link"><i class="m-menu__link-icon la la-comments"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Communication", "Kommunikation");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "mailbox", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "mailbox" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a  href="<?=_PANEL_ROOT_;?>/mailbox" class="m-menu__link "><i class="m-menu__link-icon la la-envelope"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Mailbox");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "survey", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "survey" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a  href="<?=_PANEL_ROOT_;?>/survey" class="m-menu__link "><i class="m-menu__link-icon  la la-tasks"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Survey");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "contracts", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "contracts" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a  href="<?=_PANEL_ROOT_;?>/contracts" class="m-menu__link "><i class="m-menu__link-icon la la-comment"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Contracts");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "worklog", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "timerecords" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a  href="<?=_PANEL_ROOT_;?>/timerecords" class="m-menu__link "><i class="m-menu__link-icon la la-list"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("TimeRecording", "Tidsregistrering");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+            <?php if($this->auth->isPermitted($this->lang, "offers", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "offers" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/offers" class="m-menu__link m-menu__toggle"><i class="m-menu__link-icon la la-tags"></i><span class="m-menu__link-text"> <?=$this->lang->get("Offers");?></span></a>
+                </li>
+            <?php endif;?>
+
+
+            <?php if($this->auth->isPermitted($this->lang, "translations", "view")):?>
+                <li class="m-menu__item  m-menu__item <?=($controller == "translations" ? "m-menu__item--open": "");?>" aria-haspopup="true" >
+                    <a href="<?=_PANEL_ROOT_;?>/translations" class="m-menu__link "><i class="m-menu__link-icon la la-list"></i><span class="m-menu__link-title"><span class="m-menu__link-wrap"><span class="m-menu__link-text"> <?=$this->lang->get("Translations");?></span></span></span></a>
+                </li>
+            <?php endif;?>
+
+
+            <?php if($this->auth->isPermitted($this->lang, "logs", "view")):?>
+                <li class="m-menu__item <?=($controller == "logs" ? "m-menu__item--open": "");?>" aria-haspopup="true">
+                    <a  href="<?=_PANEL_ROOT_;?>/logs" class="m-menu__link m-menu__toggle">
+                        <i class="m-menu__link-icon la la-tasks"></i><span class="m-menu__link-text"><?=$this->lang->get("Logs");?></span>
+                    </a>
+                </li>
+            <?php endif;?>
+
+            <br><br>
+            <!-- /CareCompagniet Menu -->
+        </ul>
+    </div>
+    <!-- END: Aside Menu -->
+</div>
+<!-- END: Left Aside -->

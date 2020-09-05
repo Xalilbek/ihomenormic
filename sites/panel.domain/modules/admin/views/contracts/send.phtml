@@ -1,0 +1,118 @@
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Send");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="" style="padding-top: 30px;">
+            <?php if($success):?>
+                <div class="form-group m-form__group row">
+                    <div class="form-success">
+                        <?=$success;?>
+                    </div>
+                </div>
+            <?php else:?>
+            <?php if($error):?>
+                <div class="form-group m-form__group row">
+                    <div class="form-error">
+                        <?=$error;?>
+                    </div>
+                </div>
+            <?php endif;?>
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Subject");?></label>
+                <div class="col-5">
+                    <input class="form-control m-input" name="subject" type="text" value="<?=$this->request->get("subject");?>">
+                </div>
+            </div>
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Email", "E-mail Adresse");?></label>
+                <div class="col-5">
+                    <input class="form-control m-input" name="email" type="text" value="<?=$this->request->get("email");?>">
+                </div>
+            </div>
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Citizen");?></label>
+                <div class="col-5">
+                    <select class="form-control m-select2" id="m_select2_1" name="citizen">
+                        <option value="0"><?=$this->lang->get("None");?></option>
+                        <?php foreach($citizens as $value):?>
+                            <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("citizen") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Employee");?></label>
+                <div class="col-5">
+                    <select class="form-control m-select2" id="m_select2_2" name="employee">
+                        <option value="0"><?=$this->lang->get("None");?></option>
+                        <?php foreach($employees as $value):?>
+                            <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("employee") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ContactPersons");?></label>
+                <div class="col-5">
+                    <select class="form-control m-select2" id="m_select2_3" name="contact_person">
+                        <option value="0"><?=$this->lang->get("None");?></option>
+                        <?php foreach($contactpersons as $value):?>
+                            <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("contact_person") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+
+
+                <?php for($i=0;$i<5;$i++):?>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("CustomSnippet");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[custom<?=$i+1;?>]" type="text" value="<?=('{custom'.($i+1).'}');?>" readonly="readonly">
+                        </div>
+                    </div>
+                <?php endfor;?>
+
+
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Send");?></button>&nbsp;&nbsp;
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="preview" value="1" ><?=$this->lang->get("Preview");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php endif;?>
+
+            <div class="m-portlet__body" style="background: #f1f1f1;margin-top: 30px;">
+                <iframe id="iframe" style="width: 100%;min-height: 900px;border: 0" frameborder="0" width="100%" srcdoc='<?=$this->lib->xss_clean($data->content);?>'>
+                </iframe>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

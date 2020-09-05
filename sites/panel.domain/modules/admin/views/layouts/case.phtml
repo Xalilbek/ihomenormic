@@ -1,0 +1,159 @@
+<div class="m-grid__item m-grid__item--fluid m-wrapper">
+    <div class="m-content">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="m-portlet m-portlet--full-height  ">
+                    <div class="m-portlet__body" style="padding-top: 0;">
+                        <style>
+                            .m-card-profile__pic-wrapper{margin: 10px !important;}
+                            .m-card-profile .m-card-profile__details .m-card-profile__name {
+                                font-size: 16px !important;
+                            }
+                            .m-card-profile .m-card-profile__pic img {
+                                max-width: 75px!important;
+                            }
+                        </style>
+                        <div class="m-card-profile" style="border-bottom: 1px solid #f1f1f1;padding-bottom: 20px;">
+                            <div class="m-card-profile__pic">
+                                <div class="m-card-profile__pic-wrapper">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/<?=$user->id;?>">
+                                        <?php if(strlen($user->avatar_id) > 0):?>
+                                            <img src="/upload/<?=(string)$user->_id;?>/<?=(string)$user->avatar_id;?>/small.jpg"/>
+                                        <?php else: ?>
+                                            <img src="http://placehold.it/80x80" alt="">
+                                        <?php endif;?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name"><?=htmlspecialchars(@$user->firstname);?> <?=htmlspecialchars(@$user->lastname);?></span>
+                                <div style="display: block;text-align: center;padding-top: 15px;">
+                                    <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;">
+                                        <?=$this->lang->get("citizen");?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-card-profile" style="border-bottom: 1px solid #f1f1f1;padding-bottom: 20px;">
+                            <div class="m-card-profile__pic">
+                                <div class="m-card-profile__pic-wrapper">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/<?=$employee->id;?>">
+                                        <?php if(strlen($employee->avatar_id) > 0):?>
+                                            <img src="/upload/<?=(string)$employee->_id;?>/<?=(string)$employee->avatar_id;?>/small.jpg"/>
+                                        <?php else: ?>
+                                            <img src="http://placehold.it/80x80" alt="">
+                                        <?php endif;?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name"><?=htmlspecialchars(@$employee->firstname);?> <?=htmlspecialchars(@$employee->lastname);?></span>
+                                <div style="display: block;text-align: center;padding-top: 15px;">
+                                    <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;">
+                                        <?=$this->lang->get("employee");?>
+                                    </a>
+                                    <a href="<?=_PANEL_ROOT_;?>/case/newemployee/<?=$id;?>" style="position: relative;top: 0;right: 0;background: #ffb822;border-radius: 15px;color: #fff;padding: 5px 10px;text-align: center;text-decoration: none;margin-left: 5px;"><i class="la la-edit"></i></a>
+                                </div>
+                                <?php if(strlen($data->title) > 0):?>
+                                    <div style="display: block;text-align: center;padding-top: 15px;">
+                                        <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;max-width: 100%;">
+                                            <?=$data->title;?>
+                                        </a>
+                                    </div>
+                                <?php endif;?>
+                            </div>
+                        </div>
+
+                        <?php if($contactPerson):?>
+                        <div class="m-card-profile">
+                            <div class="m-card-profile__pic">
+                                <div class="m-card-profile__pic-wrapper">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/<?=$contactPerson->id;?>">
+                                        <?php if(strlen($contactPerson->avatar_id) > 0):?>
+                                            <img src="/upload/<?=(string)$contactPerson->_id;?>/<?=(string)$contactPerson->avatar_id;?>/small.jpg"/>
+                                        <?php else: ?>
+                                            <img src="http://placehold.it/80x80" alt="">
+                                        <?php endif;?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name"><?=htmlspecialchars(@$contactPerson->firstname);?> <?=htmlspecialchars(@$contactPerson->lastname);?></span>
+                                <div style="display: block;text-align: center;padding-top: 15px;">
+                                    <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;">
+                                        <?=$this->lang->get("partner");?>
+                                    </a>
+                                    <a href="<?=_PANEL_ROOT_;?>/case/information/<?=$data->id;?>" style="position: relative;top: 0;right: 0;background: #ffb822;border-radius: 15px;color: #fff;padding: 5px 10px;text-align: center;text-decoration: none;margin-left: 5px;"><i class="la la-edit"></i></a>
+                                </div>
+                                <?php if(strlen($data->partner_title) > 0):?>
+                                    <div style="display: block;text-align: center;padding-top: 15px;">
+                                        <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;max-width: 100%;">
+                                            <?=$data->partner_title;?>
+                                        </a>
+                                    </div>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                        <?php endif;?>
+
+                        <ul class="m-nav m-nav--hover-bg m-portlet-fit--sides">
+                            <li class="m-nav__separator m-nav__separator--fit"></li>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/cases" class="m-nav__link"><i class="m-nav__link-icon la la-arrow-left"></i><span class="m-nav__link-title"><span class="m-nav__link-wrap"><span class="m-nav__link-text"><?=$this->lang->get("Back");?></span></span></span></a>
+                            </li>
+                            <li class="m-nav__item <?=($action == "index" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-briefcase"></i><span class="m-nav__link-text"><?=$this->lang->get("Overview");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("information")) == "information" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/information/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-info"></i><span class="m-nav__link-text"><?=$this->lang->get("Information");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("documents")) == "documents" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/documents/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-file-o"></i><span class="m-nav__link-text"><?=$this->lang->get("Documents");?></span></a>
+                            </li>
+                            <!--
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("tradingplans")) == "tradingplans" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/tradingplans/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-comment"></i><span class="m-nav__link-text"><?=$this->lang->get("TradingPlans");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("oldemployees")) == "oldemployees" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/oldemployees/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-comment"></i><span class="m-nav__link-text"><?=$this->lang->get("Oldemployees", "Old Employees");?></span></a>
+                            </li> -->
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("evalreports")) == "evalreports" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/evalreports/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-file-text-o"></i><span class="m-nav__link-text"><?=$this->lang->get("Reports");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("activities")) == "activities" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/activities/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-money"></i><span class="m-nav__link-text"><?=$this->lang->get("ActivityAndPayment", "Aktivitet & Refusion");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("todo")) == "todo" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/todo/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-calendar"></i><span class="m-nav__link-text"><?=$this->lang->get("Calendar");?></span></a>
+                            </li>
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("notes")) == "notes" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/notes/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-comment"></i><span class="m-nav__link-text"><?=$this->lang->get("CaseNotes");?></span></a>
+                            </li>
+
+                            <!--
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("todo")) == "todo" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/todo/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-check-square"></i><span class="m-nav__link-text"><?=$this->lang->get("Todo");?></span></a>
+                            </li>
+                            -->
+
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("timerecords")) == "timerecords" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/case/timerecords/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-clock-o"></i><span class="m-nav__link-text"><?=$this->lang->get("TimeRecording", "Tidsregistrering");?></span></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-8">
+                <?=$this->getContent();?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .m-nav__item-active{background: #f1f1f1;}
+    .fc-week-number{padding: 0.5em !important;}
+</style>

@@ -1,0 +1,89 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: 0px;"></button>
+    <h4 class="modal-title"><?=$this->lang->get("Edit");?></h4>
+</div>
+<style>
+    @media (min-width: 768px){
+        .modal-dialog {
+            width: 700px !important;
+        }
+    }
+    .input-group {
+        display: table;
+        border-collapse: separate;
+    }
+    .input-group .form-control, .input-group-addon, .input-group-btn {
+        display: table-cell;
+    }
+    .input-group .form-control {
+        position: relative;
+        z-index: 2;
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .input-group-addon {
+        padding: 0px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #e1e1e1;
+    }
+
+    .input-group-addon, .input-group-btn {
+        width: 1%;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+    .modal-title {
+        margin: 0;
+        line-height: 1.42857;
+    }
+    .modal-header {
+        display: block !important;
+        padding: 15px !important;
+    }
+</style>
+
+
+<div class="modal-body" style="padding: 0;">
+    <div class="row">
+        <div class="m-form m-form--fit m-form--label-align-left" style="padding: 0 0px !important;">
+            <?php if ($success): ?>
+                <div class="form-group m-form__group " style="padding-bottom: 0px;">
+                    <div class="form-success">
+                        <?=$success;?>
+                    </div>
+                </div>
+            <?php endif;?>
+            <?php if ($error): ?>
+                <div class="form-group m-form__group " style="padding-bottom: 0px;">
+                    <div class="form-error">
+                        <?=$error;?>
+                    </div>
+                </div>
+            <?php endif;?>
+            <div class="form-group m-form__group row">
+                <label class="col-12 col-form-label"style=""><?=$this->lang->get("Translations");?>:</label>
+                <div class="col-12">
+                    <?php foreach($this->parameters->getList($this->lang, "system_languages") as $value):?>
+                        <?php //if($value == $this->request->get("current_lang")):?>
+                        <div class="input-group input-group-md margin-bottom-8">
+                            <span class="input-group-addon"><?=$value["code"];?></span>
+                            <textarea name="translations[<?=$value["code"];?>]" class="form-control" style="width: 100%;min-height: 100px;"><?=str_replace("'",'"',$data->translations->{$value["code"]});?></textarea>
+                        </div>
+                        <?php //endif;?>
+                    <?php endforeach;?>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="width: 100%;">
+            <button type="button" class="btn btn-sm green" name="submit" value="1" onclick="editKeyword('<?=$data->_id;?>', '<?=$this->request->get("current_lang");?>', 'post', '<?=$this->request->get("from_lang");?>');"><i class="fa fa-check"></i> <?=$this->lang->get("Verify");?></button>
+            <button type="button" data-dismiss="modal" class="btn btn-sm gray"><?=$this->lang->get("Close");?></button>
+        </div>
+    </div>
+</div>

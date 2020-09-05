@@ -1,0 +1,96 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("CreateNew");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php else:?>
+                        <?php if($error):?>
+                            <div class="form-group m-form__group row">
+                                <div class="form-error">
+                                    <?=$error;?>
+                                </div>
+                            </div>
+                        <?php endif;?>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Title");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>" autocomplete="off"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Date");?></label>
+                            <div class="col-4">
+                                <input class="form-control m-input datepickerDen" name="date" type="text" value="<?=$this->lib->dateToDanish(($this->request->get("date")) ? $this->request->get("date"): date("Y-m-d"));?>" autocomplete="off"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Amount");?></label>
+                            <div class="col-4">
+                                <input class="form-control m-input" name="amount" type="text" value="<?=$this->request->get("amount");?>" autocomplete="off" placeholder="0,00"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Status");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-input" name="status">
+                                    <?php foreach($this->parameters->getList($this->lang, "activity_statuses") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$this->request->get("status") == (int)$value["id"] ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"></label>
+                            <div class="col-7">
+                                <div class="m-dropzone dropzone dz-clickable" action="/documents/upload?puid=<?=$puid;?>" id="m-dropzone-one">
+                                    <div class="m-dropzone__msg dz-message needsclick">
+                                        <h3 class="m-dropzone__msg-title"><?=$this->lang->get("CaseMatL1", "Drop filen her eller tryk for at vælge");?></h3>
+                                        <span class="m-dropzone__msg-desc"><?=$this->lang->get("CaseMatL2", "Kun tilladt at upload billede eller pdf, docx og xlsx filer");?></span>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="puid" value="<?=$puid;?>"/>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <div class="m-portlet__foot m-portlet__foot--fit">
+                        <div class="m-form__actions">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-7">
+                                    <?php if($success):?>
+                                        <a href="<?=_PANEL_ROOT_;?>/case/activities/<?=$id;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                                    <?php else:?>
+                                        <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                                    <?php endif?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

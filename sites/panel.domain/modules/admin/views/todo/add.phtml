@@ -1,0 +1,161 @@
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("CreateNew", "Opret ny");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Category");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_4" name="category">
+                                <optgroup label="">
+                                    <?php foreach($this->parameters->getList($this->lang, "todo_categories") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$this->request->get("category") ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Description");?></label>
+                        <div class="col-7">
+                            <textarea class="form-control" name="description" style="min-height: 200px;"><?=$this->request->get("description");?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("CaseNumber", "Case number");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="case" type="text" value="<?=$this->request->get("case");?>" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Moderator");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_3" name="moderator">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($moderators as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("moderator") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("AssociateCitizen", "Tilknyt borger");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_1" name="citizen">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($citizens as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("citizen") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("AssociateEmployee", "Tilknyt medarbejder");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_2" name="employee">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($employees as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("employee") ? 'selected="selected"': '');?>><?=$value->firstname;?> <?=$value->lastname;?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Lead");?></label>
+                        <div class="col-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="lead" value="<?=$this->request->get("lead");?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Date");?></label>
+                        <div class="col-7">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepicker" name="date" value="<?=$this->request->get("date");?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Deadline");?></label>
+                        <div class="col-7">
+                            <div class="input-group " >
+                                <input type="text" class="form-control datepicker" name="date_deadline" value="<?=$this->request->get("date_deadline");?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Status");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="status">
+                                <?php foreach($this->parameters->getList($this->lang, "calendar_statuses") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$this->request->get("status") ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

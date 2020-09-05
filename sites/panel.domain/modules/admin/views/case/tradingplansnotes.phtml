@@ -1,0 +1,149 @@
+<!-- END: Subheader -->
+<div class="m-portlet m-portlet--full-height m-portlet--tabs">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("CreateNew", "Opret ny");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("NoteName", "Notat navn");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Description");?></label>
+                        <div class="col-7">
+                            <textarea class="form-control" name="description" style="min-height: 110px;"><?=$this->request->get("description");?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Documents");?></label>
+                        <div class="col-7">
+                            <div class="m-dropzone dropzone dz-clickable" action="/documents/upload?puid=<?=$puid;?>" id="m-dropzone-one">
+                                <div class="m-dropzone__msg dz-message needsclick">
+                                    <h3 class="m-dropzone__msg-title"><?=$this->lang->get("CaseMatL1", "Drop filen her eller tryk for at vælge");?></h3>
+                                    <span class="m-dropzone__msg-desc"><?=$this->lang->get("CaseMatL2", "Kun tilladt at upload billede eller pdf, docx og xlsx filer");?></span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="puid" value="<?=$puid;?>"/>
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>?folder=<?=(int)$this->request->get("folder");?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+
+
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Notes");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if(count($notes) == 0):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-error">
+                            <?=$this->lang->get("NoteNotFound", "Note not found");?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                <?php foreach($notes as $key => $value):?>
+                    <div class="form-group m-form__group row">
+                        <div class="col-6" style="width: 30px;"><b><?=$key+1;?>)</b>
+                            <b><?=htmlspecialchars($value->title);?></b>
+                        </div>
+                        <div class="col-1">
+                            <a href="?id=<?=$this->request->get("id");?>&delete=<?=(string)$value->_id;?>" style="color: red;"><?=$this->lang->get("Delete");?></a>
+                        </div>
+                        <!--
+                        <div class="col-1" style="text-align: right;">
+                            <a href="?delete=<?=(string)$value->_id;?>"><i class="la la-trash redcolor"></i></a>
+                        </div> -->
+                    </div>
+                    <div class="form-group m-form__group row" style="padding-top: 0;padding-bottom: 0;">
+                        <div class="col-7">
+                            <div><?=$this->mymongo->dateFormat($value->created_at, "Y-m-d H:i");?></div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-7">
+                            <div style="background: #f1f1f1;padding: 15px;"><?=htmlspecialchars($value->description);?></div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-7">
+                            <div style="background: #f1f1f1;padding: 15px;display: flex;">
+                                <?php if(count($documents[(string)@$value->_id]) > 0):?>
+                                    <?php foreach($documents[(string)@$value->_id] as $document):?>
+                                        <div style="margin-bottom: 10px;width: 90%;">
+                                            <?php if(in_array($document->type, array("jpeg", "jpg", "png", "gif"))): ?>
+                                                <a target="_blank" href="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/org.jpg">
+                                                    <img style="max-width: 100%;" src="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/small.jpg"/>
+                                                </a>
+                                            <?php else: ?>
+                                                <a target="_blank" href="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/<?=(string)htmlspecialchars($document->filename).'.'.$document->type;?>"><b><?=(string)htmlspecialchars($document->filename).'.'.$document->type;?></b></a>
+                                            <?php endif;?>
+                                        </div>
+                                        <div style="width: 20%">
+                                            <a href="?id=<?=$this->request->get("id");?>&deletedocument=<?=(string)$document->_id;?>" style="color: red;"><?=$this->lang->get("Delete");?></a>
+                                        </div>
+                                    <?php endforeach;?>
+                                <?php else: ?>
+                                    <?=$this->lang->get("DocumentsNotFound", "Documents not found");?>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach;?>
+            </div>
+        </form>
+    </div>
+</div>

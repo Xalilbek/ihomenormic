@@ -1,0 +1,108 @@
+<div class="m-portlet m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" href="<?=_PANEL_ROOT_;?>/case/information/<?=$data->id;?>">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=(($partner) ? $partner->commune: $this->lang->get("Case"));?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <div class="m-portlet__body">
+                <div class="row">
+                    <div class="col-6">
+                        <a href="<?=_PANEL_ROOT_;?>/case/information/<?=$data->id;?>" style="color: #666;">
+                            <h6 class="text-center"><?=$this->lang->get("Duration");?></h6>
+                            <h3 class="text-center"><?=$duration;?></h3>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="<?=_PANEL_ROOT_;?>/case/calendar/<?=$data->id;?>" style="color: #666;">
+                            <h6 class="text-center"><?=$this->lang->get("StartDate", "Start date");?></h6>
+                            <h3 class="text-center"><?=$startDate;?></h3>
+                        </a>
+                    </div>
+                </div>
+                <script>
+                    var chartValueTo = <?=round((float)$data->amount_spent,0);?>;
+                    var chartValueFrom = <?=round((float)$data->balance,0);?>;
+                </script>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="m-widget14">
+                            <div class="row  align-items-center">
+                                <div class="col">
+                                    <a href="<?=_PANEL_ROOT_;?>/case/activities/<?=$data->id;?>">
+                                        <div id="m_chart_profit_share" class="m-widget14__chart" style="height: 160px">
+                                            <div class="m-widget14__stat" style="font-size: 1.1em; text-align: center; color: #ccc;">
+                                                <?=$this->lib->floatToDanish($data->amount_spent,2);?>/<?=$this->lib->floatToDanish($data->balance,2);?><br>
+                                                DKK<br/>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        var chartValueFrom2 = <?=round((float)$spentHours,2);?>;
+                        var chartValueTo2 = <?=round((float)$timerMonthly, 2);?>;
+                    </script>
+                    <div class="col-6">
+                        <div class="m-widget14">
+                            <div class="row  align-items-center">
+                                <div class="col">
+                                    <a href="<?=_PANEL_ROOT_;?>/case/timerecords/<?=$data->id;?>">
+                                        <div id="m_chart_profit_share2" class="m-widget14__chart" style="height: 160px">
+                                            <div class="m-widget14__stat" style="font-size: 1.1em; text-align: center;  color: #ccc;">
+                                                <?=round($spentHours, 1);?>/<?=(float)round($data->meeting_duration, 1);?><br>
+                                                <?=strtolower($this->lang->get("Hours", "Hour(s)"));?><br/>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="m-portlet m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" href="<?=_PANEL_ROOT_;?>/case/information/<?=$data->id;?>">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=($this->lang->get("Calendar"));?>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="<?=_PANEL_ROOT_;?>/index/add?case=<?=$id;?>&employee[]=<?=$data->employee[0];?>&citizen[]=<?=$data->citizen[0];?>" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                        <i class="la la-plus"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <div class="m-portlet__body">
+                <div id="m_calendar"></div>
+
+            </div>
+        </div>
+    </div>
+</div>

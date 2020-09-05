@@ -1,0 +1,57 @@
+<div class="m-content">
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Edit", "Edit");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($photo):?>
+                <div style="display: block;min-width: 430px;padding:0 15px;">
+                    <div style="display: block;width: 400px;">
+                        <a href="javascript: rotatePhoto();">
+                            <img id="target_image" src="<?=FILE_URL;?>/upload/<?=$photo->uuid;?>/<?=(string)$photo->_id;?>/medium.jpg?<?=microtime(true);?>"/>
+                        </a>
+                    </div>
+                </div>
+                <?php endif;?>
+                <div style="display: block;padding: 15px;">
+                    <a href="javascript: rotatePhoto();"><b><?=$this->lang->get("Rotate");?></b></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    var PID = '<?=(string)@$photo->_id;?>';
+    var angle = 0;
+    function rotatePhoto() {
+        angle += 90;
+        if(angle > 270)
+            angle -= 360;
+        console.log(angle);
+        $("#target_image").rotateRight(90);
+
+        $.ajax({
+            url: '<?=_PANEL_ROOT_;?>/documents/rotate',
+            type: 'POST',
+            data: {pid: PID},
+            success: function(data)
+            {
+                //data = $.parseJSON(data);
+                //$("#target_image").attr("src", data);
+            }
+        });
+    }
+</script>

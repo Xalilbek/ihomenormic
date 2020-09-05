@@ -1,0 +1,252 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("WorkSchedule");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                        <?php if($error):?>
+                            <div class="form-group m-form__group row">
+                                <div class="form-error">
+                                    <?=$error;?>
+                                </div>
+                            </div>
+                        <?php endif;?>
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("WeekDays");?></label>
+                            <div class="col-7">
+                                <?php foreach(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"] as $key => $weekday):?>
+                                    <div class="row" style="padding-bottom: 10px;">
+                                        <div class="col-md-12">
+                                            <input type="checkbox" name="weekdays[]" value="<?=$key;?>" <?=((in_array($key, $data->weekdays)) ? 'checked="checked"':'');?>?/> <?=$weekday;?>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("WorkHours", "Work hours");?></label>
+                        <div class="col-7">
+                            <b>7.30-9.30</b>
+                            <br/>
+                            <b>9.30-12.30</b>
+                            <br/>
+                            <b>12.30-15.00</b>
+
+                            <!--
+                            <div id="schedule-body"></div>
+                            <button type="button" class="btn btn-focus m-btn--sm  m-btn--custom" onclick="javascript:WorkSchedule.add(0)"><?=$this->lang->get("Add");?></button>&nbsp;&nbsp;
+                            -->
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-7">
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var WorkSchedule = {
+        workHours: [],
+
+        add: function(index){
+            WorkSchedule.appendHour(0);
+        },
+
+        arrangeHours: function(){
+            for(let i in WorkSchedule.workHours){
+                let hourData = WorkSchedule.workHours[i];
+            }
+        },
+
+        appendHour: function(index){
+            var iHoursFromOptions='';
+            let ifromHour = parseInt(tariffData.from / 60);
+            for(var i=0;i<24;i++){
+                iHoursFromOptions +=
+                    '<option '+(ifromHour == i ? 'selected="selected"': '')+'>'+
+                    (i < 10 ? '0'+i: i)+
+                    '</option>';
+            }
+            var iMinuteFromOptions='';
+            let ifromMinutes = tariffData.from - ifromHour * 60;
+            for(var i=0;i<60;i++){
+                iMinuteFromOptions +=
+                    '<option '+(ifromMinutes == i ? 'selected="selected"': '')+'>'+
+                    (i < 10 ? '0'+i: i)+
+                    '</option>';
+            }
+            var iHoursToOptions='';
+            let iToHour = parseInt(tariffData.to / 60);
+            for(var i=0;i<24;i++){
+                iHoursToOptions +=
+                    '<option '+(iToHour == i ? 'selected="selected"': '')+'>'+
+                    (i < 10 ? '0'+i: i)+
+                    '</option>';
+            }
+            var iMinuteToOptions='';
+            let iToMinutes = tariffData.to - iToHour * 60;
+            for(var i=0;i<60;i++){
+                iMinuteToOptions +=
+                    '<option '+(iToMinutes == i ? 'selected="selected"': '')+'>'+
+                    (i < 10 ? '0'+i: i)+
+                    '</option>';
+            }
+            var iH =
+                '<div class="row intervalLine" id="intervalLine_'+tariffKey+'_'+tariffIndex+'">' +
+                '<div style="width: 13%;float: left;padding: 0 2px 0 12px;">' +
+                '<select class="form-control" onchange="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'from_hour\')">'+
+                iHoursFromOptions+
+                '</select>'+
+                '</div>'+
+                '<div style="width: 1%;float: left;padding: 5px 2px 0 2px;">:</div>'+
+                '<div style="width: 13%;float: left;padding: 0 12px 0 2px;">' +
+                '<select class="form-control" onchange="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'from_minute\')">'+
+                iMinuteFromOptions+
+                '</select>'+
+                '</div>'+
+                '<div style="width: 13%;float: left;padding: 0 2px 0 12px;">' +
+                '<select class="form-control" onchange="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'to_hour\')">'+
+                iHoursToOptions+
+                '</select>'+
+                '</div>'+
+                '<div style="width: 1%;float: left;padding: 5px 2px 0 2px;">:</div>'+
+                '<div style="width: 13%;float: left;padding: 0 12px 0 2px;">' +
+                '<select class="form-control" onchange="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'to_minute\')">'+
+                iMinuteToOptions+
+                '</select>'+
+                '</div>'+
+                '<div style="width: 12%;float: left;padding: 0 10px;">' +
+                '<input type="text" class="form-control input-md" placeholder="" value="'+tariffData.odd+'" onkeyup="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'odd\')"/>'+
+                '</div>'+
+                '<div style="width: 20%;float: left;padding: 0 10px;">' +
+                '<input type="text" class="form-control input-md" placeholder="" value="'+tariffData.amount+'" onkeyup="setParamValue(\''+tariffKey+'\', '+tariffIndex+', this.value, \'amount\')"/>'+
+                '</div>'+
+                '<div style="width: 6%;float: left;padding: 0 8px;">' +
+                '<a class="btn btn-md  btn-success" href="javascript: addInterval(\''+tariffKey+'\', '+tariffIndex+');"><i class="fa fa-plus"></i></a>'+
+                '</div>'+
+                '<div style="width: 6%;float: left;padding: 0 8px;">' +
+                '<a class="btn btn-md red" href="javascript: deleteTimeOdd(\''+tariffKey+'\', '+tariffIndex+');"><i class="fa fa-trash"></i></a>'+
+                '</div>'+
+                '</div>';
+            document.getElementById("schedule-body").innerHTML += iH;
+        },
+    }
+
+
+
+
+
+    function addInterval(tariffKey, tariffIndex){
+        if(tariffIndex < 0) tariffIndex = tarifssTimeOdds[tariffKey].length - 1;
+        if(tariffIndex < 0) tariffIndex = 0;
+        var newTarifssTimeOdds = [];
+        var ti=0;
+        if(tarifssTimeOdds[tariffKey].length > 0){
+            for(var i=0;i<tarifssTimeOdds[tariffKey].length;i++){
+                newTarifssTimeOdds[ti] = tarifssTimeOdds[tariffKey][i];
+                ti++;
+                if(tariffIndex == i){
+                    newTarifssTimeOdds[ti] = timeIntervalBase;
+                    ti++;
+                }
+            }
+        }else{
+            newTarifssTimeOdds[ti] = timeIntervalBase;
+        }
+        tarifssTimeOdds[tariffKey] = newTarifssTimeOdds;
+        arrangeChildTimeOdds(tariffKey);
+    }
+
+    function deleteTimeOdd(tariffKey, tariffIndex){
+        var newTarifssTimeOdds = [];
+        var ti=0;
+        for(var i=0;i<tarifssTimeOdds[tariffKey].length;i++){
+            if(tariffIndex !== i){
+                newTarifssTimeOdds[ti] = tarifssTimeOdds[tariffKey][i];
+                ti++;
+            }
+        }
+        tarifssTimeOdds[tariffKey] = newTarifssTimeOdds;
+
+        var parentObj = document.getElementById("timeinterval_"+tariffKey);
+        var childObj = document.getElementById("intervalLine_"+tariffKey+'_'+tariffIndex);
+        parentObj.removeChild(childObj);
+        arrangeChildTimeOdds(tariffKey);
+    }
+
+    function setParamValue(tariffKey, tariffIndex, value, paramKey){
+        var newTarifssTimeOdds = {};
+        Object.keys(tarifssTimeOdds).map(function(tariffKey2, index) {
+            var newTarifssTimeOddsChild = [];
+            for(var i=0;i<tarifssTimeOdds[tariffKey2].length;i++){
+                let tariffData = tarifssTimeOdds[tariffKey2][i];
+                if(tariffKey == tariffKey2 && tariffIndex == i){
+                    let newFrom = 0;
+                    let newTo = 0;
+                    if(paramKey == 'from_hour'){
+                        let pHour = parseInt(tariffData.from/60);
+                        let pMin = tariffData.from - pHour * 60;
+                        newFrom = parseInt(value)*60+pMin;
+                        paramKey = 'from';
+                    }else if(paramKey == 'from_minute'){
+                        let pHour = parseInt(tariffData.from/60);
+                        newFrom = pHour*60+ parseInt(value);
+                        paramKey = 'from';
+                    }else if(paramKey == 'to_hour'){
+                        let pHour = parseInt(tariffData.to/60);
+                        let pMin = tariffData.to - pHour * 60;
+                        newTo = parseInt(value)*60+pMin;
+                        paramKey = 'to';
+                    }else if(paramKey == 'to_minute'){
+                        let pHour = parseInt(tariffData.to/60);
+                        newTo = pHour*60 + parseInt(value);
+                        paramKey = 'to';
+                    }
+                    newTarifssTimeOddsChild[i] = {
+                        from: paramKey == 'from' ? newFrom: tariffData.from,
+                        to: paramKey == 'to' ? newTo: tariffData.to,
+                        odd: paramKey == 'odd' ? parseFloat(value): tariffData.odd,
+                        amount: paramKey == 'amount' ? parseFloat(value): tariffData.amount,
+                    }
+                }else{
+                    newTarifssTimeOddsChild[i] = tariffData;
+                }
+            }
+            newTarifssTimeOdds[tariffKey2] = newTarifssTimeOddsChild;
+        });
+        tarifssTimeOdds = newTarifssTimeOdds;
+        document.getElementById("time_odds").value = JSON.stringify(tarifssTimeOdds);
+    }
+
+
+
+</script>

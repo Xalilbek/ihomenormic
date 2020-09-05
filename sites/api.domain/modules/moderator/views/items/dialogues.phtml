@@ -1,0 +1,200 @@
+<section id="dialogue_list">
+    <h2 id="html-structure"><a href="javascript:;"> Dialogues / List</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/dialogues/list</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>skip:</code> (type: INT, default: 0)<br/>
+            <code>limit:</code> (type: INT, default: 20, min: 5, max: 100)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279</br>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":"5b6437cc0964ac793d31f3c3","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b546f700964ac4d74795e73\/5b5ec29e0964ac4a366ac8d3\/small.jpg","title":"Moderator First, Ulvi Imanov, Testing Testing, Denmark1 Partner1","last_message":":)","date":"06.08.18 11:20","unixtime":1533554452},{"id":"5b6437320964ac791b5e6323","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b546f700964ac4d74795e73\/5b5ec29e0964ac4a366ac8d3\/small.jpg","title":"Moderator First, Hegel Ericson, Test5 User, Partner3 Contact1","last_message":"Hej","date":"03.08.18 11:06","unixtime":1533294401},{"id":"5b5d19ac0964ac104032bea3","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b546f700964ac4d74795e73\/5b5ec29e0964ac4a366ac8d3\/small.jpg","title":"Moderator First, Ismail Imanov, Test5 User, Second Moderator","last_message":"test","date":"01.08.18 14:09","unixtime":1533132589},{"id":"5b5a59fd0964ac2ae27dccd3","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg","title":"Second Moderator, Dale Carnegie, Test5 User, Moderator First","last_message":"Replying by pressing enter","date":"30.07.18 07:59","unixtime":1532937586},{"id":"5b5d1ac30964ac10e458ad63","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b546f700964ac4d74795e73\/5b5ec29e0964ac4a366ac8d3\/small.jpg","title":"Moderator First, Dale Carnegie, Test5 User, Partner1 Contact1","last_message":"Hi, everyone","date":"30.07.18 07:59","unixtime":1532937548}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/list?lang=en&skip=0&limit=10&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279</br>
+            <?php
+            $json = '{"status":"success","description":"","data":[]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+
+            <code>Note:</code> If You dont have dialogues, you will get empty array in response instead of error
+        </div>
+    </div>
+</section>
+
+
+
+<section id="dialogue_get">
+    <h2 id="html-structure"><a href="javascript:;"> Create / Get dialogue by user ids</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/dialogues/get</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>users:</code> (type: Array) You can add 1 and more users. If not found dialogue, it is created automatically<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success) example: 1</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/get?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&users[]=32</br>
+            <?php
+            $json = '{"status":"success","data":{"id":"5b69a7dc0964ac22511d5b45","avatar":"https:\/\/placehold.it\/80x80","title":"Freja Nielsen","users":[32,11],"last_message":"","date":"07.08.18 14:08","unixtime":1533650908}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (success) example: 2</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/get?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&users[]=32&users[]=24</br>
+            <?php
+            $json = '{"status":"success","data":{"id":"5b69a9db0964ac239f3bf743","avatar":"https:\/\/placehold.it\/80x80","title":"Ismail Imanov, Freja Nielsen","users":[32,24,11],"last_message":"","date":"07.08.18 14:16","unixtime":1533651419}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/get?lang=en&token=debbce46f81a2df0c065fb39ac0b7e13&hash=98c11a9e8b263ac53c3981de8e0c2279&users[]=32</br>
+            <?php
+            $json = '{"status":"error","description":"Information not found","error_code":1301}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="dialogue_delete">
+    <h2 id="html-structure"><a href="javascript:;"> Dialogue / Delete</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/dialogues/delete</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>id:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/delete?lang=en&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&id=5b6c3dab0964ac7d4330e075</br>
+            <?php
+            $json = '{"status":"success","description":"Deleted successfully"}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/delete?lang=en&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&id=5b6c3dab0964ac7d4330e075</br>
+            <?php
+            $json = '{"status":"error","description":"Message not found","error_code":1534}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section id="dialogue_messages">
+    <h2 id="html-structure"><a href="javascript:;"> Dialogues / Messages</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/dialogues/messages</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>dialogue_id:</code> (type: STRING)<br/>
+            <code>before:</code> <i>optional</i> (type: STRING) Message ID, fetch messages before this message ID (Keep first and last message IDs while getting messages)<br/>
+            <code>after:</code> <i>optional</i> (type: STRING) Message ID, fetch messages after this message ID (Keep first and last message IDs while getting messages)<br/>
+            <code>limit:</code> (type: INT, default: 20, min: 5, max: 100)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success: Example 1)</b> </div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/messages?lang=en&limit=3&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043<br/>
+            <?php
+            $json = '{"status":"success","description":"","first_message_id":"5b6d869d0964ac2ea90945d4","last_message_id":"5b6d86a10964ac2ea90945da","data":[{"id":"5b6d869d0964ac2ea90945d4","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"19","unixtime":1533904541},{"id":"5b6d869f0964ac2ea90945d7","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"20","unixtime":1533904543},{"id":"5b6d86a10964ac2ea90945da","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"21","unixtime":1533904545}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (success: Example 2)</b> </div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/messages?lang=en&limit=3&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043&<code>before=5b6d869d0964ac2ea90945d4</code></br>
+            <?php
+            $json = '{"status":"success","description":"","first_message_id":"5b6d86980964ac2ea90945cb","last_message_id":"5b6d869c0964ac2ea90945d1","data":[{"id":"5b6d86980964ac2ea90945cb","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"16","unixtime":1533904536},{"id":"5b6d869b0964ac2ea90945ce","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"17","unixtime":1533904539},{"id":"5b6d869c0964ac2ea90945d1","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"18","unixtime":1533904540}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (success: Example 3)</b> </div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/messages?lang=en&limit=3&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043&<code>after=5b6d86980964ac2ea90945cb</code></br>
+            <?php
+            $json = '{"status":"success","description":"","first_message_id":"5b6d869b0964ac2ea90945ce","last_message_id":"5b6d869d0964ac2ea90945d4","data":[{"id":"5b6d869b0964ac2ea90945ce","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"17","unixtime":1533904539},{"id":"5b6d869c0964ac2ea90945d1","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"18","unixtime":1533904540},{"id":"5b6d869d0964ac2ea90945d4","user":{"id":23,"fullname":"Second Moderator","avatar":"https:\/\/denmarkpanel.besfly.com\/upload\/5b5a58860964ac29b3285733\/5b5ec23b0964ac49d00ba369\/small.jpg"},"message":"19","unixtime":1533904541}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>https://denmarkapi.besfly.com/dialogues/messages?lang=en&skip=0&limit=3&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043<br/>
+            <?php
+            $json = '{"status":"success","description":"","first_message_id":false,"last_message_id":false,"data":[]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+
+            <code>Note:</code> If You dont have messages, you will get empty "data" array in response instead of error
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<section id="dialogue_send">
+    <h2 id="html-structure"><a href="javascript:;"> Dialogue / Send</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/dialogues/send</div>
+        <div class="param-title"><b>Methods:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>token:</code> (type: STRING)<br/>
+            <code>hash:</code> (type: STRING)<br/>
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>dialogue_id:</code> (type: STRING)<br/>
+            <code>message:</code> (type: STRING)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/send?lang=en&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043&message=22</br>
+            <?php
+            $json = '{"status":"success","description":"Sent successfully","data":{"id":"5b6d92630964ac35fe0a6524","user":{"id":6,"fullname":"Hegel Ericson","avatar":"https:\/\/placehold.it\/80x80"},"message":"22","unixtime":1533907555}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+        <div class="param-title"><b>Response:</i> (error)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/dialogues/send?lang=en&token=0564a29f1b95e6c92c86d2b142e2a85a&hash=41752de0fbcaf59f64968018845f48d1&dialogue_id=5b6c3a730964ac7a1c69c043&message=22</br>
+            <?php
+            $json = '{"status":"error","description":"Message not found","error_code":1534}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+

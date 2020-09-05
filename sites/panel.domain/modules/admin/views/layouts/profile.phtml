@@ -1,0 +1,124 @@
+<div class="m-grid__item m-grid__item--fluid m-wrapper">
+    <div class="m-content">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="m-portlet m-portlet--full-height  ">
+                    <div class="m-portlet__body">
+                        <div class="m-card-profile">
+                            <div class="m-card-profile__pic">
+                                <div class="m-card-profile__pic-wrapper">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/photos/<?=$id;?>">
+                                    <?php if(strlen($data->avatar_id) > 0):?>
+                                        <img src="/upload/<?=(string)$data->_id;?>/<?=(string)$data->avatar_id;?>/small.jpg"/>
+                                    <?php else: ?>
+                                        <img src="http://placehold.it/80x80" alt="">
+                                    <?php endif;?>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="m-card-profile__details">
+                                <span class="m-card-profile__name"><?=htmlspecialchars($data->firstname);?> <?=htmlspecialchars($data->lastname);?></span>
+
+                                <?php if(strlen($data->phone) > 0):?>
+                                <a href="tel:+<?=$data->phone;?>" class="m-card-profile__email m-link">+<?=$data->phone;?></a>
+                                <?php endif;?>
+
+                                <div style="display: block;text-align: center;padding-top: 15px;">
+                                    <a href="#" style="background: #e1e1e1;border-radius: 15px;color: #555;padding: 5px 15px;text-align: center;text-decoration: none;">
+                                        <?php if($data->type == "partner"):?>
+                                            <?=$this->lang->get("partner");?>
+                                        <?php elseif($data->type == "moderator"):?>
+                                            <?=$this->lang->get("moderator");?>
+                                        <?php elseif($data->type == "employee"):?>
+                                            <?=$this->lang->get("employee");?>
+                                        <?php else:?>
+                                            <?=$this->lang->get("customer");?>
+                                        <?php endif;?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="m-nav m-nav--hover-bg m-portlet-fit--sides">
+                            <li class="m-nav__separator m-nav__separator--fit"></li>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/<?=$data->id;?>" class="m-nav__link <?=($action == "index" ? "m-nav__item-active": "");?>">
+                                    <i class="m-nav__link-icon la la-user"></i><span class="m-nav__link-title"><span class="m-nav__link-wrap"><span class="m-nav__link-text"><?=$this->lang->get("Profile");?></span></span></span>
+                                </a>
+                            </li>
+
+                            <?php if(in_array($data->type, ["employee", "user","partner"])):?>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/cases/<?=$data->id;?>" class="m-nav__link <?=($action == "cases" ? "m-nav__item-active": "");?>">
+                                    <i class="m-nav__link-icon la la-briefcase"></i><span class="m-nav__link-text"><?=$this->lang->get("Cases");?></span>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php if(in_array($data->type, ["employee", "user"])):?>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/contracts/<?=$data->id;?>" class="m-nav__link <?=($action == "contracts" ? "m-nav__item-active": "");?>">
+                                    <i class="m-nav__link-icon la la-comment"></i><span class="m-nav__link-text"><?=$this->lang->get("Contracts");?></span>
+                                </a>
+                            </li>
+                            <?php endif;?>
+
+                            <?php if(in_array($data->type, ["employee", "user"])):?>
+                                <li class="m-nav__item <?=(substr($action, 0, strlen("documents")) == "documents" ? "m-nav__item-active": "");?>">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/documents/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-file-o"></i><span class="m-nav__link-text"><?=$this->lang->get("Documents");?></span></a>
+                                </li>
+                            <?php endif;?>
+
+                            <?php if($data->type == "citizen" && $this->lib->findAgeByDate($data->birthdate) < 18):?>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/parents/<?=$data->id;?>" class="m-nav__link <?=($action == "parents" ? "m-nav__item-active": "");?>">
+                                    <i class="m-nav__link-icon la la-users"></i><span class="m-nav__link-text"><?=$this->lang->get("Parents");?></span>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php if($data->type == "citizen"):?>
+                            <li class="m-nav__item">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/contacts/<?=$data->id;?>" class="m-nav__link <?=($action == "contacts" ? "m-nav__item-active": "");?>">
+                                    <i class="m-nav__link-icon la la-phone"></i><span class="m-nav__link-text"><?=$this->lang->get("Contacts");?></span>
+                                </a>
+                            </li>
+                            <?php endif;?>
+
+                            <?php if($data->type == "user"):?>
+                                <li class="m-nav__item <?=(substr($action, 0, strlen("notes")) == "notes" ? "m-nav__item-active": "");?>">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/notes/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-comment"></i><span class="m-nav__link-text"><?=$this->lang->get("Notes");?></span></a>
+                                </li>
+                            <?php endif;?>
+
+
+                            <?php if($data->type == "employee"):?>
+                                <li class="m-nav__item <?=(substr($action, 0, strlen("schedule")) == "schedule" ? "m-nav__item-active": "");?>">
+                                    <a href="<?=_PANEL_ROOT_;?>/profile/schedule/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-briefcase"></i><span class="m-nav__link-text"><?=$this->lang->get("WorkSchedule");?></span></a>
+                                </li>
+                            <?php endif;?>
+
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("permissions")) == "permissions" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/permissions/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-wrench"></i><span class="m-nav__link-text"><?=$this->lang->get("Permissions");?></span></a>
+                            </li>
+
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("chat")) == "chat" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/chat/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-comments"></i><span class="m-nav__link-text"><?=$this->lang->get("Chat");?></span></a>
+                            </li>
+
+                            <li class="m-nav__item <?=(substr($action, 0, strlen("password")) == "password" ? "m-nav__item-active": "");?>">
+                                <a href="<?=_PANEL_ROOT_;?>/profile/password/<?=$id;?>" class="m-nav__link"><i class="m-nav__link-icon la la-lock"></i><span class="m-nav__link-text"><?=$this->lang->get("Password");?></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <?=$this->getContent();?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .m-nav__item-active{background: #f1f1f1;}
+</style>
+

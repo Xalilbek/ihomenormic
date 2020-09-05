@@ -1,0 +1,170 @@
+<html>
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {"families":["Poppins:300,400,500,600,700","Roboto:300,400,500,600,700"]},
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <link href="/cc-crm2/assets/vendors/base/vendors.bundle.css?1s" rel="stylesheet" type="text/css" />
+    <link href="/cc-crm2/assets/demo/default/base/style.bundle.css?1s" rel="stylesheet" type="text/css" />
+    <link href="/resources/css/datatables.css?986" rel="stylesheet" type="text/css" />
+    <link href="/resources/css/wickedpicker.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/fotorama/fotorama.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/cc-crm2/assets/demo/default/media/img/logo/favicon.ico" />
+</head>
+<body style="text-align: center;background: white;;padding: 0;margin:0;">
+<div style="width: 100%;max-width: 1200px;margin: 0 auto;background: #fff;padding: 10px;">
+    <div style="text-align: left;width: 100%;padding: 10px;">
+
+        <div class="row">
+            <div class="col-md-5" style="background: none;padding-bottom: 20px;">
+                <div class="fotorama" data-allowfullscreen="true" data-width="100%" data-ratioo="600/600" data-max-width="100%" data-maxheight="600" data-nav="thumbs" data-keyboard="true">
+                    <img width="100%" src="<?=FILE_URL;?>/upload/<?=@$data->uuid;?>/<?=@$data->avatar_id;?>/medium.jpg" alt=""/>
+                    <?php if (count($photos) > 0): ?>
+                        <?php foreach($photos as $photo): ?>
+                            <?php if ((string)$photo->_id !== (string)$data->avatar_id): ?>
+                                <img width="100%"class="" src="<?=FILE_URL;?>/upload/<?=@$photo->uuid;?>/<?=@$photo->_id;?>/medium.jpg" alt="<?=$title;?> - <?=_SITENAME_;?>"/>
+                            <?php endif; ?>
+                        <?php endforeach;?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+            <div class="col-md-7" style="background: none">
+                <h2 class="pro-title"><?=$data->title;?></h2>
+                <div style="display: block;padding: 5px 0 0px 0;color: #7b7b7b;font-size: 14px;">
+                    <font style="color: #0a1461;font-size: 22px;"><?=round(@$data->amount, 2);?> DKK</font> / pr. måned
+                </div>
+
+                <hr/>
+
+                <div style="display: block;padding: 10px 0 10px 0;color: #2f2f2f;font-size: 16px;line-height: 24px;">
+                    <?=nl2br($data->description);?>
+                </div>
+
+
+                <div style="display: block;padding-top: 15px;">
+                    <form action="/product/step2/<?=$data->id;?>" method="post">
+                        <div style="float: left;border: 1px solid #dbe2ea;background: #eaf0f5;width: 152px;height: 51px;margin-right: 15px;margin-bottom: 15px;">
+                            <div class="pro-qty-btn" onclick="incQty('minus')"><span class="pro-qty-span">-</span></div>
+                            <div class="pro-qty-input">
+                                <input type="text" name="quantity" id="pro-qty" class="pro-qty-text" value="1"/>
+                            </div>
+                            <div class="pro-qty-btn" onclick="incQty('plus')"><span class="pro-qty-span">+</span></div>
+                        </div>
+
+
+                        <div class="pro-order-btn" onclick="nextStep()">
+                            <span class="pro-btn-span">Bestil LeakBot</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<style>
+    html, body{
+        font-family: sans-serif;
+    }
+
+    .pro-title{
+        font-weight: 300;
+        letter-spacing: 0px;
+        font-style: normal;
+        font-size: 35px;
+        color: #72849c;
+    }
+    .pro-qty-btn, .pro-qty-input{
+        float: left;
+        width: 50px;
+        height: 49px;
+        text-align: center;
+    }
+    .pro-qty-btn{
+        font-size: 24px;
+        line-height: 0;
+    }
+    .pro-qty-btn:hover{
+        background: #e3e9ee;
+        cursor: pointer;
+    }
+    .pro-qty-span{
+        width: 100%;
+        margin-top: 22px;
+        float: left;
+        color: #555;
+    }
+
+    .pro-order-btn{
+        float: left;
+        border: 1px solid #091258;
+        background: #0a1461;
+        width: 152px;
+        height: 51px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .pro-order-btn:hover{
+        background: #0d1a7d;
+    }
+    .pro-btn-span{
+        color: #f5f5f5;
+        font-size: 16px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 26px;
+        float: left;
+        line-height: 0;
+        text-align: center;
+    }
+
+    .pro-qty-input{
+        border-left: 1px solid #dbe2ea;
+        border-right: 1px solid #dbe2ea;
+        background: white;
+    }
+    .pro-qty-text{
+        width: 100%;
+        height: 49px;
+        text-align: center;
+        font-size: 20px;
+        color: #777;
+        border: 0px solid white;
+    }
+
+</style>
+<script>
+    function incQty(act){
+        var value = parseInt(document.getElementById('pro-qty').value);
+        if(act == 'plus'){
+            value++;
+        }else{
+            value--;
+        }
+        if(value < 1)
+            value = 1;
+        document.getElementById('pro-qty').value = value;
+    }
+
+    function nextStep(){
+        document.location.href = '/product/step2/<?=$data->id;?>?quantity='+document.getElementById("pro-qty").value;
+    }
+</script>
+
+<script src="/cc-crm2/assets/vendors/base/vendors.bundle.js?s" type="text/javascript"></script>
+<script src="/cc-crm2/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
+<script src="/resources/js/dashboard.js?9876" type="text/javascript"></script>
+<script src="/resources/js/wickedpicker.js" type="text/javascript"></script>
+<script src="/resources/fotorama/fotorama.js"></script>
+</body>
+</html>

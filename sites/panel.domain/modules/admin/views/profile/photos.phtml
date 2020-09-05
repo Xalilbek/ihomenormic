@@ -1,0 +1,79 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Photos");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                        <?php if(strlen($data->avatar_id) > 0):?>
+                            <div class="form-group m-form__group row">
+                                <div class="col-2">
+                                        <a target="_blank" href="/upload/<?=(string)$data->_id;?>/<?=(string)$data->avatar_id;?>/org.jpg">
+                                            <img style="max-width: 100%;" src="/upload/<?=(string)$data->_id;?>/<?=(string)$data->avatar_id;?>/small.jpg"/>
+                                        </a>
+                                </div>
+                                <div class="col-2">
+                                    <a href="?id=<?=$this->request->get("id");?>&delete=<?=(string)$data->avatar_id;?>"><i class="la la-trash redcolor"></i></a>
+                                </div>
+                            </div>
+                        <?php endif;?>
+
+                    <div class="m-portlet__body">
+                        <div class="form-group m-form__group row">
+                            <div class="col-7">
+                                <div class="m-dropzone dropzone dz-clickable" action="/documents/upload?puid=<?=$puid;?>&user_id=<?=$id;?>&type=profile_photo" id="m-dropzone-one">
+                                    <div class="m-dropzone__msg dz-message needsclick">
+                                        <h3 class="m-dropzone__msg-title"><?=$this->lang->get("CaseMatL1", "Drop filen her eller tryk for at vælge");?></h3>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="puid" value="<?=$puid;?>"/>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif;?>
+
+                    <div class="m-portlet__foot m-portlet__foot--fit">
+                        <div class="m-form__actions">
+                            <div class="row">
+                                <div class="col-2">
+                                </div>
+                                <div class="col-7">
+                                    <?php if($success):?>
+                                        <a href="<?=_PANEL_ROOT_;?>/profile/photos/<?=$id;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                                    <?php else:?>
+                                        <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                                    <?php endif?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

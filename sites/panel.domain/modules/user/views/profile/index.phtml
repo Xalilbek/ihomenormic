@@ -1,0 +1,12 @@
+<?php if($data->id == $this->auth->getData()->id):?>
+    <?php $this->view->partial("profile/edit");?>
+<?php else: ?>
+    <?php $this->view->partial("profile/info");?>
+<?php endif;?>
+
+
+<style>
+    .profile-info-right{
+        padding-top: 8px;
+    }
+</style>

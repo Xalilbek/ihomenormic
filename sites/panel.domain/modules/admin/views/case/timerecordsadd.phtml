@@ -1,0 +1,150 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("CreateNew");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php else:?>
+                        <?php if($error):?>
+                            <div class="form-group m-form__group row">
+                                <div class="form-error">
+                                    <?=$error;?>
+                                </div>
+                            </div>
+                        <?php endif;?>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Type");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-input" name="type" onchange="typeChanged(this.value);">
+                                    <option value=""><?=$this->lang->get("None");?></option>
+                                    <?php foreach($this->parameters->getList($this->lang, "session_types") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$this->request->get("status") == (int)$value["id"] ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                    <?php endforeach;?>
+                                </select>
+                                <script>
+                                    function typeChanged(value){
+                                        switch (parseInt(value)){
+                                            default:
+                                                document.getElementById("contact-list").style.display = 'none';
+                                                break;
+                                            case 1:
+                                                document.getElementById("contact-list").style.display = 'block';
+                                                break;
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="contact-list" style="display: <?=((int)$this->request->get("type") == 1 ? "block": "none");?>;">
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Contact");?></label>
+                                <div class="col-7">
+                                    <select class="form-control m-input" name="contact">
+                                        <option value=""><?=$this->lang->get("None");?></option>
+                                        <?php foreach($contacts as $value):?>
+                                            <option value="<?=(int)$value->id;?>" <?=((int)$this->request->get("contact") == (int)$value->id ? 'selected="selected"': '');?>><?=htmlspecialchars($value->title);?> <?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php /**
+                        <div id="calculation-allow" style="display: <?=((int)$this->request->get("type") == 2 ? "block": "none");?>;">
+                            <div class="form-group m-form__group row">
+                                <label for="example-text-input" class="col-3 col-form-label"></label>
+                                <div class="col-7">
+                                    <span style="padding-top: 10px;">
+                                        <input type="checkbox" name="need_calculate" value="1" <?=((int)$this->request->get("need_calculate") == 1 ? 'checked="checked"': '');?>/>
+                                    </span>
+                                    <span style="padding-left: 5px;"><?=$this->lang->get("calculateTimeregister", "Calculate time");?></span>
+                                </div>
+                            </div>
+                        </div> */ ?>
+
+
+
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("DateStart", "Start Date");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input datepickerDen" name="date_start" type="text" value="<?=(($this->request->get("date_start")) ? $this->request->get("date_start"): $this->lib->dateToDanish(date("Y-m-d")));?>" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("TimeStart", "Start Time");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input timepicker2" name="time_start" type="text" value="<?=($this->request->get("time_start"));?>" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Place");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input" name="place_start" type="text" value="<?=$this->request->get("place_start");?>" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("DateSEnd", "End Date");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input datepickerDen" name="date_end" type="text" value="<?=(($this->request->get("date_end")) ? $this->request->get("date_end"): $this->lib->dateToDanish(date("Y-m-d")));?>" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("TimeEnd", "Start End");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input timepicker2" name="time_end" type="text" value="<?=($this->request->get("time_end"));?>" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Place");?></label>
+                            <div class="col-7">
+                                <input class="form-control m-input" name="place_end" type="text" value="<?=$this->request->get("place_end");?>" autocomplete="off">
+                            </div>
+                        </div>
+                    <?php endif;?>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-7">
+                                <?php if($success):?>
+                                    <a href="<?=_PANEL_ROOT_;?>/case/timerecords/<?=$id;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                                <?php else:?>
+                                    <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                                <?php endif?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link href="/resources/css/wickedpicker.css" rel="stylesheet" type="text/css"/>
+

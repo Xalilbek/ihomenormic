@@ -1,0 +1,66 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title ">
+                <?=$this->lang->get("Calendar");?>
+            </h3>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--Begin::Section-->
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet " id="m_portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon">
+													<i class="flaticon-map-location"></i>
+												</span>
+                            <h3 class="m-portlet__head-text">
+                                <?=$this->lang->get("Calendar");?>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <form class="m-form m-form--fit" method="post" action="">
+                            <div class="form-group m-form__group row" style="padding-left: 0;padding-right: 0;padding-bottom: 20px;">
+                                <div class="col-3">
+                                    <select class="form-control" name="target">
+                                        <option value="0"><?=$this->lang->get("All");?></option>
+                                        <option value="1" <?=(1 == (int)$this->request->get("target") ? 'selected="selected"': '');?>><?=$this->lang->get("OnlyAdminCalendar", "Only my calendar");?></option>
+                                        <option value="2" <?=(2 == (int)$this->request->get("target") ? 'selected="selected"': '');?>><?=$this->lang->get("AllEmployeesCalendar", "All employees’ calendar");?></option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control m-input" name="case_id" type="text" value="<?=$this->request->get("case_id");?>" placeholder="<?=$this->lang->get("CaseID");?>">
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-control m-select2" id="m_select2_2" name="employee">
+                                        <option value="0"><?=$this->lang->get("None");?></option>
+                                        <?php foreach($employees as $value):?>
+                                            <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("employee") ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="search" value="1" ><?=$this->lang->get("Search");?></button>
+                                </div>
+                            </div>
+                    </form>
+
+                    <div id="m_calendar"></div>
+                </div>
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+    <!--End::Section-->
+</div>

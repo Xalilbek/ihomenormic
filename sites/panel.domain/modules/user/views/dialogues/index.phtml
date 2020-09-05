@@ -1,0 +1,122 @@
+<div class="m-grid__item m-grid__item--fluid m-wrapper">
+    <div class="m-content">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-tools">
+                            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        <?=$this->lang->get("Communication");?>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <?php if($this->auth->isPermitted($this->lang, "communication", "send")):?>
+                            <ul class="m-portlet__nav">
+                                <li class="m-portlet__nav-item">
+                                    <a href="<?=_PANEL_ROOT_;?>/dialogues/add" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-plus"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <?php endif;?>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_user_profile_tab_1">
+                            <div class="m-messenger m-messenger--message-arrow m-messenger--skin-light">
+                                <div class="m-messenger__messages m-scrollable m-scroller ps ps--active-y">
+                                    <?php foreach($dialogues as $key => $dialogue):?>
+                                    <a href="/dialogues/messages/<?=$dialogue->dialogue;?>" class="dialogue-line <?=(is_int($key/2) ? "dialogue-bg": "");?>">
+                                        <div class="m-messenger__wrapper">
+                                            <div class="m-messenger__message m-messenger__message--in">
+                                                <div class="m-messenger__message-no-pic user-icon-<?=rand(1,5);?>">
+                                                    <span><?=strtoupper(substr($dialogueTitles[(string)$dialogue->dialogue][0],0,1));?></span>
+                                                </div>
+                                                <div class="dialogue-right-side">
+                                                    <div class="dialogue-title"><?=implode(", ", $dialogueTitles[(string)$dialogue->dialogue]);?> <span class="dialogue-time"><?=$this->lib->secToStr($this->mymongo->toSeconds($dialogue->updated_at), $this->lang);?></span></div>
+                                                    <div class="m-messenger__message-body">
+                                                        <div class="m-messenger__message-arrow"></div>
+                                                        <div class="m-messenger__message-content">
+                                                            <div class="m-messenger__message-text">
+                                                                <?=htmlspecialchars($dialoguesData[(string)$dialogue->dialogue]->message->body);?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <?php endforeach;?>
+                                </div>
+                            </div>
+
+                            <div style="display: block;padding: 20px 20px;text-align: right;">
+                                    <?=$pagination;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dialogue-line{
+        display: block;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e7e7e7;
+        text-decoration: none;
+    }
+    .dialogue-line:hover{
+        background-color: #f3f3f3;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .dialogue-bg{
+        background-color: #f6f6f6;
+    }
+    .dialogue-line .m-messenger__message-no-pic{
+        height: 90px !important;
+        width: 90px !important;
+    }
+    .dialogue-line .m-messenger__message-arrow {
+        color: #eaeaea !important;
+    }
+    .dialogue-line .m-messenger__message-content {
+        background: #eaeaea !important;
+    }
+    .dialogue-right-side{
+        display: table-cell;
+        position: relative;
+    }
+    .dialogue-title{
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        padding-left: 15px;
+        padding-bottom: 7px;
+    }
+    .m-messenger__message {
+        margin: 0 0 0 0 !important;
+    }
+    .dialogue-time{
+        padding: 0 0 0 10px;
+        color: #999;
+        font-size: 12px;
+        font-weight: normal;
+    }
+    .user-icon-1{background-color: #f4516c !important;color: #f9f9f9;}
+    .user-icon-2{background-color: #34bfa3 !important;color: #f9f9f9;}
+    .user-icon-3{background-color: #3f50d8 !important;color: #f9f9f9;}
+    .user-icon-4{background-color: #ffb822 !important;color: #f9f9f9;}
+    .user-icon-5{background-color: #00c5dc !important;color: #f9f9f9;}
+
+    .btn-page{min-width: 40px;background: #e6e6e6;border: 1px solid #e1e1e1;padding: 8px 20px;border-radius: 20px;font-size: 15px;margin-left: 10px;color: #777;font-weight: 500;}
+    .btn-page:hover{background: #d2d2d2;text-decoration: none;color: #444;}
+    .btn-page-selected{background: #00c5dc !important;color: #f9f9f9;border: 0px;}
+</style>

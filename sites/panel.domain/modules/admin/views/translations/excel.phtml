@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-user font-red-sunglo"></i>
+                    <span class="caption-subject font-red-sunglo bold ">Export</span>
+
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form action="" id="form-username" class="form-horizontal" method="post">
+                    <?php if($success): ?>
+                        <div class="note note-success">
+                            <h4 class="block"><?=$success;?></h4>
+                        </div>
+                    <?php else: ?>
+                        <?php if($error): ?>
+                            <div class="note note-danger">
+                                <h4 class="block"><?=$error;?></h4>
+                            </div>
+                        <?php endif; ?>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">From</label>
+                            <div class="col-sm-3">
+                                <select class="form-control form-filter select margin-bottom-10" name="from_lang">
+                                    <?php foreach($this->lang->langs as $value):?>
+                                        <option value="<?=$value;?>"><?=$value;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">To</label>
+                            <div class="col-md-3">
+                                <select class="form-control form-filter select margin-bottom-10" name="to_lang">
+                                    <?php foreach($this->lang->langs as $value):?>
+                                        <option value="<?=$value;?>"><?=$value;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="<?=_ROOT_;?>/<?=$controller;?>" class="btn btn-default gray margin-right-10"><i class="fa fa-arrow-circle-left"></i> <?=$this->lang->get("Back", "Back");?></a>
+                                    <button type="submit" class="btn green" name="submit" value="1"><i class="fa fa-check"></i> <?=$this->lang->get("Verify", "Verify");?></button>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>
+</div>

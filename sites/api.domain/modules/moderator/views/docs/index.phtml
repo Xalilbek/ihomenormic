@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)#/thedocs/layout_single-page-3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Documentation</title>
+    <!-- Styles -->
+    <link href="/template_docs/theDocs.all.min.css" rel="stylesheet">
+    <link href="/template_docs/custom.css" rel="stylesheet">
+    <link href="/template_docs/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="/template_docs/css.css" rel="stylesheet" type="text/css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="#/apple-touch-icon.png">
+    <style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        .header-title{
+            background: #dddddd;
+            margin: 0;
+            padding: 5px;
+            text-align: center;
+        }
+        .div-block{
+            display: block;
+            margin: 15px;
+            border: 1px solid #cdcdcd;
+        }
+        .div-title{
+            background: #efefef;
+            padding: 10px 10px;
+            font-weight:bold;
+            color: #4a4a4a;
+        }
+        .div-body{
+            padding: 15px;
+        }
+        .div-params{
+            padding: 5px 0;
+            word-wrap:break-word;
+        }
+        .padding-left-offset{
+            padding-left: 15px;
+        }
+        .bg-gray{
+            background: #ececec;
+            padding: 15px;
+        }
+        .param-title{
+            padding: 15px 0px 5px 0;
+        }
+
+        .consist-a{
+            font-weight: bold;
+            font-size: 15px;
+            text-decoration: none;
+            color: #085581;
+            display: block;
+        }
+        .padding-left-offset .consist-a{
+            margin-bottom: 10px;
+        }
+        .list-a{
+            color: #085581;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<?php
+define("API_ROOT", "");
+define("_TOKEN_", "729be47127d66a6edeb30554e5aa28f8");
+define("_HASH_", "77ae8ea7a348a76bc6a4c7b2eca877cb");
+define("SITE_URL", "https://denmarkapi.besfly.com");
+
+$item_n = 1;
+?>
+<body data-spy="scroll" data-target=".sidebar" data-offset="200">
+<!-- Sidebar -->
+<aside class="sidebar sidebar-boxed sidebar-dark">
+    <a class="sidebar-brand" href="#/thedocs/index.html">
+        <img src="/template_docs/logo-sidebar.png" alt="logo">
+    </a>
+    <ul class="nav sidenav dropable">
+        <li>
+            <a href="#authentication" class="has-child">Authentication</a>
+            <ul>
+                <li><a href="#authentication">Login</a></li>
+                <li><a href="#registration_citizen">Registration for Citizen</a></li>
+                <li><a href="#registration_employee">Registration for Employee</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#account_info" class="has-child">Account</a>
+            <ul>
+                <li><a href="#account_info">Account Info</a></li>
+                <li><a href="#account_citizen">Update Citizen</a></li>
+                <li><a href="#account_employee">Update Employee</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#cases_list" class="has-child">Cases</a>
+            <ul>
+                <li><a href="#cases_list">List</a></li>
+                <li><a href="#case_by_id">Get By ID</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#todo_list" class="has-child">Todo</a>
+            <ul>
+                <li><a href="#todo_list">List</a></li>
+                <li><a href="#todo_create">Create</a></li>
+                <li><a href="#todo_edit">Edit</a></li>
+                <li><a href="#todo_delete">Delete</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#dialogue_list" class="has-child">Dialogues</a>
+            <ul>
+                <li><a href="#dialogue_list">List</a></li>
+                <li><a href="#dialogue_get">Create/Get</a></li>
+                <li><a href="#dialogue_delete">Delete</a></li>
+                <li><a href="#dialogue_messages">Messages</a></li>
+                <li><a href="#dialogue_send">Send Message</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#data_cities" class="has-child">Data</a>
+            <ul>
+                <li><a href="#data_cities">Cities</a></li>
+                <li><a href="#data_languages">Languages</a></li>
+                <li><a href="#data_todocategories">Todo Categories</a></li>
+                <li><a href="#data_multiple">Fetch by Multiple Data Types</a></li>
+            </ul>
+        </li>
+
+        <li><a href="#">Top</a></li>
+    </ul>
+
+</aside>
+<!-- END Sidebar -->
+
+
+<header class="site-header navbar-transparent">
+    <!-- Top navbar & branding -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <!-- Toggle buttons and brand -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+                    <span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+
+                <button type="button" class="navbar-toggle for-sidebar" data-toggle="offcanvas">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- END Toggle buttons and brand -->
+        </div>
+    </nav>
+    <!-- END Top navbar & branding -->
+
+    <!-- Banner -->
+    <div class="banner auto-size" style="background-color: #5cc7b2">
+        <div class="container-fluid text-white">
+            <h1><strong>Single page</strong> documentation</h1>
+        </div>
+    </div>
+    <!-- END Banner -->
+
+</header>
+
+<main class="container-fluid">
+    <article class="main-content" role="main">
+
+        <?php $this->view->partial("items/1.1");?>
+
+        <?php $this->view->partial("items/1.2");?>
+
+        <?php $this->view->partial("items/1.3");?>
+
+        <?php $this->view->partial("items/account");?>
+
+        <?php $this->view->partial("items/cases");?>
+
+        <?php $this->view->partial("items/todo");?>
+
+        <?php $this->view->partial("items/dialogues");?>
+
+        <?php $this->view->partial("items/data");?>
+
+
+    </article>
+</main>
+
+<footer class="site-footer">
+    <div class="container-fluid">
+        <a id="scroll-up" href="#"><i class="fa fa-angle-up"></i></a>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <p>Copyright © <?=date("Y");?>. All right reserved</p>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <ul class="footer-menu">
+                    <li><a href="http://shahmar.info">Contact us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- END Footer -->
+
+<!-- Scripts -->
+<script src="/template_docs/theDocs.all.min.js"></script>
+<script src="/template_docs/custom.js"></script>
+</body>
+</html>

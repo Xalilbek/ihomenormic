@@ -1,0 +1,365 @@
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Edit");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Type");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="type" onchange="typeChanged(this.value)">
+                                <option value="todo" <?=($data->type == "todo" ? 'selected="selected"': '');?>><?=$this->lang->get("Todo");?></option>
+                                <option value="event" <?=($data->type == "event" ? 'selected="selected"': '');?>><?=$this->lang->get("Event");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$data->title;?>" autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Category");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_4" name="category">
+                                <optgroup label="">
+                                    <?php foreach($this->parameters->getList($this->lang, "todo_categories") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$data->category ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Description");?></label>
+                        <div class="col-7">
+                            <textarea class="form-control" name="description" style="min-height: 200px;"><?=$data->description;?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Case", "Case");?></label>
+                        <div class="col-7">
+                            <select class="form-control" name="case">
+                                <option value="0"><?=$this->lang->get("None");?></option>
+                                <?php foreach($cases as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=($value->id == (int)$data->case ? 'selected="selected"': '');?>><?=$value->id;?> - <?=htmlspecialchars($citizens[(int)$value->citizen[0]]->firstname." ".$cizitens[(int)$value->citizen[0]]->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Moderator");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_3" name="moderator[]" multiple="multiple">
+                                <option value="all" <?=((in_array("all", $data->moderator)) ? 'selected="selected"': '');?>><?=$this->lang->get("All");?></option>
+                                <?php foreach($moderators as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=(!in_array("all", $data->moderator) && ((int)$value->id == $data->moderator || in_array((int)$value->id, $data->moderator)) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("AssociateCitizen", "Tilknyt borger");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_1" name="citizen[]" multiple="multiple">
+                                <?php foreach($citizens as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=((int)$value->id == $data->citizen ||in_array((int)$value->id, $data->citizen) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("AssociateEmployee", "Tilknyt medarbejder");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_2" name="employee[]" multiple="multiple">
+                                <option value="all" <?=((in_array("all", $data->employee)) ? 'selected="selected"': '');?>><?=$this->lang->get("All");?></option>
+                                <?php foreach($employees as $value):?>
+                                    <option value="<?=(int)$value->id;?>" <?=(!in_array("all", $data->employee) && ((int)$value->id == $data->employee || in_array((int)$value->id, $data->employee)) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Lead");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_10" name="lead[]" multiple="multiple">
+                                <optgroup label="<?=$this->lang->get("Moderator");?>">
+                                    <?php foreach($moderators as $value):?>
+                                        <option value="<?=(int)$value->id;?>" <?=(in_array($value->id, $data->lead) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                                <optgroup label="<?=$this->lang->get("Citizen");?>">
+                                    <?php foreach($citizens as $value):?>
+                                        <option value="<?=(int)$value->id;?>" <?=(in_array($value->id, $data->lead) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                                <optgroup label="<?=$this->lang->get("Employee");?>">
+                                    <?php foreach($employees as $value):?>
+                                        <option value="<?=(int)$value->id;?>" <?=(in_array($value->id, $data->lead) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                                <optgroup label="<?=$this->lang->get("ContactPerson");?>">
+                                    <?php foreach($contactPersons as $value):?>
+                                        <option value="<?=(int)$value->id;?>" <?=(in_array($value->id, $data->lead) ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Date");?></label>
+                        <div class="col-3">
+                            <div class="input-group ">
+                                <input type="text" class="form-control datepickerDen" name="date" value="<?=$this->lib->dateToDanish($this->mymongo->dateFormat($data->date, "Y-m-d"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Time");?></label>
+                        <div class="col-2">
+                            <input class="form-control m-input timepicker" name="time_start" type="text" value="<?=$this->mymongo->dateFormat($data->date, "H:i");?>">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label">
+                            <font class="todo-elmnt-text" style="text-align: right;"><?=$this->lang->get("Deadline");?></font>
+                            <font class="calendar-time-text" style="text-align: right;"><?=$this->lang->get("EndDate", "End Date");?></font>
+                        </label>
+                        <div class="col-3">
+                            <div class="input-group " >
+                                <input type="text" class="form-control datepickerDen" name="date_deadline" value="<?=$this->lib->dateToDanish($this->mymongo->dateFormat($data->date_deadline, "Y-m-d"));?>" autocomplete="off">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Time");?></label>
+                        <div class="col-2">
+                            <input class="form-control m-input timepicker " name="time_end" type="text" value="<?=$this->mymongo->dateFormat($data->date_deadline, "H:i");?>">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group m-form__group row todo-elmnt">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Status");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="status">
+                                <?php foreach($this->parameters->getList($this->lang, "calendar_statuses") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$data->status ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("CreateDate", "Create Date");?></label>
+                        <div class="col-7">
+                            <div style="padding-top: 7px;font-weight: 600;"><?=$this->lib->dateToDanish($this->mymongo->dateFormat($data->created_at, "Y-m-d"));?></div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("WhoCreated", "Who created");?></label>
+                        <div class="col-7">
+                            <div style="padding-top: 7px;font-weight: 600;"><a href="<?=_PANEL_ROOT_;?>/profile/<?=$creator->id;?>"><?=htmlspecialchars(@$creator->firstname." ".@$creator->lastname);?></a></div>
+                        </div>
+                    </div>
+
+
+
+                    <!--
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"></label>
+                        <div class="col-7">
+                            <div style="padding-top: 7px;font-weight: 600;">
+                                <a href="<?=_PANEL_ROOT_.'/todo/notes/'.$data->id;?>"><?=$this->lang->get("Notes");?></a>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"></label>
+                        <div class="col-7">
+                            <div style="padding-top: 7px;font-weight: 600;"><a style="color: red;" href="<?=_PANEL_ROOT_;?>/index/delete/<?=$data->id;?>"><?=$this->lang->get("Delete");?></a></div>
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>
+
+
+
+<script>
+    function typeChanged(cType){
+        if(cType == "event"){
+            $(".todo-elmnt").css("display", "none");
+            $(".todo-elmnt-text").css("display", "none");
+            $(".calendar-time").css("display", "flex");
+            $(".calendar-time-text").css("display", "block");
+        }else{
+            $(".todo-elmnt").css("display", "flex");
+            $(".todo-elmnt-text").css("display", "block");
+            $(".calendar-time").css("display", "none");
+            $(".calendar-time-text").css("display", "none");
+        }
+    }
+</script>
+<style>
+    .todo-elmnt{display: <?=($data->type == "todo" ? "flex": "none");?>;}
+    .todo-elmnt-text{display: <?=($data->type == "todo" ? "display": "none");?>;}
+    .calendar-time{display: <?=($data->type == "todo" ? "none": "flex");?>;}
+    .calendar-time-text{display: <?=($data->type == "todo" ? "none": "display");?>;}
+</style>
+
+
+
+
+
+<div class="m-grid__item m-grid__item--fluid m-wrapper">
+    <div class="m-content">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-tools">
+                            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                        <i class="flaticon-share m--hide"></i>
+                                        <?=$this->lang->get("Notes");?>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <ul class="m-portlet__nav">
+                                <li class="m-portlet__nav-item">
+                                    <a href="<?=_PANEL_ROOT_;?>/todo/notes/<?=$data->id;?>" class="m-portlet__nav-link btn btn-secondary m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill">
+                                        <i class="la la-plus"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_user_profile_tab_1">
+                            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                                <div class="m-portlet__body">
+                                    <?php if(count($notes) == 0):?>
+                                        <div class="form-group m-form__group row">
+                                            <div class="form-error">
+                                                <?=$this->lang->get("NoteNotFound", "Note not found");?>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>
+                                    <?php foreach($notes as $key => $value):?>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-6" style="width: 30px;"><b><?=$key+1;?>)</b>
+                                                <b><?=htmlspecialchars($value->title);?></b>
+                                            </div>
+                                            <div class="col-1" style="text-align: right;">
+                                                <a href="?delete=<?=(string)$value->_id;?>"><i class="la la-trash redcolor"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row" style="padding-top: 0;padding-bottom: 0;">
+                                            <div class="col-7">
+                                                <div><?=$this->mymongo->dateFormat($value->created_at, "Y-m-d H:i");?> - <a href="<?=_PANEL_ROOT_;?>/profile/<?=$value->creator_id;?>"><b><?=htmlspecialchars(@$creators[$value->creator_id]->firstname." ".@$creators[$value->creator_id]->lastname);?></b></a> </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-7">
+                                                <div style="background: #f1f1f1;padding: 15px;"><?=htmlspecialchars($value->description);?></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-7">
+                                                <div style="background: #f1f1f1;padding: 15px;">
+                                                    <?php if(count($documents[(string)@$value->_id]) > 0):?>
+                                                        <?php foreach($documents[(string)@$value->_id] as $document):?>
+                                                            <div style="margin-bottom: 10px;">
+                                                                <?php if(in_array($document->type, array("jpeg", "jpg", "png", "gif"))): ?>
+                                                                    <a target="_blank" href="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/org.jpg">
+                                                                        <img style="max-width: 100%;" src="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/small.jpg"/>
+                                                                    </a>
+                                                                <?php else: ?>
+                                                                    <a target="_blank" href="/upload/<?=(string)$document->uuid;?>/<?=(string)$document->_id;?>/<?=(string)htmlspecialchars($document->filename).'.'.$document->type;?>"><b><?=(string)htmlspecialchars($document->filename).'.'.$document->type;?></b></a>
+                                                                <?php endif;?>
+                                                            </div>
+                                                        <?php endforeach;?>
+                                                    <?php else: ?>
+                                                        <?=$this->lang->get("DocumentsNotFound", "Documents not found");?>
+                                                    <?php endif;?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach;?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

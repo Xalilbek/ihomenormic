@@ -1,0 +1,139 @@
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("CreateNew", "Opret ny");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Title");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="title" type="text" value="<?=$this->request->get("title");?>"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-9 ml-auto">
+                            <h3 class="m-form__section"><?=$this->lang->get("DefaultSnippets", "Default snippets");?></h3>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-9 ml-auto">
+                            <?=$this->lang->get("DefaultSnippetsText", "You can add these snippets where you want and your selections will be replaced with these snippets when you create contract for anyone");?>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Employee");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[employee]" type="text" value="<?=('{employee}');?>" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Citizen");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[citizen]" type="text" value="<?=('{citizen}');?>" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ContactPerson");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[contactperson]" type="text" value="<?=('{contactperson}');?>" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-9 ml-auto">
+                            <h3 class="m-form__section"><?=$this->lang->get("CustomSnippets", "Custom snippets");?></h3>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-9 ml-auto">
+                            <?=$this->lang->get("CustomSnippetsText", "You can add these snippets where you want and your texts will be replaced with these snippets when you create contract for anyone");?>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("CustomSnippet");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[custom1]" type="text" value="<?=('{custom1}');?>" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("CustomSnippet");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[custom2]" type="text" value="<?=('{custom2}');?>" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("CustomSnippet");?></label>
+                        <div class="col-5">
+                            <input class="form-control m-input" name="snippets[custom3]" type="text" value="<?=('{custom3}');?>" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <style>
+                        .note-editable{min-height: 900px;}
+                    </style>
+                    <div class="form-group m-form__group row">
+                        <div class="col-12" id="summernote_body">
+                            <textarea class="summernote" id="m_summernote_1" name="description" style="height: 900px;min-height: 900px;"><?=((int)$this->request->get("save") == 1 ? $this->request->get("description"): file_get_contents("mailtemplates/example.html"));?></textarea>
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>
+
+<script>
+    function offerTypeChanged(offer_type){
+        $.ajax({
+                method: "POST",
+                url: "/data/offertemplates",
+                data: {offer_type: offer_type},
+                dataType: "json",
+            })
+            .done(function(res){
+                var html = '<textarea class="summernote" id="m_summernote_1" name="description" style="height: 900px;min-height: 900px;">'+res.data+'</textarea>';
+                document.getElementById("summernote_body").innerHTML = html;
+                SummernoteDemo.init();
+            });
+    }
+
+</script>

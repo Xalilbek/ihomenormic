@@ -1,0 +1,46 @@
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu <?=((int)@$_COOKIE["sidebar_closed"] == 1 ? "page-sidebar-menu-closed": "");?>"" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+        <li class="heading">
+            <h3 class="uppercase"><?=$this->lang->get("Menu");?></h3>
+        </li>
+        <li class="nav-item <?=($controller == "moderators" ? "active open": "");?>">
+            <a class="nav-link nav-toggle" href="<?=_ROOT_;?>/moderators"><i class="icon-user-following"></i><span class="title"><?=$this->lang->get("Moderators");?></span></a>
+        </li>
+        <li class="nav-item <?=($controller == "settings" ? "active open": "");?>">
+            <a class="nav-link nav-toggle" href="<?=_ROOT_;?>/settings"><i class="icon-settings"></i><span class="title"><?=$this->lang->get("Settings");?></span></a>
+        </li>
+
+
+        <li class="heading">
+            <h3 class="uppercase">Logs</h3>
+        </li>
+        <li class="nav-item <?=($controller == "apilogs" ? "active open": "");?>">
+            <a class="nav-link nav-toggle" href="<?=_ROOT_;?>/apilogs"><i class="icon-anchor"></i><span class="title">API logs</span></a>
+        </li>
+
+        <li class="heading">
+            <h3 class="uppercase">Content</h3>
+        </li>
+        <li class="nav-item <?=($controller == "translations" ? "active open": "");?>">
+            <a class="nav-link nav-toggle" href="<?=_ROOT_;?>/translations"><i class="icon-flag"></i><span class="title">Translations</span></a>
+        </li>
+        <li class="nav-item <?=($controller == "parameters" ? "active open": "");?>">
+            <a href="javascript:;"><i class="icon-layers"></i><span class="title">Parameters</span></a>
+            <ul class="sub-menu">
+                <li class="nav-item <?=(@$type == "cities" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=cities" class="nav-link"><i class="icon-list"></i> <span class="title">Cities</span></a></li>
+                <li class="nav-item <?=(@$type == "focusareas" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=focusareas" class="nav-link"><i class="icon-list"></i> <span class="title">Focus areas</span></a></li>
+                <li class="nav-item <?=(@$type == "focustypes" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=focustypes" class="nav-link"><i class="icon-list"></i> <span class="title">Focus types</span></a></li>
+                <li class="nav-item <?=(@$type == "languages" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=languages" class="nav-link"><i class="icon-list"></i> <span class="title">Languages</span></a></li>
+                <li class="nav-item <?=(@$type == "questions" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=questions" class="nav-link"><i class="icon-list"></i> <span class="title">Questions</span></a></li>
+                <li class="nav-item <?=(@$type == "goals" ? " active open": "");?>"><a class="nav-link nav-toggle" href="<?=_ROOT_;?>/parameters?type=goals" class="nav-link"><i class="icon-list"></i> <span class="title">Goals</span></a></li>
+            </ul>
+        </li>
+
+
+        <li style="margin-top: 40px;">
+            <a class="nav-link nav-toggle" href="<?=_ROOT_;?>/?logout=true"><i class="icon-logout"></i><span class="title"><?=$this->lang->get("Logout");?></span></a>
+        </li>
+        </ul>
+    </div>
+</div>

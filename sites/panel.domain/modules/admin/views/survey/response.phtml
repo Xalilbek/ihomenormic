@@ -1,0 +1,454 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("Responses");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Survey");?></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="<?=_PANEL_ROOT_;?>/survey/query/<?=(($data) ? $data->id: 0);?>">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-12 col-form-label" style="text-align: left;"><b><?=$this->lang->get("Title");?></b></label>
+                        <div class="col-12">
+                            <?=htmlspecialchars($survey->title);?>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-12 col-form-label" style="text-align: left;"><b><?=$this->lang->get("Description");?></b></label>
+                        <div class="col-12">
+                            <?=htmlspecialchars($survey->description);?>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row" style="display: none;">
+                        <div class="col-10">
+                            <textarea class="form-control" name="survey_json" style="min-height: 150px;" id="survey_json"><?=(($data) && strlen($data->queries) > 10 ? $data->queries: '{}');?></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <div class="col-12">
+                            <div id="questions_body">
+
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>
+
+
+<style>
+    .qb_line{
+        display: block;
+        background: #efefef;
+        margin-top: 50px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .qb_first_line{
+        display: table;
+        width: 100%;
+    }
+    .query_props_body{
+        padding: 0;
+        background: #f7f7f7;
+        background-color: #f7f7f7;
+        background-image: linear-gradient(#e4e4e4, #f7f7f7);
+    }
+    .query_prop_line{
+        border-top: 1px solid #ffffff;
+    }
+    .query_title{
+        border: 0px solid #e1e1e1;
+        display: table-cell;
+        background: #ececec;
+        padding: 30px 20px;
+        border-radius: 5px;
+        font-size: 15px;
+        color: black;
+        line-height: 26px;
+        background-color: #f7f7f7;
+        background-image: linear-gradient(#eae9e9, #d2d2d2);
+    }
+    .query_prop_title{
+        border: 0px solid #d4d4d4;
+        display: table-cell;
+        padding: 15px 10px;
+        font-size: 14px;
+        line-height: 25px;
+        color: #111;
+        background-color: #f7f7f7;
+        background-image: linear-gradient(#e4e4e4, #f7f7f7);
+    }
+    .query_select{
+        border: 1px solid #d4d4d4;
+    }
+    .query_prop_items{
+        display: table;
+        width: 100%;
+    }
+    .query_prop_btn{
+        display: table-cell;
+        width: 30px;
+        text-align: center;
+        padding: 0;
+        background: #ececec;
+        border: 0px solid #d4d3d3;
+        vertical-align: middle;
+        background-color: #ececec;
+        background-image: linear-gradient(#d4d4d4, #eaeaea);
+    }
+    .query_select_line{
+        padding: 12px 10px;
+    }
+    .query_prop_btn .la-square{
+        color: #a1a1a1;
+    }
+    .query_prop_btn .la-check-circle, .query_prop_btn .la-check-square{
+        color: green;
+        font-weight: 700;
+    }
+    .query_prop_btn .la-circle{
+        color: #a1a1a1;
+        font-weight: 500;
+    }
+    .query_prop_another{
+        padding: 12px 10px;
+    }
+    .query_another_title,.query_date_title,.query_time_title,.query_short_text_title,.query_long_text_title{
+        border: 1px solid #dadada;
+        background: white;
+    }
+    .query_date_title,.query_time_title{
+        max-width: 200px;;
+    }
+    .query_long_text_title{
+        min-height: 100px;
+    }
+    .query_answer{
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        color: #111;
+    }
+</style>
+<style>
+    .newphotobox{
+        float: left;
+        width: 120px;
+        height: 120px;
+        background: #e1e1e1;
+        margin: 0 10px 10px 0;
+        border: 1px solid #e1e1e1;
+        border-radius: 6px;
+        overflow: hidden;
+        padding: 0 !important;
+    }
+    .photohandleimg{
+        height: 130px;
+        width: 130px;
+    }
+    .photohandlea{
+        float: right;
+        margin: 0px 6px 0 0px;
+        color: #333;
+    }
+    .photohandlea  img{width: 18px; height: 18px;}
+    .photohandleline{float:left;padding:5px 0 0 5px;}
+</style>
+<script>
+    var surveyLang = {
+        notFilled: '<font style="color: red;"><?=$this->lang->get("notFilled");?></font>',
+        Title: '<?=$this->lang->get("Title");?>',
+        Choose: '<?=$this->lang->get("Choose");?>',
+        Option: '<?=$this->lang->get("Option");?>',
+        IsRequired: '<?=$this->lang->get("IsRequired", "Is required");?>',
+        AllowAddAlternative: '<?=$this->lang->get("AllowAddAlternative", "Allow to add alternative choice");?>',
+    }
+    var fileUrl = '<?=FILE_URL;?>';
+    var SURVEY_ID = '<?=(string)$survey->_id;?>';
+
+    var Survey = {
+        data: {},
+        types: {
+            short_text: {
+                property: false,
+            },
+            long_text: {
+                property: false,
+            },
+            choice: {
+                property: {
+                    icon: 'la-circle',
+                    iconSelected: 'la-check-circle',
+                },
+            },
+            multi_choice: {
+                property: {
+                    icon: 'la-square',
+                    iconSelected: 'la-check-square',
+                },
+            },
+            dropdown: {
+                property: {
+                    icon: 'la-circle',
+                    iconSelected: 'la-check-circle',
+                },
+            },
+            fileupload: {
+                property: false,
+            },
+            property: {
+                property: false,
+            },
+            time: {
+                property: false,
+            },
+        },
+
+        init: function(){
+            var jsonData = JSON.parse(document.getElementById("survey_json").value);
+            if(jsonData)
+                Survey.data = jsonData;
+            Survey.registerHandlers();
+            Survey.render();
+        },
+
+        registerHandlers: function(){
+        },
+
+        render: function(){
+            Survey.setJson();
+            var html = '';
+            for(var qIndex in Survey.data){
+                html += Survey.getQuestionTemplate(qIndex, Survey.data[qIndex]);
+            }
+            $("#questions_body").html(html)
+            Survey.registerHandlers();
+        },
+
+        setJson: function(){
+            document.getElementById("survey_json").value = JSON.stringify(Survey.data);
+        },
+
+        getQuestionTemplate: function(qIndex, data){
+            var html = '<div class="qb_line">'
+                +'<div class="qb_first_line">'
+                +'<div class="query_title">'+data.title+'</div>'
+                +'</div>'
+                + Survey.renderProperties(qIndex, data)
+                +'</div>';
+            html = html.replace(new RegExp('{number}', 'g'), qIndex);
+            return html;
+        },
+
+        renderAnotherChoiceBtn: function(qIndex, data){
+            var html = '';
+            if(data.type == "choice" || data.type == "multi_choice" || data.type == "dropdown"){
+                var icon = (data.another) ? Survey.types[data.type].property.iconSelected: Survey.types[data.type].property.icon;
+
+                html += '<div class="query_prop_line">';
+                html += '<div class="query_prop_items">';
+                html += '<div class="query_prop_btn query_another_option" qIndex="'+qIndex+'"><i class="la '+icon+'"></i></div>';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.another) ? Survey.htmlEncode(data.another.title): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+                //}
+                html += '</div>';
+            }
+            return html;
+        },
+
+        renderProperties: function(qIndex, data){
+            //if(data.type !== "multi_choice" && data.type !== "choice" && data.type !== "dropdown") return '';
+            var html = '';
+            html += '<div class="query_props_body">';
+            if(data.type == "multi_choice" || data.type == "choice"){
+                for(var pIndex in data.properties){
+                    var pData = data.properties[pIndex];
+                    var answerSelected = false;
+                    if(data.type == "choice" && data.answerId == pIndex){
+                        answerSelected = true;
+                    }else if(data.answers && data.answers.indexOf(pIndex) >= 0){
+                        answerSelected = true;
+                    }
+                    var icon = (answerSelected) ? Survey.types[data.type].property.iconSelected: Survey.types[data.type].property.icon;
+                    html += '<div class="query_prop_line">';
+                    html += '<div class="query_prop_items">';
+                    html += '<div class="query_prop_btn query_option" qIndex="'+qIndex+'" pIndex="'+pIndex+'">';
+                    html += '<i class="la '+icon+'"></i>';
+                    html += '</div>';
+                    html += '<div class="query_prop_title">'+Survey.htmlEncode(pData.title)+'</div>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+            }else if(data.type == "dropdown"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<select class="form-control query_select" qIndex="'+qIndex+'">';
+                html += '<option value="">'+surveyLang.Choose+'</option>';
+                for(var pIndex in data.properties){
+                    var pData = data.properties[pIndex];
+                    html += '<option value="'+pIndex+'" '+(pIndex == data.answerId ? 'selected="selected"': '')+'>';
+                    html += Survey.htmlEncode(pData.title);
+                    html += '</option>';
+                }
+                html += '</select>';
+                html += '</div>';
+            }else if(data.type == "short_text"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.answer) ? Survey.htmlEncode(data.answer.title): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+            }else if(data.type == "long_text"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.answer) ? Survey.htmlEncode(data.answer.title): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+            }else if(data.type == "date"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.answer) ? Survey.htmlEncode(data.answer.title): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+            }else if(data.type == "time"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.answer) ? Survey.htmlEncode(data.answer.title): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+            }else if(data.type == "interval"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_prop_items query_prop_another">';
+                html += '<div class="query_answer">'+((data.value) ? Survey.htmlEncode(data.value): surveyLang.notFilled)+'</div>';
+                html += '</div>';
+                html += '</div>';
+            }else if(data.type == "fileupload"){
+                html += '<div class="query_prop_line query_select_line">';
+                html += '<div class="query_answer">';
+                html += '<div class="input-group" id="asdasdas">';
+                if(data.answers)
+                    for(var fileId in data.answers)
+                        html += Survey.renderPhotoBox(qIndex, fileId, data.answers[fileId]);
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+            if(data.hasAnother)
+                html += Survey.renderAnotherChoiceBtn(qIndex, data)
+            html += '</div>';
+            return html;
+        },
+
+        renderPhotoBox: function(qIndex, fileId, fData){
+            var newhtml = '';
+            newhtml += '<div class="newphotobox">';
+            if(fData.type == "image"){
+                newhtml += '<a target="_blank" href="' + fileUrl + '/upload/'+SURVEY_ID+'/'+fileId+'/org.jpg?' + Math.random() + '">';
+                newhtml += '<img width="120" height="120" src="' + fileUrl + '/upload/'+SURVEY_ID+'/'+fileId+'/small.jpg?' + Math.random() + '"/>';
+                newhtml += '</a>';
+            }else{
+                newhtml += '<a target="_blank" href="' + fileUrl + '/upload/'+SURVEY_ID+'/'+fileId+'/' + fData.name + '">';
+                newhtml += '<img width="120" height="120" src="' + fileUrl + '/resources/images/file.png?' + Math.random() + '"/>';
+                newhtml += '</a>';
+            }
+            //newhtml += '<div style="width:100%" class="photohandleline">';
+            //newhtml += '<a class="photohandlea" href="javascript:deletePhoto(\'' + fileId + '\')"><img src="/resources/images/delete-icon.gif"/></a>';
+            //newhtml += '</div>';
+            newhtml += '</div>';
+            return newhtml;
+        },
+
+        toggleOtherChoice: function(qIndex){
+            var qData = Survey.data[qIndex];
+            qData.another = (qData.another) ? false: {title: ''};
+            if(qData.type !== 'multi_choice')
+                qData.answerId = false;
+            Survey.render();
+        },
+
+        anotherTitleChanged: function(qIndex, value){
+            var qData = Survey.data[qIndex];
+            qData.another = {title: value};
+            Survey.setJson();
+            //Survey.render();
+        },
+
+        titleChanged: function(qIndex, value){
+            var qData = Survey.data[qIndex];
+            qData.answer = {title: value};
+            Survey.setJson();
+            //Survey.render();
+        },
+
+        chooseOption: function(qIndex, pIndex){
+            if(pIndex.length == 0)
+                return false;
+            var qData = Survey.data[qIndex];
+            if(qData.type == 'multi_choice'){
+                if(!qData.answers)
+                    qData.answers = [];
+                if(qData.answers.indexOf(pIndex) >= 0){
+                    console.log(qData.answers)
+                    console.log(qData.answers.indexOf(pIndex))
+
+                    qData.answers.splice(qData.answers.indexOf(pIndex), 1);
+                }else{
+                    qData.answers[qData.answers.length] = pIndex;
+                }
+            }else{
+                qData.answerId = pIndex;
+                qData.another = false;
+            }
+            Survey.render();
+        },
+
+        htmlEncode: function(str){
+            if(str.length > 0)
+            return str.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+            return str;
+        }
+    }
+</script>
+
+
+
+

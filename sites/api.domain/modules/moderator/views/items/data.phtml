@@ -1,0 +1,80 @@
+<section id="data_cities">
+    <h2 id="html-structure"><a href="javascript:;"> Data / Cities</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/data/cities</div>
+        <div class="param-title"><b>Method:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/data/cities<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":1,"title":"City 1"},{"id":2,"title":"City 2"},{"id":3,"title":"City 3"},{"id":4,"title":"City 4"},{"id":5,"title":"City 5"}]}' ;
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+<section id="data_languages">
+    <h2 id="html-structure"><a href="javascript:;"> Data / Languages</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/data/languages</div>
+        <div class="param-title"><b>Method:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/data/languages<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":1,"title":"Engelsk"},{"id":2,"title":"Dansk"},{"id":3,"title":"Tysk"},{"id":4,"title":"Fransk"},{"id":5,"title":"Spansk"},{"id":6,"title":"Italiensk"}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+<section id="data_todocategories">
+    <h2 id="html-structure"><a href="javascript:;"> Data / Todo categories</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/data/todocategories</div>
+        <div class="param-title"><b>Method:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/data/languages<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":[{"id":1,"title":"Todo cat 1","html_code":"#0b9913"},{"id":2,"title":"Todo cat 2","html_code":"#c01112"},{"id":3,"title":"Todo cat 3","html_code":"#3386c6"},{"id":4,"title":"Todo cat 4","html_code":"#ddb82c"}]}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>
+
+<section id="data_multiple">
+    <h2 id="html-structure"><a href="javascript:;"> Data / Fetch data by multiple data types</a></h2>
+    <div class="div-body">
+        <div class="param-title"><b>Url:</b> <?=API_ROOT;?>/data/multiple</div>
+        <div class="param-title"><b>Method:</b> <code>POST/GET</code></div>
+        <div class="param-title"><b>Request params:</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <code>lang:</code> (type: STRING: en/da)<br/>
+            <code>data_types:</code> (type: Array) cities, languages, focusareas, focustypes, questions, goals, case_categories, todo_categories, colors<br/>
+        </div>
+        <div class="param-title"><b>Response:</i> (success)</b></div>
+        <div class="div-params bg-gray padding-left-offset">
+            <b>Example</b>: <?=SITE_URL;?><?=API_ROOT;?>/data/multiple?lang=en&data_types[]=cities&data_types[]=languages<br/>
+            <?php
+            $json = '{"status":"success","description":"","data":{"cities":[{"id":1,"title":"City 1"},{"id":2,"title":"City 2"},{"id":3,"title":"City 3"},{"id":4,"title":"City 4"},{"id":5,"title":"City 5"}],"languages":[{"id":1,"title":"Engelsk"},{"id":2,"title":"Dansk"},{"id":3,"title":"Tysk"},{"id":4,"title":"Fransk"},{"id":5,"title":"Spansk"},{"id":6,"title":"Italiensk"}]}}';
+            ?>
+            <pre><?=$this->lib->jsonPrettyPrint($json);?></pre>
+        </div>
+    </div>
+</section>

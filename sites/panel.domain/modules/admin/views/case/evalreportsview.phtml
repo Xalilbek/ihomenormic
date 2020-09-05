@@ -1,0 +1,436 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("Report");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <!--
+                    <div class="form-group m-form__group row" style="margin-bottom: 25px;">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Status");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="status">
+                                <?php foreach($this->parameters->getList($this->lang, "report_statuses") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$reportdata->status ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div> -->
+
+                    <div class="form-group m-form__group row" style="padding-top: 0px;">
+                        <div class="col-12">
+                            <!--
+                                <?php foreach($reportdata as $value):?>
+                                    <?php if($value["title"]):?><b><?=$value["title"];?></b><br/><?php endif;?>
+
+                                    <?php if(count($value["children"]) > 0):?>
+                                        <?php foreach($value["children"] as $form):?>
+                                            <?php if($form["title"]):?><b><?=$form["title"];?></b><br/><?php endif;?>
+
+                                            <?php if($values[$form["key"]]):?>
+
+                                                <?php if($form["type"] == "file"):?>
+                                                    <?php foreach($values[$form["key"]] as $file):?>
+                                                        <a target="_blank" href="<?=$file["original"];?>">
+                                                            <Img width="100" src="<?=$file["avatar"];?>"/>
+                                                        </a>
+                                                    <?php endforeach;?>
+
+                                                <?php elseif($form["type"] == "select"):?>
+                                                    <?php foreach($form["values"] as $select):?>
+                                                        <?php if($values[$form["key"]] == $select["value"]):?>
+                                                            <?=$select["title"];?><br/>
+                                                        <?php endif;?>
+                                                    <?php endforeach;?>
+
+                                                <?php else:?>
+                                                    <?=$values[$form["key"]];?><br/>
+                                                <?php endif;?>
+                                            <?php else:?>
+                                                <font style="color: #d1d1d1;">not filled</font><br/>
+                                            <?php endif;?>
+
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                    <hr/>
+
+                                <?php endforeach;?>
+                            -->
+                        </div>
+                    </div>
+
+                    <div class="col-12" id="report-body">
+
+                    </div>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit" style="float: left;">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-7">
+                                <button type="button" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" onclick="CaseReport.saveRaport('save')"><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    var CaseReport = {
+        reportId: false,
+        caseId: false,
+        state: {
+            saving: false,
+            list: [],
+            showHiddens: {},
+            values: {},
+        },
+
+        init: function(){
+            CaseReport.getParams();
+        },
+
+        setState: function(values, dontRender){
+            for(var k in values){
+                CaseReport.state[k] = values[k];
+            }
+            if(!dontRender)
+                CaseReport.renderItems();
+        },
+
+        getParams: function async () {
+            var caseId = CaseReport.caseId;
+            $.ajax({
+                method: "POST",
+                url: API_URL+"/report/params",
+                data: {token: USER_TOKEN, id: (CaseReport.reportId) ? CaseReport.reportId: '', case: caseId},
+                dataType: "json",
+            })
+                .done(function(response){
+                    console.log(response)
+                    if (response.status === "success") {
+                        CaseReport.setState({list: response.data, uuid: response.uuid, values: response.values, editable: response.editable, show_finish: response.show_finish});
+                    } else {
+                        CaseReport.setState({error: "No connection"});
+                    }
+                });
+        },
+
+
+        saveRaport: function async (action){
+            if(CaseReport.state.saving === false){
+                var caseId = CaseReport.caseId;
+                var report = CaseReport.reportId;
+                CaseReport.setState({saving: true});
+                var values = CaseReport.state.values;
+                $.ajax({
+                    method: "POST",
+                    url: API_URL+"/report/save",
+                    data: {token: USER_TOKEN, id: (report) ? report: '', case: caseId, uuid: CaseReport.state.uuid, values: JSON.stringify(values), action: action},
+                    dataType: "json",
+                })
+                    .done(function(response){
+                            alert(JSON.stringify(response))
+                            if (response.status === "success") {
+                                CaseReport.setState({success: response.description, saving: false});
+                            } else if (response.status === "error") {
+                                CaseReport.setState({error: response.description, saving: false});
+                            } else {
+                                CaseReport.setState({error: "No connection", saving: false});
+                            }
+                        }
+                    );
+
+            }
+        },
+
+        setValue: function(key, value, dontRender){
+            //alert(key+' - '+value); return;
+            var rowData = false;
+            var values = CaseReport.state.values;
+            var showHiddens = CaseReport.state.showHiddens;
+
+            var data = CaseReport.getElementByKey(key);
+            if(data.type === "select" && data.values && data.values.length > 0){
+                for(var iii in data.values) {
+                    var rd = data.values[iii];
+                    if(rd.value == value){
+                        rowData = rd;
+                        break;
+                    }
+                }
+            }else if(data.type === "multiselect" && data.values && data.values.length > 0){
+                if(!values[data.key]) values[data.key] = [];
+                if(Number.isInteger(data.values[0].value))
+                    value = parseInt(value);
+                var idx = values[data.key].indexOf(value);
+                if(idx > -1){
+                    delete values[data.key][idx];
+                }else{
+                    values[data.key][values[data.key].length] = value;
+                    value = values[data.key];
+                }
+            }
+
+            if(data.type === "select" && rowData){
+                if(value){
+                    var option = rowData;
+                    if(option.action){
+                        var showHiddens = CaseReport.state.showHiddens;
+                        if(option.action.show){
+                            for(var i=0;i<option.action.show.length;i++)
+                                showHiddens[option.action.show[i]] = true;
+                        }
+                        if(option.action.hide){
+                            for(var i=0;i<option.action.hide.length;i++)
+                                showHiddens[option.action.hide[i]] = false;
+                        }
+                    }
+                }
+            }
+            if(data.type !== "multiselect")
+                values[data.key] = value;
+            CaseReport.setState({showHiddens: showHiddens, values: values}, dontRender);
+        },
+
+
+        renderItems: function(){
+            var h ='';
+            var showHiddens = CaseReport.state.showHiddens;
+
+            console.log('values -----');
+            console.log(CaseReport.state.values);
+
+            for(var i in CaseReport.state.list){
+                var data = CaseReport.state.list[i];
+
+                h += this.renderTitle(data);
+
+                h += this.renderForm(data, i);
+
+
+                if(data.children){
+                    h += '<div class="r-i">';
+                    for(var ii in data.children){
+                        var value = data.children[ii];
+
+                        if((value.visible && showHiddens[value.key] !== false) || showHiddens[value.key]){
+                            h += '<div class="r-i-children">';
+
+                            h += this.renderTitle2(value);
+
+                            h += this.renderForm(value, i);
+
+                            h += '</div>';
+                        }
+                    }
+                    h += '</div>';
+                }
+
+            }
+            document.getElementById("report-body").innerHTML = h;
+        },
+
+        renderTitle: function (data) {
+            if(data.title)
+            return(
+                '<div class="r-i-title"><h5>'+data.title+'<h5></div>'
+            );
+            return '';
+        },
+
+        renderTitle2: function (data) {
+            if(data.title)
+            return(
+                '<div class="r-i-title"><b>'+data.title+'</b></div>'
+            );
+            return '';
+        },
+
+        renderForm: function (data, index) {
+            var h = '';
+            var values = CaseReport.state.values;
+            switch (data.type) {
+                case 'input':
+                    h = '<input class="form-control" onkeyup="CaseReport.setValue(\''+data.key+'\', this.value, true)" value="'+((values[data.key]) ? values[data.key]: "")+'" placeholder="'+((data.placeholder) ? data.placeholder: "")+'">';
+                    break;
+
+                case 'header':
+                    h = '<div class="r-i-header"><h3>'+data.text+'</h3></div>';
+                    break;
+
+                case 'text':
+                    h = '<textarea class="form-control r-i-textarea" onkeyup="CaseReport.setValue(\''+data.key+'\', this.value, true);">'+((values[data.key]) ? values[data.key]: "")+'</textarea>';
+                    break;
+
+                case 'date':
+                    h = '<input class="form-control" value="'+((values[data.key]) ? values[data.key]: "")+'" placeholder="'+((data.placeholder) ? data.placeholder: "")+'"  onkeyup="CaseReport.setValue(\''+data.key+'\', this.value, true)">';
+                    break;
+
+                case 'select':
+                    var rowDatas = {};
+                    for(var k in data.values){
+                        var option = data.values[k];
+                        rowDatas[option.value+''] = option;
+                    }
+                    h += '<select class="form-control" onchange="CaseReport.setValue(\''+data.key+'\', this.value)">';
+                    for(var k in data.values){
+                        var option = data.values[k];
+                        h += '<option value="'+option.value+'" '+((values[data.key] == option.value) ? 'selected="selected"': '')+'>'+option.title+'</option>';
+                    }
+                    h += '</select>';
+                    break;
+
+                case 'multiselect':
+                    h += '<select class="form-control r-i-multiselect" multiple="multiple" onchange="CaseReport.setValue(\''+data.key+'\', this.value)">';
+                    //h += '<option value="">Choose</option>';
+                    for(var k in data.values){
+                        var option = data.values[k];
+                        h += '<option value="'+option.value+'" '+(values[data.key] && values[data.key].indexOf(option.value) > -1 ? 'selected="selected"': '')+'>'+option.title+'</option>';
+                    }
+                    h += '</select>';
+                    break;
+
+                case 'file':
+                    h += '<div style="float: left;display: block;padding-bottom: 15px;">';
+                    if(values[data.key]){
+                        for(var k in values[data.key]){
+                            var image = values[data.key][k];
+                            h += '<div class="r-i-img-body">';
+                            h += '<a href="'+image.original+'" target="_blank">';
+                            h += '<img class="r-i-img" src="'+image.avatar+'"/>';
+                            h += '</a>';
+                            h += '<div class="r-i-delete"><a href="javascript:CaseReport.deletePhoto(\''+data.key+'\', '+k+')"><i class="la la-trash"></i></a></div>';
+                            h += '</div>';
+                        }
+                    }else{
+                        h += '<div style="display: block">File not uploaded</div>';
+                    }
+                    h += '</div>';
+                    break;
+
+                case 'button_plus':
+                    h += '<div style="display: block">';
+                    h += '<div class="r-i-btn-plus" onclick="CaseReport.buttonPressed(\''+data.key+'\', '+index+')">';
+                    h += '<i class="la la-plus"></i>';
+                    h += '</div>';
+                    h += '</div>';
+                    break;
+            }
+            return h;
+        },
+
+
+        buttonPressed: function(key, index){
+            var data = CaseReport.getElementByKey(key);
+            if(data.action === "generate"){
+                data.count++;
+                var i = data.count;
+                var children = [];
+                var templateKey = data.template_key.replace('{i}', i);
+                for(var n=0;n<data.template.length;n++){
+                    var child = data.template[n];
+                    child.key = templateKey+"_"+n;
+                    children[n] = child
+                }
+                var param = {
+                    key: templateKey,
+                    title: (data.template_title) ? data.template_title.replace('{i}', i): false,
+                    type: "multi",
+                    visible: true,
+                    children: children,
+                }
+
+                var newParams = [];
+                for(var t=0;t<this.state.list.length;t++){
+                    if(index == t)
+                        newParams[newParams.length] = param;
+                    newParams[newParams.length] = this.state.list[t];
+                }
+                this.setState({list: newParams});
+            }
+        },
+
+        getElementByKey: function(key){
+            var data = false;
+            for(var i in CaseReport.state.list){
+                if(!data){
+                    var d = CaseReport.state.list[i];
+                    if(d.key === key){
+                        data = d;
+                        break;
+                    }
+                    if(d.children){
+                        for(var ii in d.children){
+                            var v = d.children[ii];
+                            if(v.key === key){
+                                data = v;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return data;
+        },
+
+        deletePhoto: function(key, index){
+            var values = CaseReport.state.values;
+            delete values[key][index];
+            CaseReport.setState({values: values});
+        }
+
+    }
+
+    CaseReport.reportId = '<?=$reportid;?>';
+    CaseReport.caseId = '<?=$id;?>';
+
+</script>
+
+<style>
+    .r-i{display: block;float: left;width: 100%;clear: both;margin: 5px 0 15px;background: #f1f1f1;border-radius: 5px;padding: 15px 15px 0;}
+    .r-i-children{display: block;clear: both;padding-bottom: 15px;}
+    .r-i-textarea{min-height: 100px;}
+    .r-i-title{margin-bottom: 4px}
+    .r-i-header{margin-top: 10px;margin-bottom: 10px}
+    .r-i-btn-plus{width: 50px;height: 50px;background: #e1e1e1;border-radius: 25px;text-align: center;display: flex;flex-direction: row;align-items: center;align-content: center;cursor: pointer;}
+    .r-i-btn-plus i{font-size: 25px;color: #a1a1a1;margin-left: 12px;}
+    .r-i-img-body{float: left;width: 100px;border-radius: 5px;margin-right: 10px;overflow: hidden;}
+    .r-i-img{width: 100px;height: 100px;}
+    .r-i-delete i{color: red;}
+    .r-i-multiselect{min-height: 150px;}
+    .r-i-delete{padding: 10px 10px;background: #e1e1e1;}
+</style>

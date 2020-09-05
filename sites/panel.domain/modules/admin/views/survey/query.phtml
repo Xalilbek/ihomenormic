@@ -1,0 +1,116 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("Query");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Survey");?></span></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/add" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Query");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="<?=_PANEL_ROOT_;?>/survey/query/<?=(($data) ? $data->id: 0);?>">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php endif;?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-12 col-form-label" style="text-align: left;"><?=$this->lang->get("Title");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="title" type="text" value="<?=(($data) ? htmlspecialchars($data->title): "");?>" autocomplete="off"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-12 col-form-label" style="text-align: left;"><?=$this->lang->get("Description");?></label>
+                        <div class="col-7">
+                            <textarea class="form-control" name="description" style="min-height: 150px;"><?=(($data) ? htmlspecialchars($data->description): "");?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row" style="display: none;">
+                        <div class="col-10">
+                            <textarea class="form-control" name="survey_json" style="min-height: 150px;" id="survey_json"><?=(($data) && strlen($data->queries) > 10 ? $data->queries: '{}');?></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <div class="col-12">
+                            <div id="questions_body">
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <div class="col-7">
+                            <a href="javascript:;" class="btn btn-accent m-btn m-btn--custom m-btn--trade query_add"><i class="la la-plus"></i> <?=$this->lang->get("AddQuestion", "Add question");?></a>&nbsp;&nbsp;
+                        </div>
+                    </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-7">
+                            <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save");?></button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>
+
+
+<link href="/resources/survey/survey.css?<?=rand(1,999999999);?>" rel="stylesheet" type="text/css" />
+
+<script>
+    var surveyLang = {
+        ShortText: '<?=$this->lang->get("ShortText", "Short text");?>',
+        LongText: '<?=$this->lang->get("LongText", "Long text");?>',
+        Choice: '<?=$this->lang->get("Choice", "Choice text");?>',
+        MultiChoice: '<?=$this->lang->get("MultiChoice", "Multi choice");?>',
+        Dropdown: '<?=$this->lang->get("Dropdown", "Dropdown");?>',
+        FileUpload: '<?=$this->lang->get("FileUpload", "File upload");?>',
+        Date: '<?=$this->lang->get("Date");?>',
+        Interval: '<?=$this->lang->get("Interval");?>',
+        Title: '<?=$this->lang->get("Title");?>',
+        Option: '<?=$this->lang->get("Option");?>',
+        Time: '<?=$this->lang->get("Time", "Time");?>',
+        Minimum: '<?=$this->lang->get("Minimum");?>',
+        Maximum: '<?=$this->lang->get("Maximum");?>',
+        IsRequired: '<?=$this->lang->get("IsRequired", "Is required");?>',
+        AllowAddAlternative: '<?=$this->lang->get("AllowAddAlternative", "Allow to add alternative choice");?>',
+    }
+</script>
+<script src="/resources/survey/survey.js?<?=rand(1,999999999);?>" type="text/javascript"></script>

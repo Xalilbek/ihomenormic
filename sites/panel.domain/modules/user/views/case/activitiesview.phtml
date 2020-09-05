@@ -1,0 +1,73 @@
+<script>
+    var tablelisturl = '<?=_PANEL_ROOT_;?>/<?=$controller;?>/documentslist/<?=$id;?>';
+</script>
+    <div class="m-portlet m-portlet--full-height m-portlet--tabs">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-tools">
+                <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                            <i class="flaticon-share m--hide"></i>
+                            <?=$this->lang->get("Documents");?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_user_profile_tab_1">
+                    <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                        <div class="m-portlet__body">
+                            <div class="form-group m-form__group row">
+                                <div class="col-12" style="font-size: 16px;">
+                                    <b><?=$this->lang->get("Title");?>:</b> <?=htmlspecialchars($docdata->title);?>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-12" style="font-size: 16px;">
+                                    <b><?=$this->lang->get("Amount");?>:</b> <?=$this->lib->floatToDanish($docdata->amount,2);?> kr.
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-12" style="font-size: 16px;">
+                                    <b><?=$this->lang->get("Date");?>:</b> <?=$this->lib->dateToDanish($this->mymongo->dateFormat($docdata->created_at, "Y-m-d"));?>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <div class="col-12" style="font-size: 16px;">
+                                    <b><?=$this->lang->get("Note");?>:</b> <?=$docdata->description;?>
+                                </div>
+                            </div>
+                            <?php if(count($documents) == 0):?>
+                                <div class="form-group m-form__group row">
+                                    <div class="form-error">
+                                        <?=$this->lang->get("NotFoundDocument", "Document not found");?>
+                                    </div>
+                                </div>
+                            <?php endif;?>
+                            <?php foreach($documents as $key => $value):?>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1" style="width: 20px;"><b><?=$key+1;?>)</b></div>
+                                    <div class="col-3">
+                                        <?php if(in_array($value->type, array("jpeg", "jpg", "png", "gif"))): ?>
+                                            <a target="_blank" href="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/org.jpg">
+                                                <img style="max-width: 100%;" src="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/medium.jpg"/>
+                                            </a>
+                                        <?php else: ?>
+                                            <a target="_blank" href="/upload/<?=(string)$value->uuid;?>/<?=(string)$value->_id;?>/<?=(string)htmlspecialchars($value->filename).'.'.$value->type;?>"><b><?=(string)htmlspecialchars($value->filename).'.'.$value->type;?></b></a>
+                                        <?php endif;?>
+                                    </div>
+                                    <!--
+                                    <div class="col-2">
+                                        <a href="?id=<?=$this->request->get("id");?>&delete=<?=(string)$value->_id;?>"><i class="la la-trash redcolor"></i></a>
+                                    </div>
+                                    -->
+                                </div>
+                            <?php endforeach;?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

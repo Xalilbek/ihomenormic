@@ -1,0 +1,197 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("NewCitizen", "Ny Borger");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Citizens");?></span></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/edit/<?=$data->id;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Edit", "Edit");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Edit", "Edit");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+            <div class="m-portlet__body">
+                <?php if($success):?>
+                    <div class="form-group m-form__group row">
+                        <div class="form-success">
+                            <?=$success;?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <?php if($error):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-error">
+                                <?=$error;?>
+                            </div>
+                        </div>
+                    <?php endif;?>
+                    <div class="form-group m-form__group row">
+                        <div class="col-10 ml-auto">
+                            <h3 class="m-form__section">1. <?=$this->lang->get("PersonalInformation", "Personlige Oplysninger");?></h3>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Firstname", "Fornavn");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="firstname" type="text" value="<?=$data->firstname;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Lastname", "Efternavn");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="lastname" type="text" value="<?=$data->lastname;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Email", "E-mail Adresse");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="email" type="text" value="<?=$data->email;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("SocialSecurityNumber", "CPR-nummer");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="ssn" type="text" value="<?=$data->ssn;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("PhoneNumber", "Telefonnummer");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="phone" type="text" value="<?=$data->phone;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Password");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="password" type="text" value="" placeholder="******">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Gender", "Køn");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="gender">
+                                <option value="1" <?=($data->sex == '1' ? 'selected="selected"': '');?>><?=$this->lang->get("Male", "Mand");?></option>
+                                <option value="0" <?=($data->sex == '0' ? 'selected="selected"': '');?>><?=$this->lang->get("Female", "Kvinde");?></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("LanguageProficiency", "Sprogkundskaber");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-select2" id="m_select2_3" name="languages[]" multiple="multiple">
+                                <optgroup label="<?=$this->lang->get("Language", "Sprog");?>">
+                                    <?php foreach($this->parameters->getList($this->lang, "languages") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((in_array((int)$value["id"], $data->languages)) ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+                    <div class="form-group m-form__group row">
+                        <div class="col-10 ml-auto">
+                            <h3 class="m-form__section">2. <?=$this->lang->get("Address", "Adresse");?></h3>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("Address", "Adresse");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="address" type="text" value="<?=$data->address;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("ZipCode", "Postnummer");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="zipcode" type="text" value="<?=$data->zipcode;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("City", "By");?></label>
+                        <div class="col-7">
+                            <select class="form-control m-input" name="city">
+                                <?php foreach($this->parameters->getList($this->lang, "cities") as $value):?>
+                                    <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$data->city ? 'selected="selected"': '');?>><?=$value["title"];?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+                    <div class="form-group m-form__group row">
+                        <div class="col-10 ml-auto">
+                            <h3 class="m-form__section">3. <?=$this->lang->get("PaymentDetails", "Betalingsoplysninger");?></h3>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("RegistrationNumber", "Registrerings nr.");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="payment_registration_number" type="text" value="<?=$data->payment_registration_number;?>">
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-2 col-form-label"><?=$this->lang->get("AccountNumber", "Konto nr.");?></label>
+                        <div class="col-7">
+                            <input class="form-control m-input" name="payment_account_number" type="text" value="<?=$data->payment_account_number;?>">
+                        </div>
+                    </div>
+                <?php endif;?>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-7">
+                            <?php if($success):?>
+                                <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                            <?php else:?>
+                                <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                            <?php endif?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

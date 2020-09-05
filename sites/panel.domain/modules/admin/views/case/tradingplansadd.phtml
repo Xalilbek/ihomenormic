@@ -1,0 +1,204 @@
+<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-tools">
+            <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                        <i class="flaticon-share m--hide"></i>
+                        <?=$this->lang->get("CreateNew");?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="m_user_profile_tab_1">
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="">
+                <div class="m-portlet__body">
+                    <?php if($success):?>
+                        <div class="form-group m-form__group row">
+                            <div class="form-success">
+                                <?=$success;?>
+                            </div>
+                        </div>
+                    <?php else:?>
+                        <?php if($error):?>
+                            <div class="form-group m-form__group row">
+                                <div class="form-error">
+                                    <?=$error;?>
+                                </div>
+                            </div>
+                        <?php endif;?>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Goal");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-input" name="goal" onchange="loadQuestions(this.value, 2)">
+                                    <option value="0"><?=$this->lang->get("None");?></option>
+                                    <?php foreach($this->parameters->getList($this->lang, "goals") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$this->request->get("goal") ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("TradingPlanType", "Trading plan type");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-input" name="type">
+                                    <option value="commune" <?=("commune" == $this->request->get("type") ? 'selected="selected"': '');?>><?=$this->lang->get("Commune");?></option>
+                                    <option value="company" <?=("company" == $this->request->get("type") ? 'selected="selected"': '');?>><?=$this->lang->get("CareCompagniet");?></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("WhoIsResponsible", "Responsible person");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-select2" id="m_select2_2" name="responsible">
+                                    <option value="0"><?=$this->lang->get("None");?></option>
+                                    <?php foreach($employees as $value):?>
+                                        <option value="<?=(int)$value->id;?>" <?=((int)$value->id == (int)$this->request->get("responsible") ? 'selected="selected"': '');?>><?=htmlspecialchars($value->firstname);?> <?=htmlspecialchars($value->lastname);?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("ActionPlan1", "Handleplansmål");?></label>
+                            <div class="col-7">
+                                <textarea name="action_plan" class="form-control m-input" rows="3"><?=$this->request->get("action_plan");?></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("SelectQuestions", "Udvælg spørgsmål");?></label>
+                            <div class="col-9">
+                                <div id="question_template_2"><?=$this->lang->get("ChooseGoalAndCat", "Please, choose goal and case category");?></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-3 col-form-label"><?=$this->lang->get("Status");?></label>
+                            <div class="col-7">
+                                <select class="form-control m-input" name="status">
+                                    <?php foreach($this->parameters->getList($this->lang, "trading_plan_statuses") as $value):?>
+                                        <option value="<?=(int)$value["id"];?>" <?=((int)$value["id"] == (int)$this->request->get("status") ? 'selected="selected"': '');?>><?=htmlspecialchars($value["title"]);?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                    <?php endif;?>
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-7">
+                                <?php if($success):?>
+                                    <a href="<?=_PANEL_ROOT_;?>/case/tradingplans/<?=$id;?>" class="btn btn-accent m-btn m-btn--air m-btn--custom"><?=$this->lang->get("Back");?></a>&nbsp;&nbsp;
+                                <?php else:?>
+                                    <button type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Save", "Gem ændringer");?></button>&nbsp;&nbsp;
+                                <?php endif?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ques-line{
+        display: table;
+        padding: 0;
+        width: 100%;
+        margin-top: 1px;
+    }
+    .ques-check{
+        display: table-cell;
+        width: 40px;
+        padding: 8px;
+        background: #e4e4e4;
+        vertical-align: middle;
+        text-align: center;
+    }
+    .ques-check:hover{
+        background: #d4d4d4;
+        cursor: pointer;
+    }
+    .ques-title{
+        display: table-cell;
+        padding: 8px 10px;
+        background: #f1f1f1;
+    }
+    .ques-interval{
+        display: table-cell;
+        width: 130px;
+        background: #f1f1f1;
+        padding: 5px;
+    }
+    .ques_checkinput{
+        display: none;
+    }
+    .ques-check .la-check-circle{
+        color: green;
+        font-weight: 700;
+    }
+</style>
+<script>
+    function loadQuestions(goalId, planNumber){
+        $.ajax({
+                method: "POST",
+                url: "<?=_PANEL_ROOT_;?>/data/questions",
+                data: {goal: goalId},
+                dataType: "json",
+            })
+            .done(function( res ) {
+                var html = '<select class="form-control m-select2" id="m_select2_12_{trading_plan_number}" name="questions[]" multiple="multiple">';
+                html += '<optgroup label="">';
+                for(var iii=0;iii<res.data.length;iii++){
+                    var quest = res.data[iii];
+                    html += '<option value="'+quest.id+'">'+quest.title+'</option>';
+                }
+                html += '</optgroup>';
+                html += '</select>';
+
+                var ht = '';
+                for(var iii=0;iii<res.data.length;iii++){
+                    var quest = res.data[iii];
+                    ht += '<div class="ques-line">';
+                        ht += '<div class="ques-check" onclick="checkQues('+quest.id+')" id="checkbox_'+quest.id+'"><i class="la la-circle"></i></div>';
+                        ht += '<div class="ques-title">'+quest.title+'</div>';
+                        ht += '<div class="ques-interval">';
+                            ht += '<select class="form-control" name="intervals['+quest.id+']">';
+                                ht += '<option value="after_session">After session</option>';
+                                ht += '<option value="week">1 Week</option>';
+                                ht += '<option value="14_days">14 days</option>';
+                                ht += '<option value="month">1 Month</option>';
+                                ht += '<option value="3_month">3 Month</option>';
+                                ht += '<option value="6_month">6 Month</option>';
+                            ht += '</select>';
+                            ht += '<input class="ques_checkinput" id="check_'+quest.id+'" type="checkbox" value="1" name="questions['+quest.id+']"/>';
+                        ht += '</div>';
+                    ht += '</div>';
+                }
+
+                html = html.replace(new RegExp('{trading_plan_number}', 'g'), planNumber);
+                //document.getElementById("question_template_"+planNumber).innerHTML = html;
+                document.getElementById("question_template_"+planNumber).innerHTML = ht;
+                $("#m_select2_12_"+planNumber).select2({
+                    placeholder: "Select an option"
+                });
+            });
+    }
+
+    function checkQues(qid){
+        var obj = document.getElementById("check_"+qid);
+        obj.checked = (obj.checked) ? false: true;
+        document.getElementById("checkbox_"+qid).innerHTML = (obj.checked) ? '<i class="la la-check-circle"></i>': '<i class="la la-circle"></i>';
+    }
+</script>

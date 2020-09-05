@@ -1,0 +1,92 @@
+<!-- BEGIN: Subheader -->
+<div class="m-subheader ">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                <?=$this->lang->get("Show");?>
+            </h3>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="<?=_PANEL_ROOT_;?>" class="m-nav__link m-nav__link--icon"><i class="m-nav__link-icon la la-home"></i></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Offers");?></span></a>
+                </li>
+                <li class="m-nav__separator">-</li>
+                <li class="m-nav__item">
+                    <a href="<?=_PANEL_ROOT_;?>/<?=$controller;?>/add" class="m-nav__link"><span class="m-nav__link-text"><?=$this->lang->get("Show");?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Subheader -->
+
+<div class="m-content">
+    <!--begin::Portlet-->
+    <div class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?=$this->lang->get("Show");?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="" style="padding-top: 30px;">
+            <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("Email");?></b></label>
+                <div class="col-5" style="padding-top: 7px;">
+                    <?=htmlspecialchars($data->email);?>
+                </div>
+            </div>
+            <?php if((int)$data->is_secure == 1):?>
+                <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                    <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("VerificationCode");?></b></label>
+                    <div class="col-5" style="padding-top: 7px;">
+                        <?=htmlspecialchars($data->code);?>
+                    </div>
+                </div>
+                <?php if($data->read_at):?>
+                    <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                        <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("ReadDate");?></b></label>
+                        <div class="col-5" style="padding-top: 7px;">
+                            <?=$this->mymongo->dateFormat($data->read_at, "Y-m-d H:i");?>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                        <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("IpAddress");?></b></label>
+                        <div class="col-5" style="padding-top: 7px;">
+                            <?=htmlspecialchars($data->ip);?>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                        <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("UserAgent");?></b></label>
+                        <div class="col-9" style="padding-top: 7px;">
+                            <?=htmlspecialchars($data->browser);?>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="form-group m-form__group row" style="padding-bottom: 0 !important;padding-top: 0 !important;">
+                        <label for="example-text-input" class="col-3 col-form-label"><b><?=$this->lang->get("ReadDate");?></b></label>
+                        <div class="col-5" style="padding-top: 7px;">
+                            <?=$this->lang->get("notRead");?>
+                        </div>
+                    </div>
+                <?php endif;?>
+            <?php endif;?>
+
+
+            <div class="m-portlet__body" style="background: #f1f1f1;margin-top: 30px;">
+                <iframe id="iframe" style="width: 100%;min-height: 900px;border: 0" frameborder="0" width="100%" srcdoc='<?=str_replace(["<script>","onload"], "",$data->content);?>'>
+                </iframe>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>

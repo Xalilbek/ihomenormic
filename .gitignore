@@ -1,0 +1,7 @@
+/nginx_confs/api.domain.com
+/nginx_confs/cron.domain.com
+/nginx_confs/panel.domain.com
+/sites/setting.php
+/sites/panel.domain/public/upload
+.idea/
+.vscode

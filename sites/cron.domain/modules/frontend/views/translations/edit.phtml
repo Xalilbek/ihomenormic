@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title"><?=Translate;?></h4>
+</div>
+<style>
+    @media (min-width: 768px){
+        .modal-dialog {
+            width: 700px !important;
+        }
+    }
+</style>
+<div class="modal-body">
+        <div class="row">
+            <div class="portlet  ">
+                <div class="row" style="padding: 0 30px !important;">
+                    <div class="portlet-body form">
+                        <?php if ($success): ?>
+                            <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-6">
+                                    <div class="input-group" style="text-align:left;padding:0px;color: green;"><?=$success;?>. (<?=$added;?> keyword(s))</div>
+                                </div>
+                            </div>
+                            </div>
+                        <?php endif;?>
+                        <?php if ($error): ?>
+                            <div class="form-group">
+                                <div class="row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-6">
+                                    <div class="input-group" style="text-align:left;padding:0px;color: red;"><?=$error;?></div>
+                                </div>
+                                </div>
+                            </div>
+                        <?php endif;?>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Original <em>*</em></label>
+                            <div class="col-sm-12">
+                                <div style="display: block;background: #e6e6e6;padding: 15px;">
+                                    <?=(($data->translations->{$this->request->get("from_lang")}) ? $data->translations->{$this->request->get("from_lang")}: $data->translations->en);?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label"style="margin-top: 20px;">Translations:</label>
+                            <div class="col-sm-12">
+                                <?php foreach($this->lang->testLangs as $value):?>
+                                    <?php //if($value == $this->request->get("current_lang")):?>
+                                        <div class="input-group input-group-md margin-bottom-10">
+                                            <span class="input-group-addon"><?=$value;?></span>
+                                            <textarea name="translations[<?=$value;?>]" class="form-control" style="min-height: 100px;"><?=str_replace("'",'"',$data->translations->$value);?></textarea>
+                                        </div>
+                                    <?php //endif;?>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" name="submit" value="1" onclick="editKeyword('<?=$data->_id;?>', '<?=$this->request->get("current_lang");?>', 'post', '<?=$this->request->get("from_lang");?>');"><i class="fa fa-check"></i> Verify</button>
+                <button type="button" data-dismiss="modal" class="btn"><?=Close;?></button>
+            </div>
+        </div>
+</div>

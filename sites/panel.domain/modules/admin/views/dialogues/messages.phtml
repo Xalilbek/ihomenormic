@@ -1,0 +1,219 @@
+<div class="m-content">
+    <form class="m-portlet">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        <?php foreach($users as $user):?>
+                            <a class="btn msg-user" href="<?=_PANEL_ROOT_;?>/profile/<?=$user->id;?>"><i class="la la-user"></i> <?=$user->firstname;?> <?=$user->lastname;?></a>
+                        <?php endforeach;?>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <div class="m-portlet__body">
+            <div class="m-messenger m-messenger--message-arrow m-messenger--skin-light" id="msg_scroll_body">
+                <div class="m-messenger__messages m-scrollable m-scroller ps ps--active-y" style="min-height: 300px;" id="message_body">
+                    <!--
+                    <div class="m-messenger__wrapper">
+                        <div class="m-messenger__message m-messenger__message--in">
+                            <div class="m-messenger__message-no-pic m--bg-fill-danger">
+                                <span>F</span>
+                            </div>
+                            <div class="m-messenger__message-body">
+                                <div class="m-messenger__message-arrow"></div>
+                                <div class="m-messenger__message-content">
+                                    <div class="m-messenger__message-username">
+                                        Fornavn Efternavn skrev
+                                    </div>
+                                    <div class="m-messenger__message-text">
+                                        Hej, dette er en chat besked.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-messenger__wrapper">
+                        <div class="m-messenger__message m-messenger__message--out">
+                            <div class="m-messenger__message-body">
+                                <div class="m-messenger__message-arrow"></div>
+                                <div class="m-messenger__message-content">
+                                    <div class="m-messenger__message-text">
+                                        Flere beskeder efter hinanden.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-messenger__datetime">12:45</div>
+                    -->
+                    <div id="loading_top" style="color: #777;font-size: 18px;padding: 100px;text-align: center;">Loading...</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group m-form__group row" style="background: #f5f5f5;border-top: 1px solid #e4e3e3;margin-left: 0 !important;margin-right: 0 !important;padding: 15px 0;">
+            <label for="example-text-input" class="col-2 col-form-label" style="text-align: right;"><?=$this->lang->get("Message");?>:</label>
+            <div class="col-8">
+                <textarea id="message_box" class="form-control" name="message" style="min-height: 60px;"><?=$this->request->get("message");?></textarea>
+            </div>
+            <div class="col-2">
+                <button onclick="sendMessage();" style="width: 100%;" type="button" class="btn btn-accent m-btn m-btn--air m-btn--custom" name="save" value="1" ><?=$this->lang->get("Send");?></button>&nbsp;&nbsp;
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.msg-user{
+    cursor: pointer;
+    padding: 6px 12px !important;
+    border-radius: 17px;
+    background: #f3f3f3;
+    color: #666;
+    border: 1px solid #e7e7e7;
+}
+    .msg-user:hover{
+        background: #e6e6e6;
+        color: #444;
+        border: 1px solid #e1e1e1;
+    }
+    .msg-user .la{
+        font-size: 16px !important;
+    }
+.dialogue-time{
+    padding: 0 0 0 10px;
+    color: #d4d4d4;
+    font-size: 12px;
+    font-weight: normal;
+}
+.user-icon-1{background-color: #f4516c !important;color: #f9f9f9;}
+.user-icon-2{background-color: #34bfa3 !important;color: #f9f9f9;}
+.user-icon-3{background-color: #3f50d8 !important;color: #f9f9f9;}
+.user-icon-4{background-color: #ffb822 !important;color: #f9f9f9;}
+.user-icon-5{background-color: #00c5dc !important;color: #f9f9f9;}
+
+    #msg_scroll_body{
+        overflow-y: scroll;
+        max-height: 400px;
+    }
+    .msg-avatar{width: 100%;border-radius: 50%;border: 2px solid #e1e1e1;}
+</style>
+<script>
+    var dialogueId = '<?=$did;?>';
+    var firstMsgId = false;
+    var lastMsgId = false;
+    var lockLoading = false;
+    function sendMessage(){
+        var msgInput = document.getElementById("message_box");
+        var msg = msgInput.value;
+        if(msg.length > 0){
+            $.ajax({
+                    method: "POST",
+                    url: "<?=_PANEL_ROOT_;?>/<?=$controller;?>/send",
+                    data: {dialogue: dialogueId, message: msg},
+                    dataType: "json",
+                })
+                .done(function( res ) {
+                    msgInput.value = '';
+                    $("#message_box").focus();
+                    loadMessages();
+                });
+        }
+    }
+    function loadMessages(sort_type){
+        if(lockLoading)
+            return true;
+        lockLoading = true;
+        if(!sort_type)
+            sort_type = "after";
+        var messageId = (lastMsgId) ? lastMsgId: '';
+        if(sort_type == "before")
+            messageId = (firstMsgId) ? firstMsgId: '';
+
+        var currentHeight = $("#message_body").height();
+        $.ajax({
+                method: "POST",
+                url: "<?=_PANEL_ROOT_;?>/<?=$controller;?>/list",
+                data: {dialogue_id: dialogueId, sort_type: sort_type, message_id: messageId, limit: 10},
+                dataType: "json",
+            })
+            .done(function( res ) {
+                if(res.status == 'success'){
+                    var h = '';
+                    for(var ii=0;ii<res.data.length;ii++){
+                        var msg = res.data[ii];
+                        console.log(msg)
+                        if(sort_type == "after"){
+                            if(!firstMsgId && ii==0)
+                                firstMsgId=msg.id;
+                            lastMsgId=msg.id;
+                            //console.log(lastMsgId);
+                        }else if(sort_type == "before"){
+                            if(ii==0)
+                                firstMsgId=msg.id;
+                        }
+                        if(msg.is_me){
+                            h += '<div class="m-messenger__wrapper">'
+                                    + '<div class="m-messenger__message m-messenger__message--out">'
+                                        + '<div class="m-messenger__message-body">'
+                                            + '<div class="m-messenger__message-arrow"></div>'
+                                                + '<div class="m-messenger__message-content">'
+                                                + '<div class="m-messenger__message-username">'
+                                                + msg.user.fullname
+                                                + '<span class="dialogue-time">'+msg.date_text+'</span>'
+                                                + '</div>'
+                                                + '<div class="m-messenger__message-text">'
+                                                + msg.message
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                        + '<div class="m-messenger__message-no-pic user-icon-1">'
+                                            + '<span><img class="msg-avatar" src="'+msg.user.avatar+'"/></span>'
+                                        + '</div>'
+                                    + '</div>'
+                                + '</div>';
+                        }else{
+
+                            h += '<div class="m-messenger__wrapper">'
+                                        + '<div class="m-messenger__message m-messenger__message--in">'
+                                            + '<div class="m-messenger__message-no-pic user-pr user-icon-2">'
+                                                + '<span><img class="msg-avatar" src="'+msg.user.avatar+'"/></span>'
+                                            + '</div>'
+                                            + '<div class="m-messenger__message-body">'
+                                        + '<div class="m-messenger__message-arrow"></div>'
+                                        + '<div class="m-messenger__message-content">'
+                                            + '<div class="m-messenger__message-username">'
+                                                + msg.user.fullname
+                                        + '<span class="dialogue-time">'+msg.date_text+'</span>'
+                                        + '</div>'
+                                            + '<div class="m-messenger__message-text">'
+                                                + msg.message
+                                            + '</div>'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '</div>'
+                                    + '</div>';
+                        }
+                    }
+                    document.getElementById('loading_top').style.display = 'none';
+                    if(sort_type == "after"){
+                        $( "#message_body" ).append(h);
+                        $("#msg_scroll_body").animate({ scrollTop: $("#message_body").height() }, 1);
+                    }else{
+                        $( "#message_body" ).prepend(h);
+                        if(h.length > 0)
+                            $("#msg_scroll_body").scrollTop($("#message_body").height() - currentHeight);
+                    }
+
+                    lockLoading = false;
+                }
+            });
+    }
+
+    function initScroll(){
+        //console.log($("#msg_scroll_body").scrollTop());
+        if($("#msg_scroll_body").scrollTop() < 10)
+            loadMessages("before");
+    }
+</script>
